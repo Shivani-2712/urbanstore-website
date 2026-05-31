@@ -20,6 +20,8 @@ function Admin() {
         fetchProducts()
     }, [])
 
+    const [imageFile, setImageFile] = useState(null)
+
     const [editingProduct, setEditingProduct] =
         useState(null)
 
@@ -73,21 +75,46 @@ function Admin() {
         })
     }
 
+    const uploadImage = async () => {
+        const data = new FormData()
+
+        data.append("image", imageFile)
+
+        const res = await axios.post(
+            "http://localhost:5000/upload",
+            data
+        )
+
+        return res.data.imageUrl
+    }
+
     const addProduct = async (e) => {
         e.preventDefault()
 
+        console.log("Add Product clicked")
+
         try {
+            let imageUrl = ""
+
+            if (imageFile) {
+                imageUrl = await uploadImage()
+            }
+
             await axios.post(
                 "http://localhost:5000/products",
-                formData
+                {
+                    ...formData,
+                    image: imageUrl,
+                }
             )
 
             setFormData({
                 name: "",
                 price: "",
-                image: "",
                 description: "",
             })
+
+            setImageFile(null)
 
             fetchProducts()
         } catch (error) {
@@ -128,11 +155,10 @@ function Admin() {
                 />
 
                 <input
-                    type="text"
-                    name="image"
+                    type="file"
+                    accept="image/*"
                     placeholder="Image URL"
-                    value={formData.image}
-                    onChange={handleChange}
+                    onChange={(e) => setImageFile(e.target.files[0])}
                     className="w-full border p-3 rounded"
                 />
 

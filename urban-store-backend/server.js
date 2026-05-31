@@ -1,16 +1,34 @@
+const dotenv = require("dotenv")
+dotenv.config()
+
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
-const dotenv = require("dotenv")
+const multer = require("multer")
+const cloudinary = require("./config/cloudinary") 
 
 const Product = require("./models/Product")
 
-dotenv.config()
+console.log(
+  "Cloud Name:",
+  process.env.CLOUDINARY_CLOUD_NAME
+)
+
+console.log(
+  "API Key:",
+  process.env.CLOUDINARY_API_KEY
+)
+
+console.log("API Secret Exists:",
+  !!process.env.CLOUDINARY_API_SECRET)
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage })
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -47,6 +65,31 @@ app.get("/products/:id", async (req, res) => {
     })
   }
 })
+
+app.post(
+  "/upload",
+  upload.single("image"),
+  async (req, res) => {
+    try {
+      const file = req.file
+
+      const result = await cloudinary.uploader.upload(
+        `data:${file.mimetype};base64,${file.buffer.toString("base64")}`
+      )
+
+      res.json({
+        imageUrl: result.secure_url,
+      })
+    } catch (error) {
+      console.log("UPLOAD ERROR:")
+      console.log(error)
+
+      res.status(500).json({
+        message: error.message,
+      })
+    }
+  }
+)
 
 app.listen(process.env.PORT, () => {
   console.log(

@@ -1,6 +1,10 @@
 const dotenv = require("dotenv")
 dotenv.config()
 
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+const Admin = require("./models/Admin")
+
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
@@ -91,6 +95,76 @@ app.post(
   }
 )
 
+app.post("/create-admin", async (req, res) => {
+  try {
+    const hashedPassword =
+      await bcrypt.hash(
+        req.body.password,
+        10
+      )
+
+    const admin = new Admin({
+      email: req.body.email,
+      password: hashedPassword,
+    })
+
+    await admin.save()
+
+    res.json({
+      message: "Admin Created",
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    })
+  }
+})
+
+app.post("/admin-login", async (req, res) => {
+  try {
+    const admin =
+      await Admin.findOne({
+        email: req.body.email,
+      })
+
+    if (!admin) {
+      return res.status(400).json({
+        message: "Invalid Email",
+      })
+    }
+
+    const isMatch =
+      await bcrypt.compare(
+        req.body.password,
+        admin.password
+      )
+
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Invalid Password",
+      })
+    }
+
+    const token = jwt.sign(
+      {
+        adminId: admin._id,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    )
+
+    res.json({
+      token,
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    })
+  }
+})
+
 app.listen(process.env.PORT, () => {
   console.log(
     `Server running on port ${process.env.PORT}`
@@ -120,6 +194,7 @@ app.post("/products", async (req, res) => {
       price: req.body.price,
       image: req.body.image,
       description: req.body.description,
+      category: req.body.category,
     })
 
     const savedProduct = await product.save()
@@ -142,6 +217,7 @@ app.put("/products/:id", async (req, res) => {
           price: req.body.price,
           image: req.body.image,
           description: req.body.description,
+          category: req.body.category,
         },
         { new: true }
       )

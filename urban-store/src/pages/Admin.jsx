@@ -66,6 +66,7 @@ function Admin() {
         price: "",
         image: "",
         description: "",
+        category: "",
     })
 
     const handleChange = (e) => {
@@ -161,6 +162,45 @@ function Admin() {
                     onChange={(e) => setImageFile(e.target.files[0])}
                     className="w-full border p-3 rounded"
                 />
+
+                <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    className="w-full border p-3 rounded mb-4"
+                >
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="T-Shirts">
+                        T-Shirts
+                    </option>
+
+                    <option value="Hoodies">
+                        Hoodies
+                    </option>
+
+                    <option value="Jackets">
+                        Jackets
+                    </option>
+
+                    <option value="Sweatshirts">
+                        Sweatshirts
+                    </option>
+
+                    <option value="Dresses">
+                        Dresses
+                    </option>
+
+                    <option value="Jeans">
+                        Jeans
+                    </option>
+
+                    <option value="Shirts">
+                        Shirts
+                    </option>
+                </select>
 
                 <textarea
                     name="description"

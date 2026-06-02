@@ -12,11 +12,15 @@ import ProductDetails from "./pages/ProductDetails"
 import Cart from "./pages/Cart"
 import Admin from "./pages/Admin"
 import AdminLogin from "./pages/AdminLogin"
+import Wishlist from "./pages/Wishlist"
+import HeroBanner from "./components/HeroBanner"
+import Checkout from "./pages/Checkout"
 
 function Home() {
   return (
     <>
-      <Hero />
+      <Navbar />
+      <HeroBanner />
       <Products />
     </>
   )
@@ -25,7 +29,6 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -52,6 +55,16 @@ function App() {
               <Admin />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/wishlist"
+          element={<Wishlist />}
+        />
+
+        <Route
+          path="/checkout"
+          element={<Checkout />}
         />
       </Routes>
     </BrowserRouter>

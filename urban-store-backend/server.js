@@ -12,6 +12,7 @@ const multer = require("multer")
 const cloudinary = require("./config/cloudinary") 
 
 const Product = require("./models/Product")
+const Order = require("./models/Order")
 
 console.log(
   "Cloud Name:",
@@ -158,6 +159,70 @@ app.post("/admin-login", async (req, res) => {
     res.json({
       token,
     })
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    })
+  }
+})
+
+app.post("/orders", async (req, res) => {
+  try {
+    const order = new Order({
+      customerName:
+        req.body.customerName,
+
+      email: req.body.email,
+
+      phone: req.body.phone,
+
+      address: req.body.address,
+
+      items: req.body.items,
+
+      totalAmount:
+        req.body.totalAmount,
+    })
+
+    const savedOrder =
+      await order.save()
+
+    res.status(201).json(
+      savedOrder
+    )
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    })
+  }
+})
+
+app.get("/orders", async (req, res) => {
+  try {
+    const orders = await Order.find()
+
+    res.json(orders)
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    })
+  }
+})
+
+app.put("/orders/:id", async (req, res) => {
+  try {
+    const updatedOrder =
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          status: req.body.status,
+        },
+        {
+          new: true,
+        }
+      )
+
+    res.json(updatedOrder)
   } catch (error) {
     res.status(500).json({
       message: error.message,

@@ -3,6 +3,7 @@ import axios from "axios"
 
 function Admin() {
     const [products, setProducts] = useState([])
+    const [orders, setOrders] = useState([])
 
     const fetchProducts = async () => {
         try {
@@ -16,8 +17,39 @@ function Admin() {
         }
     }
 
+    const fetchOrders = async () => {
+        try {
+            const res = await axios.get(
+                "http://localhost:5000/orders"
+            )
+
+            setOrders(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const updateOrderStatus = async (
+        id,
+        status
+    ) => {
+        try {
+            await axios.put(
+                `http://localhost:5000/orders/${id}`,
+                {
+                    status,
+                }
+            )
+
+            fetchOrders()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         fetchProducts()
+        fetchOrders()
     }, [])
 
     const [imageFile, setImageFile] = useState(null)
@@ -260,6 +292,67 @@ function Admin() {
                         </button>
                     </div>
                 ))}
+            </div>
+            <div className="mt-16">
+                <h2 className="text-3xl font-bold mb-6">
+                    Orders
+                </h2>
+
+                <div className="grid gap-4">
+                    {orders.map((order) => (
+                        <div
+                            key={order._id}
+                            className="border rounded-lg p-5 bg-white shadow"
+                        >
+                            <h3 className="font-bold text-xl">
+                                {order.customerName}
+                            </h3>
+
+                            <p>Email: {order.email}</p>
+
+                            <p>Phone: {order.phone}</p>
+
+                            <p>Address: {order.address}</p>
+
+                            <p>
+                                Total: ₹{order.totalAmount}
+                            </p>
+
+                            <div className="mt-2">
+                                <label className="font-semibold">
+                                    Status:
+                                </label>
+
+                                <select
+                                    value={order.status}
+                                    onChange={(e) =>
+                                        updateOrderStatus(
+                                            order._id,
+                                            e.target.value
+                                        )
+                                    }
+                                    className="ml-2 border p-1 rounded"
+                                >
+                                    <option value="Pending">
+                                        Pending
+                                    </option>
+
+                                    <option value="Shipped">
+                                        Shipped
+                                    </option>
+
+                                    <option value="Delivered">
+                                        Delivered
+                                    </option>
+                                </select>
+                            </div>
+
+                            <p>
+                                Items: {order.items.length}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )

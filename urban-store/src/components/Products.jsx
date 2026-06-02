@@ -9,6 +9,9 @@ function Products() {
   const [selectedCategory, setSelectedCategory] =
     useState("All")
 
+  const [sortOption, setSortOption] =
+    useState("default")
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/products")
@@ -38,8 +41,25 @@ function Products() {
     }
   )
 
+  const sortedProducts = [...filteredProducts]
+
+  if (sortOption === "lowToHigh") {
+    sortedProducts.sort(
+      (a, b) => a.price - b.price
+    )
+  }
+
+  if (sortOption === "highToLow") {
+    sortedProducts.sort(
+      (a, b) => b.price - a.price
+    )
+  }
+
   return (
-    <section className="px-10 py-20 bg-gray-50">
+    <section
+      id="products"
+      className="px-10 py-20 bg-gray-50"
+    >
       <div className="flex justify-center mb-10">
         <input
           type="text"
@@ -58,36 +78,52 @@ function Products() {
           onClick={() =>
             setSelectedCategory("All")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "All"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
           All
         </button>
 
         <button
           onClick={() =>
-            setSelectedCategory("T-Shirts")
+            setSelectedCategory("Jackets")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "Jackets"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
-          T-Shirts
+          Jackets
         </button>
 
         <button
           onClick={() =>
             setSelectedCategory("Hoodies")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "Hoodies"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
           Hoodies
         </button>
 
         <button
           onClick={() =>
-            setSelectedCategory("Jackets")
+            setSelectedCategory("T-shirts")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "T-shirts"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
-          Jackets
+          T-shirts
         </button>
 
         <button
@@ -96,7 +132,11 @@ function Products() {
               "Sweatshirts"
             )
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "Sweatshirts"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
           Sweatshirts
         </button>
@@ -105,7 +145,11 @@ function Products() {
           onClick={() =>
             setSelectedCategory("Dresses")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "Dresses"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
           Dresses
         </button>
@@ -114,7 +158,11 @@ function Products() {
           onClick={() =>
             setSelectedCategory("Jeans")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "Jeans"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
           Jeans
         </button>
@@ -123,18 +171,46 @@ function Products() {
           onClick={() =>
             setSelectedCategory("Shirts")
           }
-          className="px-4 py-2 border rounded"
+          className={`px-4 py-2 rounded transition
+    ${selectedCategory === "Shirts"
+              ? "bg-black text-white"
+              : "border"
+            }`}
         >
           Shirts
         </button>
 
       </div>
+      <div className="flex justify-center mb-8">
+        <select
+          value={sortOption}
+          onChange={(e) =>
+            setSortOption(e.target.value)
+          }
+          className="border p-3 rounded-lg"
+        >
+          <option value="default">
+            Sort By
+          </option>
+
+          <option value="lowToHigh">
+            Price: Low to High
+          </option>
+
+          <option value="highToLow">
+            Price: High to Low
+          </option>
+        </select>
+      </div>
+      <p className="text-center text-gray-500 mb-4">
+        Showing {sortedProducts.length} Products
+      </p>
       <h2 className="text-5xl font-bold mb-12 text-center">
         Trending Products
       </h2>
 
       <div className="grid md:grid-cols-4 gap-8">
-        {filteredProducts.map((product) => (
+        {sortedProducts.map((product) => (
           <ProductCard
             key={product._id}
             product={product}

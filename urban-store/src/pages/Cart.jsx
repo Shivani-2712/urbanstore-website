@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useContext } from "react"
 import { CartContext } from "../context/CartContext"
 
@@ -79,9 +80,11 @@ function Cart() {
                             Total: ₹{totalPrice}
                         </h2>
 
-                        <button className="mt-6 bg-black text-white px-8 py-4 rounded-lg">
-                            Checkout
-                        </button>
+                        <Link to="/checkout">
+                            <button className="mt-6 bg-black text-white px-8 py-4 rounded-lg">
+                                Checkout
+                            </button>
+                        </Link>
                     </div>
                 </div>
             )}

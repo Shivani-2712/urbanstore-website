@@ -1,9 +1,13 @@
 import { useContext } from "react"
 import { CartContext } from "../context/CartContext"
+import { WishlistContext } from "../context/WishlistContext"
 import { Link } from "react-router-dom"
 
 function Navbar() {
     const { cartItems } = useContext(CartContext)
+
+    const { wishlistItems } =
+        useContext(WishlistContext)
 
     return (
         <nav className="flex justify-between items-center px-10 py-5 border-b bg-white sticky top-0 z-50">
@@ -25,8 +29,14 @@ function Navbar() {
                 </li>
 
                 <li className="hover:text-gray-500 cursor-pointer transition">
+                    <Link to="/wishlist">
+                        ❤️ Wishlist ({wishlistItems.length})
+                    </Link>
+                </li>
+
+                <li className="hover:text-gray-500 cursor-pointer transition">
                     <Link to="/cart">
-                        Cart ({cartItems.length})
+                        🛒 Cart ({cartItems.length})
                     </Link>
                 </li>
             </ul>

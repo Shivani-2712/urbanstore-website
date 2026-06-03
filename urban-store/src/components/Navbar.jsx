@@ -4,6 +4,18 @@ import { WishlistContext } from "../context/WishlistContext"
 import { Link } from "react-router-dom"
 
 function Navbar() {
+    const userToken = localStorage.getItem(
+        "userToken"
+    )
+
+    const handleLogout = () => {
+        localStorage.removeItem(
+            "userToken"
+        )
+
+        window.location.reload()
+    }
+
     const { cartItems } = useContext(CartContext)
 
     const { wishlistItems } =
@@ -16,6 +28,38 @@ function Navbar() {
             </h1>
 
             <ul className="flex gap-8 text-lg font-medium">
+                {userToken ? (
+                    <>
+                        <li>
+                            <Link to="/my-orders">
+                                My Orders
+                            </Link>
+                        </li>
+
+                        <li>
+                            <button
+                                onClick={handleLogout}
+                                className="hover:text-gray-500"
+                            >
+                                Logout
+                            </button>
+                        </li>
+                    </>
+                ) : (
+                    <>
+                        <li>
+                            <Link to="/login">
+                                Login
+                            </Link>
+                        </li>
+
+                        <li>
+                            <Link to="/register">
+                                Register
+                            </Link>
+                        </li>
+                    </>
+                )}
                 <li className="hover:text-gray-500 cursor-pointer transition">
                     Men
                 </li>

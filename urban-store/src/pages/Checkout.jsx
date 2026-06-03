@@ -1,10 +1,15 @@
 import { useState, useContext } from "react"
 import axios from "axios"
 import { CartContext } from "../context/CartContext"
+import { useNavigate } from "react-router-dom"
 
 function Checkout() {
-    const { cartItems } =
-        useContext(CartContext)
+    const {
+        cartItems,
+        clearCart,
+    } = useContext(CartContext)
+
+    const navigate = useNavigate()
 
     const [formData, setFormData] =
         useState({
@@ -30,24 +35,87 @@ function Checkout() {
             0
         )
 
-    const placeOrder = async (
-        e
-    ) => {
-        e.preventDefault()
-
+    const handlePayment = async () => {
+        if (
+            !formData.customerName ||
+            !formData.email ||
+            !formData.phone ||
+            !formData.address
+        ) {
+            alert("Please fill all fields")
+            return
+        }
         try {
-            await axios.post(
-                "http://localhost:5000/orders",
+            const { data } = await axios.post(
+                "http://localhost:5000/create-payment-order",
                 {
-                    ...formData,
-                    items: cartItems,
-                    totalAmount,
+                    amount: totalAmount,
                 }
             )
 
-            alert(
-                "Order Placed Successfully 🎉"
-            )
+            const options = {
+                key:
+                    import.meta.env
+                        .VITE_RAZORPAY_KEY_ID,
+
+                amount: data.amount,
+
+                currency: data.currency,
+
+                name: "UrbanStore",
+
+                description:
+                    "Order Payment",
+
+                order_id: data.id,
+
+                handler: async function (
+                    response
+                ) {
+                    try {
+                        const user = JSON.parse(
+                            localStorage.getItem("userInfo")
+                        )
+
+                        await axios.post(
+                            "http://localhost:5000/orders",
+                            {
+                                ...formData,
+
+                                userId: user._id,
+
+                                items: cartItems,
+
+                                totalAmount,
+
+                                paymentId:
+                                    response.razorpay_payment_id,
+                            }
+                        )
+
+                        clearCart()
+
+                        alert(
+                            "Order Placed Successfully 🎉"
+                        )
+
+                        navigate("/order-success")
+                    } catch (error) {
+                        console.log(error)
+                    }
+                },
+
+                theme: {
+                    color: "#000000",
+                },
+            }
+
+            const razorpay =
+                new window.Razorpay(
+                    options
+                )
+
+            razorpay.open()
         } catch (error) {
             console.log(error)
         }
@@ -59,10 +127,7 @@ function Checkout() {
                 Checkout
             </h1>
 
-            <form
-                onSubmit={placeOrder}
-                className="max-w-2xl"
-            >
+            <form className="max-w-2xl">
                 <input
                     type="text"
                     name="customerName"
@@ -105,9 +170,12 @@ function Checkout() {
                 </h2>
 
                 <button
+                    type="button"
+
+                    onClick={handlePayment}
                     className="bg-black text-white px-8 py-4 rounded-lg"
                 >
-                    Place Order
+                    Pay Now
                 </button>
             </form>
         </div>

@@ -9,10 +9,12 @@ const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
 const multer = require("multer")
-const cloudinary = require("./config/cloudinary") 
+const cloudinary = require("./config/cloudinary")
 
 const Product = require("./models/Product")
 const Order = require("./models/Order")
+const User = require("./models/User")
+const Razorpay = require("razorpay")
 
 console.log(
   "Cloud Name:",
@@ -34,6 +36,12 @@ app.use(express.json())
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage })
+
+const razorpay = new Razorpay({
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret:
+    process.env.RAZORPAY_KEY_SECRET,
+})
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -178,6 +186,8 @@ app.post("/orders", async (req, res) => {
 
       address: req.body.address,
 
+      userId: req.body.userId,
+
       items: req.body.items,
 
       totalAmount:
@@ -209,6 +219,28 @@ app.get("/orders", async (req, res) => {
   }
 })
 
+app.get(
+  "/my-orders/:userId",
+  async (req, res) => {
+    try {
+      const orders =
+        await Order.find({
+          userId:
+            req.params.userId,
+        }).sort({
+          createdAt: -1,
+        })
+
+      res.json(orders)
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
 app.put("/orders/:id", async (req, res) => {
   try {
     const updatedOrder =
@@ -229,6 +261,150 @@ app.put("/orders/:id", async (req, res) => {
     })
   }
 })
+
+app.post(
+  "/create-payment-order",
+  async (req, res) => {
+    try {
+      const options = {
+        amount:
+          req.body.amount * 100,
+        currency: "INR",
+        receipt:
+          "receipt_" +
+          Date.now(),
+      }
+
+      const order =
+        await razorpay.orders.create(
+          options
+        )
+
+      res.json(order)
+    } catch (error) {
+      res.status(500).json({
+        message: error.message,
+      })
+    }
+  }
+)
+
+app.post(
+  "/register",
+  async (req, res) => {
+    try {
+      const existingUser =
+        await User.findOne({
+          email:
+            req.body.email,
+        })
+
+      if (existingUser) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Email already exists",
+          })
+      }
+
+      const hashedPassword =
+        await bcrypt.hash(
+          req.body.password,
+          10
+        )
+
+      const user =
+        new User({
+          name:
+            req.body.name,
+
+          email:
+            req.body.email,
+
+          password:
+            hashedPassword,
+        })
+
+      await user.save()
+
+      res.json({
+        message:
+          "User Registered",
+      })
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.post(
+  "/login",
+  async (req, res) => {
+    try {
+      const user =
+        await User.findOne({
+          email:
+            req.body.email,
+        })
+
+      if (!user) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Invalid Email",
+          })
+      }
+
+      const isMatch =
+        await bcrypt.compare(
+          req.body.password,
+          user.password
+        )
+
+      if (!isMatch) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Invalid Password",
+          })
+      }
+
+      const token =
+        jwt.sign(
+          {
+            userId:
+              user._id,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn:
+              "7d",
+          }
+        )
+
+      res.json({
+        token,
+
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      })
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
 
 app.listen(process.env.PORT, () => {
   console.log(

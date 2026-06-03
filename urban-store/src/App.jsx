@@ -4,6 +4,8 @@ import {
   Route,
 } from "react-router-dom"
 
+import Register from "./pages/Register"
+import Login from "./pages/Login"
 import ProtectedRoute from "./components/ProtectedRoute"
 import Navbar from "./components/Navbar"
 import Hero from "./components/Hero"
@@ -15,6 +17,8 @@ import AdminLogin from "./pages/AdminLogin"
 import Wishlist from "./pages/Wishlist"
 import HeroBanner from "./components/HeroBanner"
 import Checkout from "./pages/Checkout"
+import OrderSuccess from "./pages/OrderSuccess"
+import MyOrders from "./pages/MyOrders"
 
 function Home() {
   return (
@@ -44,6 +48,16 @@ function App() {
         />
 
         <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
           path="/admin-login"
           element={<AdminLogin />}
         />
@@ -65,6 +79,16 @@ function App() {
         <Route
           path="/checkout"
           element={<Checkout />}
+        />
+
+        <Route
+          path="/order-success"
+          element={<OrderSuccess />}
+        />
+
+        <Route
+          path="/my-orders"
+          element={<MyOrders />}
         />
       </Routes>
     </BrowserRouter>

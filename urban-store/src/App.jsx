@@ -19,6 +19,8 @@ import HeroBanner from "./components/HeroBanner"
 import Checkout from "./pages/Checkout"
 import OrderSuccess from "./pages/OrderSuccess"
 import MyOrders from "./pages/MyOrders"
+import UserProtectedRoute from "./components/UserProtectedRoute"
+import MyAccount from "./pages/MyAccount"
 
 function Home() {
   return (
@@ -78,7 +80,11 @@ function App() {
 
         <Route
           path="/checkout"
-          element={<Checkout />}
+          element={
+            <UserProtectedRoute>
+              <Checkout />
+            </UserProtectedRoute>
+          }
         />
 
         <Route
@@ -88,7 +94,20 @@ function App() {
 
         <Route
           path="/my-orders"
-          element={<MyOrders />}
+          element={
+            <UserProtectedRoute>
+              <MyOrders />
+            </UserProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-account"
+          element={
+            <UserProtectedRoute>
+              <MyAccount />
+            </UserProtectedRoute>
+          }
         />
       </Routes>
     </BrowserRouter>

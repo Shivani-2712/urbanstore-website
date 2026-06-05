@@ -4,6 +4,7 @@ import ProductCard from "./ProductCard"
 
 function Products() {
   const [products, setProducts] = useState([])
+  
   const [search, setSearch] = useState("")
 
   const [selectedCategory, setSelectedCategory] =
@@ -205,6 +206,11 @@ function Products() {
       <p className="text-center text-gray-500 mb-4">
         Showing {sortedProducts.length} Products
       </p>
+      {sortedProducts.length === 0 && (
+  <p className="text-center text-red-500 mb-6">
+    No products found
+  </p>
+)}
       <h2 className="text-5xl font-bold mb-12 text-center">
         Trending Products
       </h2>

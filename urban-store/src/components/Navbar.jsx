@@ -44,6 +44,12 @@ function Navbar() {
                                 Logout
                             </button>
                         </li>
+
+                        <li>
+                            <Link to="/my-account">
+                                My Account
+                            </Link>
+                        </li>
                     </>
                 ) : (
                     <>

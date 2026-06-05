@@ -12,6 +12,7 @@ const multer = require("multer")
 const cloudinary = require("./config/cloudinary")
 
 const Product = require("./models/Product")
+const Review = require("./models/Review")
 const Order = require("./models/Order")
 const User = require("./models/User")
 const Razorpay = require("razorpay")
@@ -397,6 +398,245 @@ app.post(
           email: user.email,
         },
       })
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.put(
+  "/update-profile/:id",
+  async (req, res) => {
+    try {
+      const updatedUser =
+        await User.findByIdAndUpdate(
+          req.params.id,
+          {
+            phone:
+              req.body.phone,
+
+            address:
+              req.body.address,
+          },
+          {
+            new: true,
+          }
+        )
+
+      res.json(updatedUser)
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.get(
+  "/user/:id",
+  async (req, res) => {
+    try {
+      const user =
+        await User.findById(
+          req.params.id
+        )
+
+      res.json(user)
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.post(
+  "/reviews",
+  async (req, res) => {
+    try {
+
+      const existingReview =
+        await Review.findOne({
+          productId:
+            req.body.productId,
+
+          userId:
+            req.body.userId,
+        })
+
+      if (existingReview) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "You already reviewed this product",
+          })
+      }
+
+      const orders =
+    await Order.find({
+        userId:
+            req.body.userId,
+    })
+
+const hasPurchased =
+    orders.some((order) =>
+        order.items.some(
+            (item) =>
+                item._id?.toString() ===
+                req.body.productId
+        )
+    )
+
+      const review = new Review({
+    productId:
+        req.body.productId,
+
+    userId:
+        req.body.userId,
+
+    userName:
+        req.body.userName,
+
+    rating:
+        req.body.rating,
+
+    comment:
+        req.body.comment,
+
+    verifiedBuyer:
+        hasPurchased,
+})
+      const savedReview =
+        await review.save()
+
+      res.status(201).json(
+        savedReview
+      )
+
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.get(
+  "/reviews/:productId",
+  async (req, res) => {
+    try {
+      const reviews =
+        await Review.find({
+          productId:
+            req.params.productId,
+        }).sort({
+          createdAt: -1,
+        })
+
+      res.json(reviews)
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.get(
+  "/can-review/:userId/:productId",
+  async (req, res) => {
+    try {
+      const orders =
+        await Order.find({
+          userId:
+            req.params.userId,
+        })
+
+      const hasPurchased =
+        orders.some((order) =>
+          order.items.some(
+            (item) =>
+              item._id?.toString() ===
+              req.params.productId
+          )
+        )
+
+      res.json({
+        canReview:
+          hasPurchased,
+      })
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
+    }
+  }
+)
+
+app.get(
+    "/can-review/:userId/:productId",
+    async (req, res) => {
+        try {
+            const orders =
+                await Order.find({
+                    userId:
+                        req.params.userId,
+                })
+
+            const hasPurchased =
+                orders.some(
+                    (order) =>
+                        order.items.some(
+                            (item) =>
+                                item._id?.toString() ===
+                                req.params.productId
+                        )
+                )
+
+            res.json({
+                canReview:
+                    hasPurchased,
+            })
+        } catch (error) {
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+        }
+    }
+)
+
+app.put(
+  "/reviews/:id",
+  async (req, res) => {
+    try {
+      const updatedReview =
+        await Review.findByIdAndUpdate(
+          req.params.id,
+          {
+            rating:
+              req.body.rating,
+
+            comment:
+              req.body.comment,
+          },
+          {
+            new: true,
+          }
+        )
+
+      res.json(
+        updatedReview
+      )
     } catch (error) {
       res.status(500).json({
         message:

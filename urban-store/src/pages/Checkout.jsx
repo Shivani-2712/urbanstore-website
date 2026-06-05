@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import axios from "axios"
 import { CartContext } from "../context/CartContext"
 import { useNavigate } from "react-router-dom"
@@ -11,13 +11,50 @@ function Checkout() {
 
     const navigate = useNavigate()
 
+    const user =
+        JSON.parse(
+            localStorage.getItem(
+                "userInfo"
+            )
+        )
+
     const [formData, setFormData] =
         useState({
-            customerName: "",
-            email: "",
+            customerName:
+                user?.name || "",
+
+            email:
+                user?.email || "",
+
             phone: "",
+
             address: "",
         })
+
+    useEffect(() => {
+        axios
+            .get(
+                `http://localhost:5000/user/${user._id}`
+            )
+            .then((res) => {
+                setFormData({
+                    customerName:
+                        res.data.name,
+
+                    email:
+                        res.data.email,
+
+                    phone:
+                        res.data.phone || "",
+
+                    address:
+                        res.data.address || "",
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [])
 
     const handleChange = (e) => {
         setFormData({
@@ -131,21 +168,23 @@ function Checkout() {
                 <input
                     type="text"
                     name="customerName"
+                    readOnly
                     placeholder="Full Name"
                     value={
                         formData.customerName
                     }
                     onChange={handleChange}
-                    className="w-full border p-4 mb-4 rounded"
+                    className="w-full border p-4 mb-4 rounded bg-gray-100"
                 />
 
                 <input
                     type="email"
                     name="email"
+                    readOnly
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full border p-4 mb-4 rounded"
+                    className="w-full border p-4 mb-4 rounded bg-gray-100"
                 />
 
                 <input

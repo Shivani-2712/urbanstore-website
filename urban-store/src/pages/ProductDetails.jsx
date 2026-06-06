@@ -2,12 +2,17 @@ import { useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { CartContext } from "../context/CartContext"
+import ProductCard from "../components/ProductCard"
 
 function ProductDetails() {
     const { id } = useParams()
     const { addToCart } = useContext(CartContext)
 
     const [product, setProduct] = useState(null)
+
+    const [relatedProducts,
+        setRelatedProducts] =
+        useState([])
 
     const [reviews, setReviews] = useState([])
 
@@ -18,8 +23,8 @@ function ProductDetails() {
         useState(false)
 
     const [editingReviewId,
-                setEditingReviewId] =
-                useState(null)
+        setEditingReviewId] =
+        useState(null)
 
     const averageRating =
         reviews.length > 0
@@ -40,9 +45,33 @@ function ProductDetails() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/products/${id}`)
-            .then((res) => {
-                setProduct(res.data)
+            .get(
+                `http://localhost:5000/products/${id}`
+            )
+            .then(async (res) => {
+
+                setProduct(
+                    res.data
+                )
+
+                const allProducts =
+                    await axios.get(
+                        "http://localhost:5000/products"
+                    )
+
+                const related =
+                    allProducts.data.filter(
+                        (item) =>
+                            item.category ===
+                            res.data.category &&
+                            item._id !==
+                            res.data._id
+                    )
+
+                setRelatedProducts(
+                    related.slice(0, 4)
+                )
+
             })
             .catch((err) => {
                 console.log(err)
@@ -76,29 +105,6 @@ function ProductDetails() {
                         !!existingReview
                     )
                 }
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [id])
-
-    useEffect(() => {
-        const user = JSON.parse(
-            localStorage.getItem(
-                "userInfo"
-            )
-        )
-
-        if (!user) return
-
-        axios
-            .get(
-                `http://localhost:5000/can-review/${user._id}/${id}`
-            )
-            .then((res) => {
-                setCanReview(
-                    res.data.canReview
-                )
             })
             .catch((err) => {
                 console.log(err)
@@ -422,7 +428,7 @@ function ProductDetails() {
                         Only customers who purchased this product can review it.
                     </div>
                 )}
-                
+
                 {reviews.map(
                     (review) => (
                         <div
@@ -472,6 +478,34 @@ function ProductDetails() {
                         </div>
                     )
                 )}
+            </div>
+            <div className="mt-24">
+
+                <h2 className="text-4xl font-bold mb-10">
+
+                    You May Also Like
+
+                </h2>
+
+                {relatedProducts.length === 0 && (
+                    <p className="text-gray-500">
+                        No related products found
+                    </p>
+                )}
+
+                <div className="grid md:grid-cols-4 gap-8">
+
+                    {relatedProducts.map(
+                        (item) => (
+                            <ProductCard
+                                key={item._id}
+                                product={item}
+                            />
+                        )
+                    )}
+
+                </div>
+
             </div>
         </div>
     )

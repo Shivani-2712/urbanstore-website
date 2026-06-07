@@ -9,11 +9,19 @@ function ProductCard({ product }) {
         toggleWishlist,
     } = useContext(WishlistContext)
 
-    const isWishlisted =
-        wishlistItems.some(
-            (item) =>
-                item._id === product._id
+    const user =
+    JSON.parse(
+        localStorage.getItem(
+            "userInfo"
         )
+    )
+
+const isWishlisted =
+    user &&
+    wishlistItems.some(
+        (item) =>
+            item._id === product._id
+    )
 
     return (
         <Link to={`/product/${product._id}`}>

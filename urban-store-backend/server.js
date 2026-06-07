@@ -15,6 +15,8 @@ const Product = require("./models/Product")
 const Review = require("./models/Review")
 const Order = require("./models/Order")
 const User = require("./models/User")
+const Wishlist = require("./models/Wishlist")
+const Cart = require("./models/Cart")
 const Razorpay = require("razorpay")
 
 console.log(
@@ -644,6 +646,279 @@ app.put(
       })
     }
   }
+)
+
+app.post(
+    "/wishlist",
+    async (req, res) => {
+        try {
+
+            const exists =
+                await Wishlist.findOne(
+                    {
+                        userId:
+                            req.body.userId,
+
+                        productId:
+                            req.body.productId,
+                    }
+                )
+
+            if (exists) {
+                return res.json({
+                    message:
+                        "Already in wishlist",
+                })
+            }
+
+            const wishlist =
+                new Wishlist({
+                    userId:
+                        req.body.userId,
+
+                    productId:
+                        req.body.productId,
+                })
+
+            await wishlist.save()
+
+            res.json({
+                message:
+                    "Added to wishlist",
+            })
+
+        } catch (error) {
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+        }
+    }
+)
+
+app.get(
+    "/wishlist/:userId",
+    async (req, res) => {
+        try {
+
+            const wishlist =
+                await Wishlist.find(
+                    {
+                        userId:
+                            req.params.userId,
+                    }
+                )
+
+            res.json(
+                wishlist
+            )
+
+        } catch (error) {
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+        }
+    }
+)
+
+app.delete(
+    "/wishlist/:userId/:productId",
+    async (req, res) => {
+        try {
+
+            await Wishlist.deleteOne({
+                userId:
+                    req.params.userId,
+
+                productId:
+                    req.params.productId,
+            })
+
+            res.json({
+                message:
+                    "Removed from wishlist",
+            })
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.post(
+    "/cart",
+    async (req, res) => {
+        try {
+
+            const existingItem =
+                await Cart.findOne({
+                    userId:
+                        req.body.userId,
+
+                    productId:
+                        req.body.productId,
+                })
+
+            if (existingItem) {
+
+                existingItem.quantity += 1
+
+                await existingItem.save()
+
+                return res.json(
+                    existingItem
+                )
+            }
+
+            const cart =
+                new Cart({
+                    userId:
+                        req.body.userId,
+
+                    productId:
+                        req.body.productId,
+
+                    quantity: 1,
+                })
+
+            await cart.save()
+
+            res.json(cart)
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.get(
+    "/cart/:userId",
+    async (req, res) => {
+        try {
+
+            const cart =
+                await Cart.find({
+                    userId:
+                        req.params.userId,
+                })
+
+            res.json(cart)
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.put(
+    "/cart/:userId/:productId",
+    async (req, res) => {
+        try {
+
+            const cartItem =
+                await Cart.findOneAndUpdate(
+                    {
+                        userId:
+                            req.params.userId,
+
+                        productId:
+                            req.params.productId,
+                    },
+                    {
+                        quantity:
+                            req.body.quantity,
+                    },
+                    {
+                        new: true,
+                    }
+                )
+
+            res.json(cartItem)
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.delete(
+    "/cart/clear/:userId",
+    async (req, res) => {
+        try {
+          console.log(
+                "CLEAR CART API HIT",
+                req.params.userId
+            )
+
+            await Cart.deleteMany({
+                userId:
+                    req.params.userId,
+            })
+
+            res.json({
+                message:
+                    "Cart cleared",
+            })
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.delete(
+    "/cart/:userId/:productId",
+    async (req, res) => {
+        try {
+
+            await Cart.deleteOne({
+                userId:
+                    req.params.userId,
+
+                productId:
+                    req.params.productId,
+            })
+
+            res.json({
+                message:
+                    "Item removed",
+            })
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
 )
 
 app.listen(process.env.PORT, () => {

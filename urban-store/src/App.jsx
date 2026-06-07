@@ -74,9 +74,13 @@ function App() {
         />
 
         <Route
-          path="/wishlist"
-          element={<Wishlist />}
-        />
+    path="/wishlist"
+    element={
+        <UserProtectedRoute>
+            <Wishlist />
+        </UserProtectedRoute>
+    }
+/>
 
         <Route
           path="/checkout"

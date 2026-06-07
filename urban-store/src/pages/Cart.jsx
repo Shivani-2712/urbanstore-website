@@ -67,7 +67,9 @@ function Cart() {
                             </div>
 
                             <button
-                                onClick={() => removeFromCart(index)}
+                                onClick={() =>
+                                    removeFromCart(item._id)
+                                }
                                 className="bg-red-500 text-white px-5 py-3 rounded-lg hover:bg-red-600 transition"
                             >
                                 Remove

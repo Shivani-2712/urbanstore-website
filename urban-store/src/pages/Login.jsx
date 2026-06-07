@@ -36,6 +36,10 @@ function Login() {
                 )
             )
 
+            window.dispatchEvent(
+    new Event("wishlistUpdated")
+)
+
             navigate("/")
         } catch (error) {
             console.log(error)

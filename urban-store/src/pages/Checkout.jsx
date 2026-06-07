@@ -130,7 +130,7 @@ function Checkout() {
                             }
                         )
 
-                        clearCart()
+                        await clearCart()
 
                         alert(
                             "Order Placed Successfully 🎉"

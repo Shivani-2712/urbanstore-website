@@ -9,12 +9,17 @@ function Navbar() {
     )
 
     const handleLogout = () => {
-        localStorage.removeItem(
-            "userToken"
-        )
 
-        window.location.reload()
-    }
+    localStorage.removeItem(
+        "userToken"
+    )
+
+    localStorage.removeItem(
+        "userInfo"
+    )
+
+    window.location.reload()
+}
 
     const { cartItems } = useContext(CartContext)
 
@@ -78,16 +83,25 @@ function Navbar() {
                     Collections
                 </li>
 
+{userToken && (
+    <li className="hover:text-gray-500 cursor-pointer transition">
+        <Link to="/wishlist">
+            ❤️ Wishlist ({wishlistItems.length})
+        </Link>
+    </li>
+)}
                 <li className="hover:text-gray-500 cursor-pointer transition">
-                    <Link to="/wishlist">
-                        ❤️ Wishlist ({wishlistItems.length})
-                    </Link>
-                </li>
-
-                <li className="hover:text-gray-500 cursor-pointer transition">
-                    <Link to="/cart">
-                        🛒 Cart ({cartItems.length})
-                    </Link>
+                    <Link
+    to={
+        userToken
+            ? "/cart"
+            : "/login"
+    }
+>
+    {userToken
+        ? `🛒 Cart (${cartItems.length})`
+        : "🛒 Cart"}
+</Link>
                 </li>
             </ul>
         </nav>

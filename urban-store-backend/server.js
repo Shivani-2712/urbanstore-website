@@ -223,6 +223,114 @@ app.get("/orders", async (req, res) => {
 })
 
 app.get(
+    "/admin/orders",
+    async (req, res) => {
+        try {
+
+            const orders =
+                await Order.find()
+                    .sort({
+                        createdAt: -1,
+                    })
+
+            res.json(orders)
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.put(
+    "/admin/orders/:id",
+    async (req, res) => {
+        try {
+
+            const updatedOrder =
+                await Order.findByIdAndUpdate(
+                    req.params.id,
+                    {
+                        status:
+                            req.body.status,
+                    },
+                    {
+                        new: true,
+                    }
+                )
+
+            res.json(
+                updatedOrder
+            )
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.get(
+    "/admin/stats",
+    async (req, res) => {
+
+        try {
+
+            const totalOrders =
+                await Order.countDocuments()
+
+            const totalProducts =
+                await Product.countDocuments()
+
+            const totalUsers =
+                await User.countDocuments()
+
+            const orders =
+                await Order.find()
+
+            const totalRevenue =
+                orders.reduce(
+                    (sum, order) =>
+                        sum +
+                        order.totalAmount,
+                    0
+                )
+
+            const recentOrders =
+    await Order.find()
+        .sort({
+            createdAt: -1,
+        })
+        .limit(5)
+
+res.json({
+    totalOrders,
+    totalProducts,
+    totalUsers,
+    totalRevenue,
+    recentOrders,
+})
+
+        } catch (error) {
+
+            res.status(500).json({
+                message:
+                    error.message,
+            })
+
+        }
+    }
+)
+
+app.get(
   "/my-orders/:userId",
   async (req, res) => {
     try {

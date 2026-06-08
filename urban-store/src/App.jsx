@@ -21,6 +21,8 @@ import OrderSuccess from "./pages/OrderSuccess"
 import MyOrders from "./pages/MyOrders"
 import UserProtectedRoute from "./components/UserProtectedRoute"
 import MyAccount from "./pages/MyAccount"
+import AdminOrders from "./pages/AdminOrders"
+import AdminDashboard from "./pages/AdminDashboard"
 
 function Home() {
   return (
@@ -65,13 +67,29 @@ function App() {
         />
 
         <Route
-          path="/admin"
-          element={
-            <ProtectedRoute>
-              <Admin />
-            </ProtectedRoute>
-          }
-        />
+  path="/admin/products"
+  element={
+    <ProtectedRoute>
+      <Admin />
+    </ProtectedRoute>
+  }
+/>
+
+        <Route
+    path="/admin/orders"
+    element={
+        <AdminOrders />
+    }
+/>
+
+<Route
+  path="/admin"
+  element={
+    <ProtectedRoute>
+      <AdminDashboard />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
     path="/wishlist"

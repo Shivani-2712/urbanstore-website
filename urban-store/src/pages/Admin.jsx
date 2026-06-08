@@ -232,6 +232,10 @@ function Admin() {
                     <option value="Shirts">
                         Shirts
                     </option>
+
+                    <option value="T-Shirts">
+                        Skirts
+                    </option>
                 </select>
 
                 <textarea

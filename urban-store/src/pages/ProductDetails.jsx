@@ -14,6 +14,11 @@ function ProductDetails() {
         setRelatedProducts] =
         useState([])
 
+    const [
+        recentlyViewed,
+        setRecentlyViewed,
+    ] = useState([])
+
     const [reviews, setReviews] = useState([])
 
     const [canReview, setCanReview] =
@@ -52,6 +57,30 @@ function ProductDetails() {
 
                 setProduct(
                     res.data
+                )
+
+                const viewedProducts =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "recentlyViewed"
+                        )
+                    ) || []
+
+                const updatedProducts =
+                    [
+                        res.data,
+                        ...viewedProducts.filter(
+                            (item) =>
+                                item._id !==
+                                res.data._id
+                        ),
+                    ].slice(0, 6)
+
+                localStorage.setItem(
+                    "recentlyViewed",
+                    JSON.stringify(
+                        updatedProducts
+                    )
                 )
 
                 const allProducts =
@@ -132,6 +161,24 @@ function ProductDetails() {
             .catch((err) => {
                 console.log(err)
             })
+    }, [id])
+
+    useEffect(() => {
+
+        const products =
+            JSON.parse(
+                localStorage.getItem(
+                    "recentlyViewed"
+                )
+            ) || []
+
+        setRecentlyViewed(
+            products.filter(
+                (item) =>
+                    item._id !== id
+            )
+        )
+
     }, [id])
 
     const submitReview = async () => {
@@ -492,6 +539,34 @@ function ProductDetails() {
                         No related products found
                     </p>
                 )}
+
+                {recentlyViewed.length >
+                    0 && (
+                        <div className="mt-20">
+
+                            <h2 className="text-4xl font-bold mb-8">
+                                Recently Viewed
+                            </h2>
+
+                            <div className="grid md:grid-cols-4 gap-8">
+
+                                {recentlyViewed.map(
+                                    (product) => (
+                                        <ProductCard
+                                            key={
+                                                product._id
+                                            }
+                                            product={
+                                                product
+                                            }
+                                        />
+                                    )
+                                )}
+
+                            </div>
+
+                        </div>
+                    )}
 
                 <div className="grid md:grid-cols-4 gap-8">
 

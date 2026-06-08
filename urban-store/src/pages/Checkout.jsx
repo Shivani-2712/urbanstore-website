@@ -31,6 +31,12 @@ function Checkout() {
             address: "",
         })
 
+    const [couponCode, setCouponCode] =
+        useState("")
+
+    const [discount, setDiscount] =
+        useState(0)
+
     useEffect(() => {
         axios
             .get(
@@ -64,6 +70,43 @@ function Checkout() {
         })
     }
 
+    const applyCoupon = () => {
+
+        if (
+            couponCode === "SAVE10"
+        ) {
+
+            setDiscount(
+                totalAmount * 0.1
+            )
+
+            alert(
+                "10% Discount Applied 🎉"
+            )
+
+        } else if (
+            couponCode === "WELCOME20"
+        ) {
+
+            setDiscount(
+                totalAmount * 0.2
+            )
+
+            alert(
+                "20% Discount Applied 🎉"
+            )
+
+        } else {
+
+            setDiscount(0)
+
+            alert(
+                "Invalid Coupon ❌"
+            )
+
+        }
+    }
+
     const totalAmount =
         cartItems.reduce(
             (total, item) =>
@@ -71,6 +114,9 @@ function Checkout() {
                 item.price * item.quantity,
             0
         )
+
+    const finalAmount =
+        totalAmount - discount
 
     const handlePayment = async () => {
         if (
@@ -86,7 +132,7 @@ function Checkout() {
             const { data } = await axios.post(
                 "http://localhost:5000/create-payment-order",
                 {
-                    amount: totalAmount,
+                    amount: finalAmount,
                 }
             )
 
@@ -123,7 +169,8 @@ function Checkout() {
 
                                 items: cartItems,
 
-                                totalAmount,
+                                totalAmount:
+                                    finalAmount,
 
                                 paymentId:
                                     response.razorpay_payment_id,
@@ -204,9 +251,48 @@ function Checkout() {
                     className="w-full border p-4 mb-4 rounded"
                 />
 
-                <h2 className="text-2xl font-bold mb-6">
-                    Total: ₹{totalAmount}
-                </h2>
+                <div className="mb-6">
+
+                    <div className="flex gap-3 mb-4">
+
+                        <input
+                            type="text"
+                            placeholder="Coupon Code"
+                            value={couponCode}
+                            onChange={(e) =>
+                                setCouponCode(
+                                    e.target.value
+                                )
+                            }
+                            className="border p-3 rounded w-full"
+                        />
+
+                        <button
+                            type="button"
+                            onClick={applyCoupon}
+                            className="bg-black text-white px-5 rounded"
+                        >
+                            Apply
+                        </button>
+
+                    </div>
+
+                    <h2 className="text-xl">
+                        Subtotal:
+                        ₹{totalAmount}
+                    </h2>
+
+                    <h2 className="text-xl text-green-600">
+                        Discount:
+                        ₹{discount}
+                    </h2>
+
+                    <h2 className="text-3xl font-bold">
+                        Final Total:
+                        ₹{finalAmount}
+                    </h2>
+
+                </div>
 
                 <button
                     type="button"

@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react"
 import axios from "axios"
@@ -7,6 +8,7 @@ import ProductCard from "../components/ProductCard"
 function ProductDetails() {
     const { id } = useParams()
     const { addToCart } = useContext(CartContext)
+    const navigate = useNavigate()
 
     const [product, setProduct] = useState(null)
 
@@ -47,6 +49,8 @@ function ProductDetails() {
 
     const [comment, setComment] =
         useState("")
+
+    const [selectedSize, setSelectedSize] = useState("")
 
     useEffect(() => {
         axios
@@ -303,27 +307,91 @@ function ProductDetails() {
             }
         }
 
+        const handleBuyNow = () => {
+
+    if (!selectedSize) {
+        alert("Please select a size")
+        return
+    }
+
+    addToCart({
+        ...product,
+        size: selectedSize,
+    })
+
+    setTimeout(() => {
+        navigate("/checkout")
+    }, 300)
+}
     return (
-        <div className="min-h-screen px-10 py-20">
-            <div className="grid md:grid-cols-2 gap-16">
-                <img
-                    src={product.image}
-                    alt={product.name}
-                    className="rounded-2xl w-full"
-                />
+        <div
+            className="
+    min-h-screen
+    px-10
+    py-12
+    bg-[#F8F4EE]
+    "
+        >
+            <div
+                className="
+    max-w-7xl
+    mx-auto
+    grid
+    md:grid-cols-2
+    gap-12
+    items-start
+    "
+            >
+
+                {/* Product Image */}
 
                 <div>
-                    <h1 className="text-5xl font-bold mb-6">
+                    <img
+                        src={product.image}
+                        alt={product.name}
+                        className="
+            w-full
+            h-[500px]
+            object-cover
+            border
+            border-[#E8DCCB]
+            "
+                    />
+                </div>
+
+                {/* Product Details */}
+
+                <div>
+
+                    <p
+                        className="
+            uppercase
+            tracking-[4px]
+            text-gray-400
+            mb-4
+            "
+                    >
+                        UrbanStore Collection
+                    </p>
+
+                    <h1
+                        className="
+            text-3xl
+            font-serif
+            leading-tight
+            mb-6
+            "
+                    >
                         {product.name}
                     </h1>
 
                     {reviews.length > 0 ? (
-                        <div className="flex items-center gap-2 mb-4">
-                            <span className="text-yellow-500 text-xl">
+                        <div className="flex items-center gap-2 mb-6">
+                            <span className="text-yellow-500">
                                 ⭐
                             </span>
 
-                            <span className="font-semibold">
+                            <span>
                                 {averageRating}
                             </span>
 
@@ -332,53 +400,132 @@ function ProductDetails() {
                             </span>
                         </div>
                     ) : (
-                        <p className="text-gray-500 mb-4">
+                        <p className="text-gray-500 mb-6">
                             No Reviews Yet
                         </p>
                     )}
 
-                    <p className="text-3xl mb-6">
-                        ₹{product.price}
+                    <p
+                        className="
+            text-3xl
+            font-semibold
+            mb-8
+            "
+                    >
+                        ₹ {product.price}
                     </p>
 
-                    <p className="text-gray-600 text-lg mb-8">
+                    <p
+                        className="
+            text-gray-600
+            text-lg
+            leading-8
+            mb-10
+            "
+                    >
                         {product.description}
                     </p>
 
-                    <div className="flex gap-4 mb-8">
-                        <button className="border px-4 py-2 rounded">
-                            S
-                        </button>
+                    {/* Size */}
 
-                        <button className="border px-4 py-2 rounded">
-                            M
-                        </button>
+                    <div className="mb-10">
 
-                        <button className="border px-4 py-2 rounded">
-                            L
-                        </button>
+                        <p className="uppercase tracking-[3px] text-sm mb-4">
+                            Select Size
+                        </p>
 
-                        <button className="border px-4 py-2 rounded">
-                            XL
-                        </button>
+                        <div className="flex gap-3">
+
+    {["S", "M", "L", "XL"].map((size) => (
+        <button
+            key={size}
+            onClick={() =>
+                setSelectedSize(size)
+            }
+            className={`
+                px-5
+                py-3
+                border
+                transition
+                ${
+                    selectedSize === size
+                        ? "bg-black text-white border-black shadow-lg"
+                        : "border-gray-300 hover:bg-black hover:text-white"
+                }
+            `}
+        >
+            {size}
+        </button>
+    ))}
+
+</div>
+
+{selectedSize && (
+    <p className="mt-3 text-gray-600">
+        Selected Size: {selectedSize}
+    </p>
+)}
+
                     </div>
 
-                    <button
-                        onClick={() => addToCart(product)}
-                        className="bg-black text-white px-8 py-4 rounded-lg"
-                    >
-                        Add To Cart
-                    </button>
-                </div>
-            </div>
-            <div className="mt-20">
+                    {/* Buttons */}
 
-                <h2 className="text-4xl font-bold mb-8">
+                    <div className="space-y-4">
+
+                        <button
+                            onClick={() => {
+    if (!selectedSize) {
+        alert("Please select a size")
+        return
+    }
+
+    addToCart({
+        ...product,
+        size: selectedSize,
+    })
+}}
+                            className="
+                w-full
+                bg-black
+                text-white
+                py-4
+                uppercase
+                tracking-[3px]
+                "
+                        >
+                            Add To Cart
+                        </button>
+
+                        <button
+    onClick={handleBuyNow}
+    className="
+    w-full
+    border
+    border-black
+    py-4
+    uppercase
+    tracking-[3px]
+    hover:bg-black
+    hover:text-white
+    transition
+    "
+>
+    Buy Now
+</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div className="mt-12">
+
+                <h2 className="text-2xl font-serif mb-6">
                     Reviews
                 </h2>
 
                 {canReview && (!hasReviewed || editingReviewId) ? (
-                    <div className="bg-white p-6 rounded-2xl shadow mb-10">
+                    <div className="bg-white p-5 rounded-xl shadow-sm mb-8 max-w-5xl">
                         <select
                             value={rating}
                             onChange={(e) =>
@@ -412,6 +559,7 @@ function ProductDetails() {
                         </select>
 
                         <textarea
+                            rows={2}
                             placeholder="Write your review..."
                             value={comment}
                             onChange={(e) =>
@@ -480,11 +628,18 @@ function ProductDetails() {
                     (review) => (
                         <div
                             key={review._id}
-                            className="bg-white p-6 rounded-2xl shadow mb-4"
+                            className="
+bg-white
+p-5
+rounded-xl
+border
+border-[#E8DCCB]
+mb-4
+"
                         >
                             <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="font-bold text-xl">
+                                    <h3 className="font-semibold text-lg">
                                         {review.userName}
                                     </h3>
 
@@ -506,17 +661,6 @@ function ProductDetails() {
                                 {review.comment}
                             </p>
 
-                            <button
-                                onClick={() =>
-                                    editReview(
-                                        review
-                                    )
-                                }
-                                className="bg-blue-500 text-white px-4 py-2 rounded mb-3"
-                            >
-                                Edit Review
-                            </button>
-
                             <p className="text-gray-500 text-sm">
                                 {new Date(
                                     review.createdAt
@@ -526,25 +670,46 @@ function ProductDetails() {
                     )
                 )}
             </div>
-            <div className="mt-24">
+            <div
+className="
+mt-16
+pt-12
+border-t
+border-[#E8DCCB]
+"
+>
 
-                <h2 className="text-4xl font-bold mb-10">
+                {relatedProducts.length > 0 && (
+                    <>
+                        <h2 className="text-2xl font-serif mb-6">
+                            You May Also Like
+                        </h2>
 
-                    You May Also Like
+                        <div className="grid md:grid-cols-4 gap-8">
 
-                </h2>
+                            {relatedProducts.map((item) => (
+                                <ProductCard
+                                    key={item._id}
+                                    product={item}
+                                />
+                            ))}
 
-                {relatedProducts.length === 0 && (
-                    <p className="text-gray-500">
-                        No related products found
-                    </p>
+                        </div>
+                    </>
                 )}
 
                 {recentlyViewed.length >
                     0 && (
-                        <div className="mt-20">
+                        <div
+className="
+mt-16
+pt-12
+border-t
+border-[#E8DCCB]
+"
+>
 
-                            <h2 className="text-4xl font-bold mb-8">
+                            <h2 className="text-2xl font-serif mb-8">
                                 Recently Viewed
                             </h2>
 
@@ -567,20 +732,6 @@ function ProductDetails() {
 
                         </div>
                     )}
-
-                <div className="grid md:grid-cols-4 gap-8">
-
-                    {relatedProducts.map(
-                        (item) => (
-                            <ProductCard
-                                key={item._id}
-                                product={item}
-                            />
-                        )
-                    )}
-
-                </div>
-
             </div>
         </div>
     )

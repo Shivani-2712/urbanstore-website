@@ -58,9 +58,37 @@ function Products() {
 
   return (
     <section
-      id="products"
-      className="px-10 py-20 bg-gray-50"
+  id="products"
+  className="
+  pt-12
+  pb-24
+  bg-[#F8F4EE]
+"
+>
+  <div className="max-w-7xl mx-auto px-8">
+      <div className="text-center mb-10 mt-6">
+<div className="w-40 h-px bg-[#D9CFC2] mx-auto mb-8"></div>
+    <p
+        className="
+        uppercase
+        tracking-[4px]
+        text-gray-400
+        mb-4
+        "
     >
+        Featured Collection
+    </p>
+
+    <h2 className="
+text-6xl
+font-serif
+font-medium
+tracking-tight
+">
+        New Arrivals
+    </h2>
+
+</div>
       <div className="flex justify-center mb-10">
         <input
           type="text"
@@ -69,11 +97,20 @@ function Products() {
           onChange={(e) =>
             setSearch(e.target.value)
           }
-          className="w-full max-w-lg border p-4 rounded-xl shadow-sm"
+          className="
+w-full
+max-w-xl
+border
+border-[#D9CFC2]
+bg-white
+p-5
+text-lg
+outline-none
+"
         />
       </div>
 
-      <div className="flex justify-center gap-3 mb-10 flex-wrap">
+      <div className="flex justify-center gap-3 mb-6 flex-wrap">
 
         <button
           onClick={() =>
@@ -82,7 +119,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "All"
               ? "bg-black text-white"
-              : "border"
+: "border border-[#D9CFC2] bg-white"
             }`}
         >
           All
@@ -95,7 +132,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "Jackets"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white"
             }`}
         >
           Jackets
@@ -108,7 +145,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "Hoodies"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white "
             }`}
         >
           Hoodies
@@ -121,7 +158,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "T-shirts"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white"
             }`}
         >
           T-shirts
@@ -136,7 +173,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "Sweatshirts"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white"
             }`}
         >
           Sweatshirts
@@ -149,7 +186,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "Dresses"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white"
             }`}
         >
           Dresses
@@ -162,7 +199,7 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "Jeans"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white"
             }`}
         >
           Jeans
@@ -175,20 +212,25 @@ function Products() {
           className={`px-4 py-2 rounded transition
     ${selectedCategory === "Shirts"
               ? "bg-black text-white"
-              : "border"
+              : "border border-[#D9CFC2] bg-white"
             }`}
         >
           Shirts
         </button>
 
       </div>
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-4">
         <select
           value={sortOption}
           onChange={(e) =>
             setSortOption(e.target.value)
           }
-          className="border p-3 rounded-lg"
+          className="
+border
+border-[#D9CFC2]
+bg-white
+p-3
+"
         >
           <option value="default">
             Sort By
@@ -203,25 +245,33 @@ function Products() {
           </option>
         </select>
       </div>
-      <p className="text-center text-gray-500 mb-4">
-        Showing {sortedProducts.length} Products
+      <p className="text-center text-gray-400 text-sm mb-10">
+        {sortedProducts.length} Pieces Available
       </p>
       {sortedProducts.length === 0 && (
   <p className="text-center text-red-500 mb-6">
     No products found
   </p>
 )}
-      <h2 className="text-5xl font-bold mb-12 text-center">
-        Trending Products
-      </h2>
+      
 
-      <div className="grid md:grid-cols-4 gap-8">
+      <div className="
+max-w-7xl
+mx-auto
+grid
+grid-cols-1
+sm:grid-cols-2
+lg:grid-cols-4
+gap-6
+px-8
+">
         {sortedProducts.map((product) => (
           <ProductCard
             key={product._id}
             product={product}
           />
         ))}
+      </div>
       </div>
     </section>
   )

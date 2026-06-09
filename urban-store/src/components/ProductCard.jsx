@@ -25,47 +25,108 @@ const isWishlisted =
 
     return (
         <Link to={`/product/${product._id}`}>
-            <div className="rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition duration-300 group bg-white">
-                <div className="overflow-hidden">
-                    <img
-                        src={product.image}
-                        alt={product.name}
-                        className="w-full h-96 object-cover group-hover:scale-105 transition duration-500"
-                    />
-                </div>
+            <div
+    className="
+    bg-white
+    border
+    border-[#E8DCCB]
+    overflow-hidden
+    transition
+    duration-300
+    group
+hover:shadow-2xl
+hover:-translate-y-2    "
+>
+                <div className="relative overflow-hidden">
 
-                <div className="p-5">
-                    <div className="flex justify-end mb-3">
+    <img
+        src={product.image}
+        alt={product.name}
+        className="
+w-full
+h-[380px]
+object-cover
+transition
+duration-500
+group-hover:scale-105
+"
+    />
 
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault()
-                                toggleWishlist(product)
-                            }}
-                            className={`text-2xl transition hover:scale-110 ${isWishlisted
-                                    ? "text-red-500"
-                                    : "text-gray-500"
-                                }`}
-                        >
-                            {isWishlisted ? (
-                                <FaHeart />
-                            ) : (
-                                <FaRegHeart />
-                            )}
-                        </button>
+    <button
+        onClick={(e) => {
+            e.preventDefault()
+            toggleWishlist(product)
+        }}
+        className="
+absolute
+top-4
+right-4
+bg-white
+w-9
+h-9
+rounded-full
+shadow-md
+flex
+items-center
+justify-center
+"
+    >
+        {isWishlisted ? (
+            <FaHeart className="text-red-500" />
+        ) : (
+            <FaRegHeart className="text-gray-500" />
+        )}
+    </button>
 
-                    </div>
-                    <h2 className="text-xl font-semibold mb-2">
+</div>
+
+                <div className="p-6">
+                    
+                    <p
+    className="
+    uppercase
+    text-xs
+    tracking-[3px]
+    text-gray-400
+    mb-2
+    "
+>
+    Collection
+</p>
+                    <h2
+    className="
+    text-lg
+    font-serif
+    mb-3
+    "
+>
                         {product.name}
                     </h2>
 
-                    <p className="text-gray-500 mb-4">
-                        ₹{product.price}
-                    </p>
+                    <p
+className="
+text-black
+font-medium
+tracking-wide
+mb-6
+"
+>
+    ₹ {product.price}
+</p>
 
-                    <button className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 transition">
-                        View Product
-                    </button>
+                    <p
+className="
+uppercase
+tracking-[3px]
+text-sm
+border-b
+border-black
+inline-block
+pb-1
+"
+>
+    View Details
+</p>
                 </div>
             </div>
         </Link>

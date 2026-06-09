@@ -12,44 +12,122 @@ function Cart() {
     )
 
     return (
-        <div className="min-h-screen px-10 py-16 bg-gray-50">
-            <h1 className="text-5xl font-bold mb-10">
-                Shopping Cart
-            </h1>
+        <div
+            className="
+    min-h-screen
+    px-10
+    py-16
+    bg-[#F8F4EE]
+    "
+        >
+            <div className="text-center mb-12">
+
+                <p
+                    className="
+        uppercase
+        tracking-[4px]
+        text-gray-400
+        mb-3
+        "
+                >
+                    Your Selection
+                </p>
+
+                <h1
+                    className="
+        text-5xl
+        font-serif
+        "
+                >
+                    Shopping Cart
+                </h1>
+
+                <p className="text-gray-500 mt-3">
+                    {cartItems.length} Items
+                </p>
+
+            </div>
 
             {cartItems.length === 0 ? (
-                <h2 className="text-2xl text-gray-500">
-                    Your cart is empty
-                </h2>
+                <div className="text-center py-20">
+
+                    <div className="text-7xl mb-6">
+                        🛒
+                    </div>
+
+                    <h2 className="text-3xl font-serif mb-4">
+                        Your Cart Is Empty
+                    </h2>
+
+                    <p className="text-gray-500">
+                        Discover timeless fashion pieces
+                        and add them to your cart.
+                    </p>
+
+                </div>
             ) : (
                 <div className="grid gap-6">
                     {cartItems.map((item, index) => (
                         <div
                             key={index}
-                            className="bg-white p-5 rounded-2xl shadow flex items-center justify-between"
+                            className="
+bg-white
+border
+border-[#E8DCCB]
+p-6
+flex
+items-center
+justify-between
+hover:shadow-lg
+transition
+"
                         >
-                            <div className="flex items-center gap-5">
+                            <div className="flex items-center gap-6">
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    className="w-32 h-32 object-cover rounded-xl"
+                                    className="
+w-32
+h-32
+object-cover
+border
+border-[#E8DCCB]
+"
                                 />
 
                                 <div>
-                                    <h2 className="text-2xl font-semibold">
+                                    <h2 className="
+text-2xl
+font-serif
+mb-2
+">
                                         {item.name}
                                     </h2>
 
                                     <p className="text-gray-500">
                                         ₹{item.price}
                                     </p>
+
+                                    {item.size && (
+                                        <p className="text-sm text-gray-400 mt-1">
+                                            Size: {item.size}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-4 mt-4">
+                            <div className="flex items-center gap-4 mt-4 border border-[#D9CFC2] p-2">
                                 <button
                                     onClick={() => decreaseQuantity(item._id)}
-                                    className="bg-gray-200 px-4 py-2 rounded-lg"
+                                    className="
+border
+border-[#D9CFC2]
+w-10
+h-10
+hover:bg-black
+hover:text-white
+transition
+"
                                 >
                                     -
                                 </button>
@@ -60,30 +138,80 @@ function Cart() {
 
                                 <button
                                     onClick={() => increaseQuantity(item._id)}
-                                    className="bg-gray-200 px-4 py-2 rounded-lg"
+                                    className="
+border
+border-[#D9CFC2]
+w-10
+h-10
+hover:bg-black
+hover:text-white
+transition
+"
                                 >
                                     +
                                 </button>
                             </div>
 
                             <button
-                                onClick={() =>
-                                    removeFromCart(item._id)
-                                }
-                                className="bg-red-500 text-white px-5 py-3 rounded-lg hover:bg-red-600 transition"
-                            >
-                                Remove
-                            </button>
+    onClick={() =>
+        removeFromCart(item._id)
+    }
+    className="
+border
+border-[#D9CFC2]
+px-5
+py-3
+uppercase
+tracking-[2px]
+text-sm
+hover:bg-black
+hover:text-white
+transition
+"
+>
+    Remove
+</button>
                         </div>
                     ))}
 
-                    <div className="bg-white p-6 rounded-2xl shadow mt-6">
-                        <h2 className="text-3xl font-bold">
-                            Total: ₹{totalPrice}
-                        </h2>
+                    <div
+                        className="
+    bg-white
+    border
+    border-[#E8DCCB]
+    p-10
+    mt-8
+    "
+                    >
+                        <div className="flex justify-between items-end">
 
+    <div>
+        <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
+            Order Total
+        </p>
+
+        <div className="w-24 border-t border-[#E8DCCB]"></div>
+    </div>
+
+    <h2 className="text-5xl font-serif">
+        ₹{totalPrice}
+    </h2>
+
+</div>
+                                
+
+                        <div className="border-t border-[#E8DCCB] my-6"></div>
                         <Link to="/checkout">
-                            <button className="mt-6 bg-black text-white px-8 py-4 rounded-lg">
+                            <button className="
+w-full
+bg-black
+text-white
+py-5
+uppercase
+tracking-[4px]
+hover:opacity-90
+transition
+">
                                 Checkout
                             </button>
                         </Link>

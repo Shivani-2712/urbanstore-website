@@ -865,13 +865,16 @@ app.post(
         try {
 
             const existingItem =
-                await Cart.findOne({
-                    userId:
-                        req.body.userId,
+    await Cart.findOne({
+        userId:
+            req.body.userId,
 
-                    productId:
-                        req.body.productId,
-                })
+        productId:
+            req.body.productId,
+
+        size:
+            req.body.size,
+    })
 
             if (existingItem) {
 
@@ -885,15 +888,18 @@ app.post(
             }
 
             const cart =
-                new Cart({
-                    userId:
-                        req.body.userId,
+    new Cart({
+        userId:
+            req.body.userId,
 
-                    productId:
-                        req.body.productId,
+        productId:
+            req.body.productId,
 
-                    quantity: 1,
-                })
+        size:
+            req.body.size,
+
+        quantity: 1,
+    })
 
             await cart.save()
 

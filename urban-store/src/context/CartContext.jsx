@@ -50,6 +50,7 @@ function CartProvider({ children }) {
                             ...product.data,
                             quantity:
                                 item.quantity,
+                                size: item.size,
                         }
                     }
                 )
@@ -98,6 +99,8 @@ useEffect(() => {
 
                 productId:
                     product._id,
+
+                size: product.size,
             }
         )
 

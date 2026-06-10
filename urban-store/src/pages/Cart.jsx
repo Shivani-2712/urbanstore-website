@@ -12,33 +12,14 @@ function Cart() {
     )
 
     return (
-        <div
-            className="
-    min-h-screen
-    px-10
-    py-16
-    bg-[#F8F4EE]
-    "
-        >
+        <div className="min-h-screen px-10 py-16 bg-[#F8F4EE]">
             <div className="text-center mb-12">
 
-                <p
-                    className="
-        uppercase
-        tracking-[4px]
-        text-gray-400
-        mb-3
-        "
-                >
+                <p className="uppercase tracking-[4px] text-gray-400 mb-3">
                     Your Selection
                 </p>
 
-                <h1
-                    className="
-        text-5xl
-        font-serif
-        "
-                >
+                <h1 className="text-5xl font-serif">
                     Shopping Cart
                 </h1>
 
@@ -46,6 +27,7 @@ function Cart() {
                     {cartItems.length} Items
                 </p>
 
+                <div className="w-24 h-px bg-[#D9CFC2] mx-auto mt-6"></div>
             </div>
 
             {cartItems.length === 0 ? (
@@ -70,37 +52,17 @@ function Cart() {
                     {cartItems.map((item, index) => (
                         <div
                             key={index}
-                            className="
-bg-white
-border
-border-[#E8DCCB]
-p-6
-flex
-items-center
-justify-between
-hover:shadow-lg
-transition
-"
-                        >
+                            className="bg-white border border-[#E8DCCB] p-6 flex items-center justify-between hover:shadow-lg transition">
+
                             <div className="flex items-center gap-6">
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    className="
-w-32
-h-32
-object-cover
-border
-border-[#E8DCCB]
-"
+                                    className="w-32 h-32 object-cover border border-[#E8DCCB]"
                                 />
 
                                 <div>
-                                    <h2 className="
-text-2xl
-font-serif
-mb-2
-">
+                                    <h2 className="text-2xl font-serif mb-2">
                                         {item.name}
                                     </h2>
 
@@ -116,102 +78,52 @@ mb-2
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-4 mt-4 border border-[#D9CFC2] p-2">
-                                <button
-                                    onClick={() => decreaseQuantity(item._id)}
-                                    className="
-border
-border-[#D9CFC2]
-w-10
-h-10
-hover:bg-black
-hover:text-white
-transition
-"
-                                >
-                                    -
+                            <div className="flex items-center border border-[#D9CFC2]">
+                                <button onClick={() => decreaseQuantity(item._id)}
+                                    className="w-12 h-12 border-r border-[#D9CFC2] hover:bg-black hover:text-white transition">
+                                    −
                                 </button>
 
-                                <span className="text-xl font-semibold">
+                                <span className="w-12 text-center font-medium">
                                     {item.quantity}
                                 </span>
 
-                                <button
-                                    onClick={() => increaseQuantity(item._id)}
-                                    className="
-border
-border-[#D9CFC2]
-w-10
-h-10
-hover:bg-black
-hover:text-white
-transition
-"
-                                >
+                                <button onClick={() => increaseQuantity(item._id)}
+                                    className="w-12 h-12 border-l border-[#D9CFC2] hover:bg-black hover:text-white transition">
                                     +
                                 </button>
                             </div>
 
-                            <button
-    onClick={() =>
-        removeFromCart(item._id)
-    }
-    className="
-border
-border-[#D9CFC2]
-px-5
-py-3
-uppercase
-tracking-[2px]
-text-sm
-hover:bg-black
-hover:text-white
-transition
-"
->
-    Remove
-</button>
+                            <button onClick={() => removeFromCart(item._id)}
+                                className="border border-[#D9CFC2] px-5 py-3 uppercase tracking-[2px] text-sm hover:bg-black hover:text-white transition">
+                                Remove
+                            </button>
                         </div>
                     ))}
 
                     <div
-                        className="
-    bg-white
-    border
-    border-[#E8DCCB]
-    p-10
-    mt-8
-    "
+                        className="bg-white border border-[#E8DCCB] p-10 mt-8"
                     >
                         <div className="flex justify-between items-end">
 
-    <div>
-        <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
-            Order Total
-        </p>
+                            <div>
+                                <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
+                                    Order Total
+                                </p>
 
-        <div className="w-24 border-t border-[#E8DCCB]"></div>
-    </div>
+                                <div className="w-24 border-t border-[#E8DCCB]"></div>
+                            </div>
 
-    <h2 className="text-5xl font-serif">
-        ₹{totalPrice}
-    </h2>
+                            <h2 className="text-5xl font-serif">
+                                ₹{totalPrice}
+                            </h2>
 
-</div>
-                                
+                        </div>
+
 
                         <div className="border-t border-[#E8DCCB] my-6"></div>
                         <Link to="/checkout">
-                            <button className="
-w-full
-bg-black
-text-white
-py-5
-uppercase
-tracking-[4px]
-hover:opacity-90
-transition
-">
+                            <button className="w-full bg-black text-white py-5 uppercase tracking-[4px] hover:opacity-90 transition">
                                 Checkout
                             </button>
                         </Link>

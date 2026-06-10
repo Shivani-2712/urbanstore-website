@@ -15,6 +15,11 @@ const cartSchema =
                 required: true,
             },
 
+            size: {
+                type: String,
+                default: "",
+            },
+
             quantity: {
                 type: Number,
                 default: 1,

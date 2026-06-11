@@ -135,6 +135,10 @@ transition
                                 <FaUser />
                             </Link>
 
+                            <Link to="/orders">
+                                My Orders
+                            </Link>
+
                             <button
                                 onClick={handleLogout}
                                 className="

@@ -23,6 +23,7 @@ import UserProtectedRoute from "./components/UserProtectedRoute"
 import MyAccount from "./pages/MyAccount"
 import AdminOrders from "./pages/AdminOrders"
 import AdminDashboard from "./pages/AdminDashboard"
+import OrderHistory from "./pages/OrderHistory"
 
 function Home() {
   return (
@@ -67,38 +68,38 @@ function App() {
         />
 
         <Route
-  path="/admin/products"
-  element={
-    <ProtectedRoute>
-      <Admin />
-    </ProtectedRoute>
-  }
-/>
+          path="/admin/products"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
-    path="/admin/orders"
-    element={
-        <AdminOrders />
-    }
-/>
-
-<Route
-  path="/admin"
-  element={
-    <ProtectedRoute>
-      <AdminDashboard />
-    </ProtectedRoute>
-  }
-/>
+          path="/admin/orders"
+          element={
+            <AdminOrders />
+          }
+        />
 
         <Route
-    path="/wishlist"
-    element={
-        <UserProtectedRoute>
-            <Wishlist />
-        </UserProtectedRoute>
-    }
-/>
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wishlist"
+          element={
+            <UserProtectedRoute>
+              <Wishlist />
+            </UserProtectedRoute>
+          }
+        />
 
         <Route
           path="/checkout"
@@ -130,6 +131,11 @@ function App() {
               <MyAccount />
             </UserProtectedRoute>
           }
+        />
+
+        <Route
+          path="/orders"
+          element={<OrderHistory />}
         />
       </Routes>
     </BrowserRouter>

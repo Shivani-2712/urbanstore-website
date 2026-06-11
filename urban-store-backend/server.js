@@ -195,6 +195,8 @@ app.post("/orders", async (req, res) => {
 
       totalAmount:
         req.body.totalAmount,
+
+      status: "Paid",
     })
 
     const savedOrder =
@@ -207,6 +209,26 @@ app.post("/orders", async (req, res) => {
     res.status(500).json({
       message: error.message,
     })
+  }
+})
+
+app.get("/orders/:userId", async (req, res) => {
+  try {
+
+    const orders = await Order.find({
+      userId: req.params.userId,
+    }).sort({
+      createdAt: -1,
+    })
+
+    res.json(orders)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
   }
 })
 

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 function OrderHistory() {
 
     const [orders, setOrders] = useState([])
+    const [loadingOrder, setLoadingOrder] = useState(null)
     const { addToCart } = useContext(CartContext)
     const navigate = useNavigate()
 
@@ -29,29 +30,41 @@ function OrderHistory() {
     }, [])
 
     const statusColor = {
-    Pending:
-        "bg-[#FCFAF2] text-[#B8860B] border-[#E7D88A]",
+        Pending:
+            "bg-[#FCFAF2] text-[#B8860B] border-[#E7D88A]",
 
-    Paid:
-        "bg-[#F4FBF6] text-[#228B22] border-[#B7E4C7]",
+        Paid:
+            "bg-[#F4FBF6] text-[#228B22] border-[#B7E4C7]",
 
-    Shipped:
-        "bg-[#F4F8FF] text-[#2563EB] border-[#BFDBFE]",
+        Shipped:
+            "bg-[#F4F8FF] text-[#2563EB] border-[#BFDBFE]",
 
-    Delivered:
-        "bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]",
-}
-
-const handleBuyAgain = async (order) => {
-
-    for (const item of order.items) {
-
-        await addToCart(item)
-
+        Delivered:
+            "bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]",
     }
 
-    navigate("/cart")
-}
+    const handleBuyAgain = async (order) => {
+
+        setLoadingOrder(order._id)
+
+        try {
+
+            for (const item of order.items) {
+                await addToCart(item)
+            }
+
+            navigate("/cart")
+
+        } catch (error) {
+
+            console.log(error)
+
+        } finally {
+
+            setLoadingOrder(null)
+
+        }
+    }
 
     return (
         <div className="min-h-screen px-10 py-16 bg-[#F8F4EE]">
@@ -115,22 +128,21 @@ duration-300
                             </div>
 
                             <div
-    className={`
+                                className={`
         inline-flex
         items-center
         justify-center
-        px-5
+        px-4
         py-2
-        rounded-full
+        rounded-md
         border
         text-sm
         font-medium
-        min-w-[100px]
         ${statusColor[order.status]}
     `}
->
-    {order.status}
-</div>
+                            >
+                                {order.status}
+                            </div>
 
                         </div>
                         <p className="uppercase tracking-[3px] text-xs text-gray-400 mb-4">
@@ -156,8 +168,8 @@ duration-300
                                             src={item.image}
                                             alt={item.name}
                                             className="
-                w-20
-                h-20
+                w-24
+                h-24
                 object-cover
                 border
                 border-[#E8DCCB]
@@ -181,7 +193,7 @@ duration-300
                                             </p>
 
                                             <p>
-                                                ₹{item.price * item.quantity}
+                                                ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                                             </p>
 
                                         </div>
@@ -192,8 +204,8 @@ duration-300
                             ))}
 
                         </div>
-
-                        <div className="flex justify-between items-end mt-10">
+                        <div className="border-t border-[#E8DCCB] my-8"></div>
+                        <div className="flex justify-between items-center mt-10">
 
                             <div>
                                 <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
@@ -201,13 +213,13 @@ duration-300
                                 </p>
 
                                 <h2 className="text-4xl font-serif">
-                                    ₹{order.totalAmount}
+                                    ₹{Math.round(order.totalAmount).toLocaleString("en-IN")}
                                 </h2>
                             </div>
 
-<button
-    onClick={() => handleBuyAgain(order)}
-    className="
+                            <button
+                                onClick={() => handleBuyAgain(order)}
+                                className="
     border
     border-[#D9CFC2]
     px-8
@@ -219,9 +231,13 @@ duration-300
     hover:text-white
     transition
     "
->
-    Buy Again
-</button>
+                            >
+                                {
+                                    loadingOrder === order._id
+                                        ? "Adding..."
+                                        : "Buy Again"
+                                }
+                            </button>
 
                         </div>
 

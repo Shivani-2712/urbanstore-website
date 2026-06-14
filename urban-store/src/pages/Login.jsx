@@ -233,6 +233,7 @@ transition
                     <Link
                         to="/register"
                         className="
+    text-black
     underline
     hover:text-gray-600
     transition

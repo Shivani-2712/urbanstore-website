@@ -135,7 +135,7 @@ transition
                                 <FaUser />
                             </Link>
 
-                            <Link to="/orders">
+                            <Link to="/my-orders">
                                 My Orders
                             </Link>
 

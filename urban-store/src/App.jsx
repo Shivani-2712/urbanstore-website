@@ -18,7 +18,6 @@ import Wishlist from "./pages/Wishlist"
 import HeroBanner from "./components/HeroBanner"
 import Checkout from "./pages/Checkout"
 import OrderSuccess from "./pages/OrderSuccess"
-import MyOrders from "./pages/MyOrders"
 import UserProtectedRoute from "./components/UserProtectedRoute"
 import MyAccount from "./pages/MyAccount"
 import AdminOrders from "./pages/AdminOrders"
@@ -116,15 +115,6 @@ function App() {
         />
 
         <Route
-          path="/my-orders"
-          element={
-            <UserProtectedRoute>
-              <MyOrders />
-            </UserProtectedRoute>
-          }
-        />
-
-        <Route
           path="/my-account"
           element={
             <UserProtectedRoute>
@@ -134,8 +124,12 @@ function App() {
         />
 
         <Route
-          path="/orders"
-          element={<OrderHistory />}
+          path="/my-orders"
+          element={
+            <UserProtectedRoute>
+              <OrderHistory />
+            </UserProtectedRoute>
+          }
         />
       </Routes>
     </BrowserRouter>

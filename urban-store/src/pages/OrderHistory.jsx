@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import { CartContext } from "../context/CartContext"
 import { useNavigate } from "react-router-dom"
+import jsPDF from "jspdf"
 
 function OrderHistory() {
 
@@ -41,6 +42,78 @@ function OrderHistory() {
 
         Delivered:
             "bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]",
+    }
+
+    const downloadInvoice = (order) => {
+
+        const doc = new jsPDF()
+
+        doc.setFontSize(24)
+        doc.text("UrbanStore", 20, 20)
+
+        doc.setFontSize(16)
+        doc.text("INVOICE", 20, 30)
+
+        doc.line(20, 35, 190, 35)
+
+        let infoY = 45
+
+        doc.setFontSize(12)
+
+        doc.text(
+            `Invoice #: INV-${order._id.slice(-6).toUpperCase()}`,
+            20,
+            infoY
+        )
+
+        doc.text(
+            `Generated: ${new Date().toLocaleDateString()}`,
+            20,
+            infoY + 10
+        )
+
+        doc.text(
+            `Date: ${new Date(order.createdAt).toLocaleDateString()}`,
+            20,
+            infoY + 20
+        )
+
+        doc.text(
+            `Status: ${order.status}`,
+            20,
+            infoY + 30
+        )
+
+        let y = 120
+
+        order.items.forEach((item) => {
+
+            doc.text(item.name, 20, y)
+
+            doc.text(
+                `${item.quantity}`,
+                120,
+                y
+            )
+
+            doc.text(
+                `₹${item.price}`,
+                160,
+                y
+            )
+
+            y += 10
+        })
+
+        doc.text(
+            `Total Amount: ₹${order.totalAmount}`,
+            20,
+            y + 20
+        )
+
+        doc.save(
+            `invoice-${order._id}.pdf`
+        )
     }
 
     const handleBuyAgain = async (order) => {
@@ -85,11 +158,48 @@ function OrderHistory() {
 
             <div className="space-y-6">
 
-                {orders.map((order) => (
+                {orders.length === 0 ? (
 
-                    <div
-                        key={order._id}
-                        className="
+                    <div className="text-center py-24">
+
+                        <div className="text-7xl mb-6">
+                            📦
+                        </div>
+
+                        <h2 className="text-3xl font-serif mb-4">
+                            No Orders Yet
+                        </h2>
+
+                        <p className="text-gray-500 mb-8">
+                            Looks like you haven't placed any orders yet.
+                        </p>
+
+                        <button
+                            onClick={() => navigate("/")}
+                            className="
+            border
+            border-[#D9CFC2]
+            px-8
+            py-4
+            uppercase
+            tracking-[3px]
+            hover:bg-black
+            hover:text-white
+            transition
+            "
+                        >
+                            Start Shopping
+                        </button>
+
+                    </div>
+
+                ) : (
+
+                    orders.map((order) => (
+
+                        <div
+                            key={order._id}
+                            className="
 bg-white
 border
 border-[#E8DCCB]
@@ -98,37 +208,37 @@ hover:shadow-lg
 transition
 duration-300
 "
-                    >
+                        >
 
-                        <div className="flex justify-between mb-6">
+                            <div className="flex justify-between mb-6">
 
-                            <div>
+                                <div>
 
-                                <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
-                                    Order
-                                </p>
+                                    <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
+                                        Order
+                                    </p>
 
-                                <h2 className="text-4xl font-serif">
-                                    #{order._id.slice(-6)}
-                                </h2>
+                                    <h2 className="text-4xl font-serif">
+                                        #{order._id.slice(-6)}
+                                    </h2>
 
-                                <p className="text-gray-500">
-                                    {
-                                        new Date(order.createdAt).toLocaleDateString(
-                                            "en-IN",
-                                            {
-                                                day: "numeric",
-                                                month: "short",
-                                                year: "numeric",
-                                            }
-                                        )
-                                    }
-                                </p>
+                                    <p className="text-gray-500">
+                                        {
+                                            new Date(order.createdAt).toLocaleDateString(
+                                                "en-IN",
+                                                {
+                                                    day: "numeric",
+                                                    month: "short",
+                                                    year: "numeric",
+                                                }
+                                            )
+                                        }
+                                    </p>
 
-                            </div>
+                                </div>
 
-                            <div
-                                className={`
+                                <div
+                                    className={`
         inline-flex
         items-center
         justify-center
@@ -140,110 +250,193 @@ duration-300
         font-medium
         ${statusColor[order.status]}
     `}
-                            >
-                                {order.status}
+                                >
+                                    {order.status}
+                                </div>
+
                             </div>
+                            <p className="uppercase tracking-[3px] text-xs text-gray-400 mb-4">
+                                Items Ordered
+                            </p>
+                            <div className="space-y-2">
 
-                        </div>
-                        <p className="uppercase tracking-[3px] text-xs text-gray-400 mb-4">
-                            Items Ordered
-                        </p>
-                        <div className="space-y-2">
+                                {order.items.map((item, index) => (
 
-                            {order.items.map((item, index) => (
-
-                                <div
-                                    key={index}
-                                    className="
+                                    <div
+                                        key={index}
+                                        className="
         flex
         justify-between
         items-center
         mb-4
         "
-                                >
+                                    >
 
-                                    <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-4">
 
-                                        <img
-                                            src={item.image}
-                                            alt={item.name}
-                                            className="
+                                            <img
+                                                src={item.image}
+                                                alt={item.name}
+                                                className="
                 w-24
                 h-24
                 object-cover
                 border
                 border-[#E8DCCB]
                 "
-                                        />
+                                            />
 
-                                        <div>
+                                            <div>
 
-                                            <p className="font-medium">
-                                                {item.name}
-                                            </p>
-
-                                            {item.size && (
-                                                <p className="text-gray-500 text-sm">
-                                                    Size: {item.size}
+                                                <p className="font-medium">
+                                                    {item.name}
                                                 </p>
-                                            )}
 
-                                            <p className="text-gray-500 text-sm">
-                                                Qty: {item.quantity}
-                                            </p>
+                                                {item.size && (
+                                                    <p className="text-gray-500 text-sm">
+                                                        Size: {item.size}
+                                                    </p>
+                                                )}
 
-                                            <p>
-                                                ₹{(item.price * item.quantity).toLocaleString("en-IN")}
-                                            </p>
+                                                <p className="text-gray-500 text-sm">
+                                                    Qty: {item.quantity}
+                                                </p>
+
+                                                <p>
+                                                    ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+                                                </p>
+
+                                            </div>
 
                                         </div>
-
                                     </div>
-                                </div>
 
-                            ))}
+                                ))}
 
-                        </div>
-                        <div className="border-t border-[#E8DCCB] my-8"></div>
-                        <div className="flex justify-between items-center mt-10">
+                            </div>
+                            <div className="w-full bg-[#EFE7DB] h-2 rounded-full mt-8">
 
-                            <div>
-                                <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
-                                    Total
-                                </p>
+                                <div
+                                    className={`
+        h-2
+        rounded-full
+        bg-green-500
 
-                                <h2 className="text-4xl font-serif">
-                                    ₹{Math.round(order.totalAmount).toLocaleString("en-IN")}
-                                </h2>
+        ${order.status === "Pending"
+                                            ? "w-1/4"
+                                            : order.status === "Paid"
+                                                ? "w-2/4"
+                                                : order.status === "Shipped"
+                                                    ? "w-3/4"
+                                                    : "w-full"}
+        `}
+                                />
+
                             </div>
 
-                            <button
-                                onClick={() => handleBuyAgain(order)}
-                                className="
-    border
-    border-[#D9CFC2]
-    px-8
-    py-4
-    uppercase
-    tracking-[2px]
-    text-sm
-    hover:bg-black
-    hover:text-white
-    transition
-    "
-                            >
-                                {
-                                    loadingOrder === order._id
-                                        ? "Adding..."
-                                        : "Buy Again"
-                                }
-                            </button>
+                            <div className="flex justify-between text-xs text-gray-500 mt-3">
+
+                                <span>Pending</span>
+
+                                <span>Paid</span>
+
+                                <span>Shipped</span>
+
+                                <span>Delivered</span>
+
+                            </div>
+                            <p className="text-gray-500 mt-5">
+
+                                Estimated Delivery:
+                                {order.status === "Delivered" && (
+
+                                    <div
+                                        className="
+        mt-4
+        bg-green-50
+        border
+        border-green-200
+        text-green-700
+        p-4
+        "
+                                    >
+                                        🎉 Your order has been delivered successfully!
+                                    </div>
+
+                                )}
+
+                                {" "}
+
+                                {new Date(
+                                    new Date(order.createdAt).getTime() +
+                                    5 * 24 * 60 * 60 * 1000
+                                ).toLocaleDateString()}
+
+                            </p>
+                            <div className="border-t border-[#E8DCCB] my-8"></div>
+                            <div className="flex justify-between items-center mt-10">
+
+                                <div>
+                                    <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-2">
+                                        Total
+                                    </p>
+
+                                    <h2 className="text-4xl font-serif">
+                                        ₹{Math.round(order.totalAmount).toLocaleString("en-IN")}
+                                    </h2>
+                                </div>
+
+                                <div className="flex gap-4">
+
+                                    <button
+                                        onClick={() =>
+                                            downloadInvoice(order)
+                                        }
+                                        className="
+        bg-black
+        text-white
+        px-6
+        py-3
+        uppercase
+        tracking-[2px]
+        text-sm
+        "
+                                    >
+                                        Download Invoice
+                                    </button>
+
+                                    <button
+                                        onClick={() =>
+                                            handleBuyAgain(order)
+                                        }
+                                        className="
+        border
+        border-[#D9CFC2]
+        px-8
+        py-4
+        uppercase
+        tracking-[2px]
+        text-sm
+        hover:bg-black
+        hover:text-white
+        transition
+        "
+                                    >
+                                        {
+                                            loadingOrder === order._id
+                                                ? "Adding..."
+                                                : "Buy Again"
+                                        }
+                                    </button>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
-                    </div>
-
-                ))}
+                    ))
+                )}
 
             </div>
 

@@ -1,16 +1,16 @@
 function HeroBanner() {
     return (
         <section
-  className="
+            className="
   bg-[#EFE5D8]
-  min-h-[80vh]
+  min-h-[90vh]
   flex
   items-center
   pt-12
 "
->
+        >
             <div
-    className="
+                className="
     max-w-7xl
     mx-auto
     px-10
@@ -19,7 +19,7 @@ function HeroBanner() {
     gap-20
     items-center
     "
->
+            >
 
                 {/* Left Side */}
 
@@ -96,14 +96,15 @@ hover:scale-105
 
                 <div className="flex justify-end">
                     <img
-                        src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=1000"
+                        src="https://images.unsplash.com/photo-1622023585373-fbd947f3fdc3?q=80&w=709&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         alt="Fashion Model"
                         className="
 w-full
 max-w-md
-h-[450px]
+h-[550px]
 object-cover
 shadow-xl
+rounded-lg
 "
                     />
                 </div>

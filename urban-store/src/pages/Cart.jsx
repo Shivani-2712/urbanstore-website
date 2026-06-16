@@ -46,6 +46,13 @@ function Cart() {
                         and add them to your cart.
                     </p>
 
+                    <Link
+                        to="/"
+                        className="inline-block mt-8 bg-black text-white px-8 py-4 uppercase tracking-[3px]"
+                    >
+                        Start Shopping
+                    </Link>
+
                 </div>
             ) : (
                 <div className="grid gap-6">

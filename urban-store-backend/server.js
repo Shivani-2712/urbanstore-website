@@ -245,111 +245,111 @@ app.get("/orders", async (req, res) => {
 })
 
 app.get(
-    "/admin/orders",
-    async (req, res) => {
-        try {
+  "/admin/orders",
+  async (req, res) => {
+    try {
 
-            const orders =
-                await Order.find()
-                    .sort({
-                        createdAt: -1,
-                    })
+      const orders =
+        await Order.find()
+          .sort({
+            createdAt: -1,
+          })
 
-            res.json(orders)
+      res.json(orders)
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.put(
-    "/admin/orders/:id",
-    async (req, res) => {
-        try {
+  "/admin/orders/:id",
+  async (req, res) => {
+    try {
 
-            const updatedOrder =
-                await Order.findByIdAndUpdate(
-                    req.params.id,
-                    {
-                        status:
-                            req.body.status,
-                    },
-                    {
-                        new: true,
-                    }
-                )
+      const updatedOrder =
+        await Order.findByIdAndUpdate(
+          req.params.id,
+          {
+            status:
+              req.body.status,
+          },
+          {
+            new: true,
+          }
+        )
 
-            res.json(
-                updatedOrder
-            )
+      res.json(
+        updatedOrder
+      )
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.get(
-    "/admin/stats",
-    async (req, res) => {
+  "/admin/stats",
+  async (req, res) => {
 
-        try {
+    try {
 
-            const totalOrders =
-                await Order.countDocuments()
+      const totalOrders =
+        await Order.countDocuments()
 
-            const totalProducts =
-                await Product.countDocuments()
+      const totalProducts =
+        await Product.countDocuments()
 
-            const totalUsers =
-                await User.countDocuments()
+      const totalUsers =
+        await User.countDocuments()
 
-            const orders =
-                await Order.find()
+      const orders =
+        await Order.find()
 
-            const totalRevenue =
-                orders.reduce(
-                    (sum, order) =>
-                        sum +
-                        order.totalAmount,
-                    0
-                )
+      const totalRevenue =
+        orders.reduce(
+          (sum, order) =>
+            sum +
+            order.totalAmount,
+          0
+        )
 
-            const recentOrders =
-    await Order.find()
-        .sort({
+      const recentOrders =
+        await Order.find()
+          .sort({
             createdAt: -1,
-        })
-        .limit(5)
+          })
+          .limit(5)
 
-res.json({
-    totalOrders,
-    totalProducts,
-    totalUsers,
-    totalRevenue,
-    recentOrders,
-})
+      res.json({
+        totalOrders,
+        totalProducts,
+        totalUsers,
+        totalRevenue,
+        recentOrders,
+      })
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.get(
@@ -540,6 +540,52 @@ app.post(
 )
 
 app.put(
+  "/forgot-password",
+  async (req, res) => {
+
+    try {
+
+      const user =
+        await User.findOne({
+          email: req.body.email,
+        })
+
+      if (!user) {
+
+        return res.status(404).json({
+          message: "Email not found",
+        })
+
+      }
+
+      const hashedPassword =
+        await bcrypt.hash(
+          req.body.newPassword,
+          10
+        )
+
+      user.password =
+        hashedPassword
+
+      await user.save()
+
+      res.json({
+        message:
+          "Password updated successfully 🎉",
+      })
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      })
+
+    }
+
+  }
+)
+
+app.put(
   "/update-profile/:id",
   async (req, res) => {
     try {
@@ -611,39 +657,39 @@ app.post(
       }
 
       const orders =
-    await Order.find({
-        userId:
+        await Order.find({
+          userId:
             req.body.userId,
-    })
+        })
 
-const hasPurchased =
-    orders.some((order) =>
-        order.items.some(
+      const hasPurchased =
+        orders.some((order) =>
+          order.items.some(
             (item) =>
-                item._id?.toString() ===
-                req.body.productId
+              item._id?.toString() ===
+              req.body.productId
+          )
         )
-    )
 
       const review = new Review({
-    productId:
-        req.body.productId,
+        productId:
+          req.body.productId,
 
-    userId:
-        req.body.userId,
+        userId:
+          req.body.userId,
 
-    userName:
-        req.body.userName,
+        userName:
+          req.body.userName,
 
-    rating:
-        req.body.rating,
+        rating:
+          req.body.rating,
 
-    comment:
-        req.body.comment,
+        comment:
+          req.body.comment,
 
-    verifiedBuyer:
-        hasPurchased,
-})
+        verifiedBuyer:
+          hasPurchased,
+      })
       const savedReview =
         await review.save()
 
@@ -715,36 +761,36 @@ app.get(
 )
 
 app.get(
-    "/can-review/:userId/:productId",
-    async (req, res) => {
-        try {
-            const orders =
-                await Order.find({
-                    userId:
-                        req.params.userId,
-                })
+  "/can-review/:userId/:productId",
+  async (req, res) => {
+    try {
+      const orders =
+        await Order.find({
+          userId:
+            req.params.userId,
+        })
 
-            const hasPurchased =
-                orders.some(
-                    (order) =>
-                        order.items.some(
-                            (item) =>
-                                item._id?.toString() ===
-                                req.params.productId
-                        )
-                )
+      const hasPurchased =
+        orders.some(
+          (order) =>
+            order.items.some(
+              (item) =>
+                item._id?.toString() ===
+                req.params.productId
+            )
+        )
 
-            res.json({
-                canReview:
-                    hasPurchased,
-            })
-        } catch (error) {
-            res.status(500).json({
-                message:
-                    error.message,
-            })
-        }
+      res.json({
+        canReview:
+          hasPurchased,
+      })
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
     }
+  }
 )
 
 app.put(
@@ -779,282 +825,282 @@ app.put(
 )
 
 app.post(
-    "/wishlist",
-    async (req, res) => {
-        try {
+  "/wishlist",
+  async (req, res) => {
+    try {
 
-            const exists =
-                await Wishlist.findOne(
-                    {
-                        userId:
-                            req.body.userId,
+      const exists =
+        await Wishlist.findOne(
+          {
+            userId:
+              req.body.userId,
 
-                        productId:
-                            req.body.productId,
-                    }
-                )
+            productId:
+              req.body.productId,
+          }
+        )
 
-            if (exists) {
-                return res.json({
-                    message:
-                        "Already in wishlist",
-                })
-            }
+      if (exists) {
+        return res.json({
+          message:
+            "Already in wishlist",
+        })
+      }
 
-            const wishlist =
-                new Wishlist({
-                    userId:
-                        req.body.userId,
+      const wishlist =
+        new Wishlist({
+          userId:
+            req.body.userId,
 
-                    productId:
-                        req.body.productId,
-                })
+          productId:
+            req.body.productId,
+        })
 
-            await wishlist.save()
+      await wishlist.save()
 
-            res.json({
-                message:
-                    "Added to wishlist",
-            })
+      res.json({
+        message:
+          "Added to wishlist",
+      })
 
-        } catch (error) {
-            res.status(500).json({
-                message:
-                    error.message,
-            })
-        }
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
     }
+  }
 )
 
 app.get(
-    "/wishlist/:userId",
-    async (req, res) => {
-        try {
+  "/wishlist/:userId",
+  async (req, res) => {
+    try {
 
-            const wishlist =
-                await Wishlist.find(
-                    {
-                        userId:
-                            req.params.userId,
-                    }
-                )
+      const wishlist =
+        await Wishlist.find(
+          {
+            userId:
+              req.params.userId,
+          }
+        )
 
-            res.json(
-                wishlist
-            )
+      res.json(
+        wishlist
+      )
 
-        } catch (error) {
-            res.status(500).json({
-                message:
-                    error.message,
-            })
-        }
+    } catch (error) {
+      res.status(500).json({
+        message:
+          error.message,
+      })
     }
+  }
 )
 
 app.delete(
-    "/wishlist/:userId/:productId",
-    async (req, res) => {
-        try {
+  "/wishlist/:userId/:productId",
+  async (req, res) => {
+    try {
 
-            await Wishlist.deleteOne({
-                userId:
-                    req.params.userId,
+      await Wishlist.deleteOne({
+        userId:
+          req.params.userId,
 
-                productId:
-                    req.params.productId,
-            })
+        productId:
+          req.params.productId,
+      })
 
-            res.json({
-                message:
-                    "Removed from wishlist",
-            })
+      res.json({
+        message:
+          "Removed from wishlist",
+      })
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.post(
-    "/cart",
-    async (req, res) => {
-        try {
+  "/cart",
+  async (req, res) => {
+    try {
 
-            const existingItem =
-    await Cart.findOne({
-        userId:
+      const existingItem =
+        await Cart.findOne({
+          userId:
             req.body.userId,
 
-        productId:
+          productId:
             req.body.productId,
 
-        size:
+          size:
             req.body.size,
-    })
+        })
 
-            if (existingItem) {
+      if (existingItem) {
 
-                existingItem.quantity += 1
+        existingItem.quantity += 1
 
-                await existingItem.save()
+        await existingItem.save()
 
-                return res.json(
-                    existingItem
-                )
-            }
+        return res.json(
+          existingItem
+        )
+      }
 
-            const cart =
-    new Cart({
-        userId:
+      const cart =
+        new Cart({
+          userId:
             req.body.userId,
 
-        productId:
+          productId:
             req.body.productId,
 
-        size:
+          size:
             req.body.size,
 
-        quantity: 1,
-    })
+          quantity: 1,
+        })
 
-            await cart.save()
+      await cart.save()
 
-            res.json(cart)
+      res.json(cart)
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.get(
-    "/cart/:userId",
-    async (req, res) => {
-        try {
+  "/cart/:userId",
+  async (req, res) => {
+    try {
 
-            const cart =
-                await Cart.find({
-                    userId:
-                        req.params.userId,
-                })
+      const cart =
+        await Cart.find({
+          userId:
+            req.params.userId,
+        })
 
-            res.json(cart)
+      res.json(cart)
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.put(
-    "/cart/:userId/:productId",
-    async (req, res) => {
-        try {
+  "/cart/:userId/:productId",
+  async (req, res) => {
+    try {
 
-            const cartItem =
-                await Cart.findOneAndUpdate(
-                    {
-                        userId:
-                            req.params.userId,
+      const cartItem =
+        await Cart.findOneAndUpdate(
+          {
+            userId:
+              req.params.userId,
 
-                        productId:
-                            req.params.productId,
-                    },
-                    {
-                        quantity:
-                            req.body.quantity,
-                    },
-                    {
-                        new: true,
-                    }
-                )
+            productId:
+              req.params.productId,
+          },
+          {
+            quantity:
+              req.body.quantity,
+          },
+          {
+            new: true,
+          }
+        )
 
-            res.json(cartItem)
+      res.json(cartItem)
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.delete(
-    "/cart/clear/:userId",
-    async (req, res) => {
-        try {
-          console.log(
-                "CLEAR CART API HIT",
-                req.params.userId
-            )
+  "/cart/clear/:userId",
+  async (req, res) => {
+    try {
+      console.log(
+        "CLEAR CART API HIT",
+        req.params.userId
+      )
 
-            await Cart.deleteMany({
-                userId:
-                    req.params.userId,
-            })
+      await Cart.deleteMany({
+        userId:
+          req.params.userId,
+      })
 
-            res.json({
-                message:
-                    "Cart cleared",
-            })
+      res.json({
+        message:
+          "Cart cleared",
+      })
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.delete(
-    "/cart/:userId/:productId",
-    async (req, res) => {
-        try {
+  "/cart/:userId/:productId",
+  async (req, res) => {
+    try {
 
-            await Cart.deleteOne({
-                userId:
-                    req.params.userId,
+      await Cart.deleteOne({
+        userId:
+          req.params.userId,
 
-                productId:
-                    req.params.productId,
-            })
+        productId:
+          req.params.productId,
+      })
 
-            res.json({
-                message:
-                    "Item removed",
-            })
+      res.json({
+        message:
+          "Item removed",
+      })
 
-        } catch (error) {
+    } catch (error) {
 
-            res.status(500).json({
-                message:
-                    error.message,
-            })
+      res.status(500).json({
+        message:
+          error.message,
+      })
 
-        }
     }
+  }
 )
 
 app.listen(process.env.PORT, () => {

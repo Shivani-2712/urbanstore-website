@@ -23,6 +23,7 @@ import MyAccount from "./pages/MyAccount"
 import AdminOrders from "./pages/AdminOrders"
 import AdminDashboard from "./pages/AdminDashboard"
 import OrderHistory from "./pages/OrderHistory"
+import ForgotPassword from "./pages/ForgotPassword"
 
 function Home() {
   return (
@@ -130,6 +131,11 @@ function App() {
               <OrderHistory />
             </UserProtectedRoute>
           }
+        />
+
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
         />
       </Routes>
     </BrowserRouter>

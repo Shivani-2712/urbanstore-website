@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react"
 import axios from "axios"
 import { CartContext } from "../context/CartContext"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import jsPDF from "jspdf"
 
 function OrderHistory() {
@@ -174,22 +174,11 @@ function OrderHistory() {
                             Looks like you haven't placed any orders yet.
                         </p>
 
-                        <button
-                            onClick={() => navigate("/")}
-                            className="
-            border
-            border-[#D9CFC2]
-            px-8
-            py-4
-            uppercase
-            tracking-[3px]
-            hover:bg-black
-            hover:text-white
-            transition
-            "
-                        >
-                            Start Shopping
-                        </button>
+                        <Link
+                            to="/"
+                            className="inline-block mt-8 bg-black text-white px-8 py-4 uppercase tracking-[3px]">
+                            Continue Shopping
+                        </Link>
 
                     </div>
 
@@ -199,16 +188,7 @@ function OrderHistory() {
 
                         <div
                             key={order._id}
-                            className="
-bg-white
-border
-border-[#E8DCCB]
-p-8
-hover:shadow-lg
-transition
-duration-300
-"
-                        >
+                            className="bg-white border border-[#E8DCCB] p-8 hover:shadow-lg transition duration-300">
 
                             <div className="flex justify-between mb-6">
 
@@ -238,19 +218,8 @@ duration-300
                                 </div>
 
                                 <div
-                                    className={`
-        inline-flex
-        items-center
-        justify-center
-        px-4
-        py-2
-        rounded-md
-        border
-        text-sm
-        font-medium
-        ${statusColor[order.status]}
-    `}
-                                >
+                                    className={`inline-flex items-center justify-center px-4 py-2 rounded-md border text-sm font-medium
+                                        ${statusColor[order.status]}`}>
                                     {order.status}
                                 </div>
 
@@ -264,27 +233,14 @@ duration-300
 
                                     <div
                                         key={index}
-                                        className="
-        flex
-        justify-between
-        items-center
-        mb-4
-        "
-                                    >
+                                        className="flex justify-between items-center mb-4">
 
                                         <div className="flex items-center gap-4">
 
                                             <img
                                                 src={item.image}
                                                 alt={item.name}
-                                                className="
-                w-24
-                h-24
-                object-cover
-                border
-                border-[#E8DCCB]
-                "
-                                            />
+                                                className="w-24 h-24 object-cover border border-[#E8DCCB]" />
 
                                             <div>
 
@@ -317,21 +273,15 @@ duration-300
                             <div className="w-full bg-[#EFE7DB] h-2 rounded-full mt-8">
 
                                 <div
-                                    className={`
-        h-2
-        rounded-full
-        bg-green-500
-
-        ${order.status === "Pending"
+                                    className={`h-2 rounded-full bg-green-500
+                                        ${order.status === "Pending"
                                             ? "w-1/4"
                                             : order.status === "Paid"
                                                 ? "w-2/4"
                                                 : order.status === "Shipped"
                                                     ? "w-3/4"
                                                     : "w-full"}
-        `}
-                                />
-
+                                            `} />
                             </div>
 
                             <div className="flex justify-between text-xs text-gray-500 mt-3">
@@ -351,15 +301,7 @@ duration-300
                                 {order.status === "Delivered" && (
 
                                     <div
-                                        className="
-        mt-4
-        bg-green-50
-        border
-        border-green-200
-        text-green-700
-        p-4
-        "
-                                    >
+                                        className="mt-4 bg-green-50 border border-green-200 text-green-700 p-4">
                                         🎉 Your order has been delivered successfully!
                                     </div>
 
@@ -392,16 +334,7 @@ duration-300
                                         onClick={() =>
                                             downloadInvoice(order)
                                         }
-                                        className="
-        bg-black
-        text-white
-        px-6
-        py-3
-        uppercase
-        tracking-[2px]
-        text-sm
-        "
-                                    >
+                                        className="bg-black text-white px-6 py-3 uppercase tracking-[2px] text-sm">
                                         Download Invoice
                                     </button>
 
@@ -409,19 +342,7 @@ duration-300
                                         onClick={() =>
                                             handleBuyAgain(order)
                                         }
-                                        className="
-        border
-        border-[#D9CFC2]
-        px-8
-        py-4
-        uppercase
-        tracking-[2px]
-        text-sm
-        hover:bg-black
-        hover:text-white
-        transition
-        "
-                                    >
+                                        className="border border-[#D9CFC2] px-8 py-4 uppercase tracking-[2px] text-sm hover:bg-black hover:text-white transition">
                                         {
                                             loadingOrder === order._id
                                                 ? "Adding..."

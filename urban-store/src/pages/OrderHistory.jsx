@@ -42,6 +42,9 @@ function OrderHistory() {
 
         Delivered:
             "bg-[#F5F3FF] text-[#7C3AED] border-[#DDD6FE]",
+
+        Cancelled:
+            "bg-red-50 text-red-600 border-red-200",
     }
 
     const downloadInvoice = (order) => {
@@ -114,6 +117,35 @@ function OrderHistory() {
         doc.save(
             `invoice-${order._id}.pdf`
         )
+    }
+
+    const cancelOrder = async (orderId) => {
+
+        try {
+
+            await axios.put(
+                `http://localhost:5000/orders/${orderId}`,
+                {
+                    status: "Cancelled",
+                }
+            )
+
+            setOrders(
+                orders.map((order) =>
+                    order._id === orderId
+                        ? {
+                            ...order,
+                            status: "Cancelled",
+                        }
+                        : order
+                )
+            )
+
+        } catch (error) {
+
+            console.log(error)
+
+        }
     }
 
     const handleBuyAgain = async (order) => {
@@ -270,51 +302,71 @@ function OrderHistory() {
                                 ))}
 
                             </div>
-                            <div className="w-full bg-[#EFE7DB] h-2 rounded-full mt-8">
 
-                                <div
-                                    className={`h-2 rounded-full bg-green-500
-                                        ${order.status === "Pending"
-                                            ? "w-1/4"
-                                            : order.status === "Paid"
-                                                ? "w-2/4"
-                                                : order.status === "Shipped"
-                                                    ? "w-3/4"
-                                                    : "w-full"}
-                                            `} />
-                            </div>
-
-                            <div className="flex justify-between text-xs text-gray-500 mt-3">
-
-                                <span>Pending</span>
-
-                                <span>Paid</span>
-
-                                <span>Shipped</span>
-
-                                <span>Delivered</span>
-
-                            </div>
-                            <p className="text-gray-500 mt-5">
-
-                                Estimated Delivery:
-                                {order.status === "Delivered" && (
+                            {order.status !== "Cancelled" && (
+                                <div className="w-full bg-[#EFE7DB] h-2 rounded-full mt-8">
 
                                     <div
-                                        className="mt-4 bg-green-50 border border-green-200 text-green-700 p-4">
-                                        🎉 Your order has been delivered successfully!
-                                    </div>
+                                        className={`h-2 rounded-full bg-green-500
+                                        ${order.status === "Pending"
+                                                ? "w-1/4"
+                                                : order.status === "Paid"
+                                                    ? "w-2/4"
+                                                    : order.status === "Shipped"
+                                                        ? "w-3/4"
+                                                        : "w-full"}
+                                            `} />
+                                </div>
+                            )}
 
-                                )}
+                            {order.status !== "Cancelled" && (
 
-                                {" "}
+                                <div className="flex justify-between text-xs text-gray-500 mt-3">
 
-                                {new Date(
-                                    new Date(order.createdAt).getTime() +
-                                    5 * 24 * 60 * 60 * 1000
-                                ).toLocaleDateString()}
+                                    <span>Pending</span>
 
-                            </p>
+                                    <span>Paid</span>
+
+                                    <span>Shipped</span>
+
+                                    <span>Delivered</span>
+
+                                </div>
+
+                            )}
+                            {order.status !== "Cancelled" && (
+                                <p className="text-gray-500 mt-5">
+
+                                    Estimated Delivery:
+                                    {order.status === "Delivered" && (
+
+                                        <div
+                                            className="mt-4 bg-green-50 border border-green-200 text-green-700 p-4">
+                                            🎉 Your order has been delivered successfully!
+                                        </div>
+
+                                    )}
+
+                                    {" "}
+
+                                    {new Date(
+                                        new Date(order.createdAt).getTime() +
+                                        5 * 24 * 60 * 60 * 1000
+                                    ).toLocaleDateString()}
+
+                                </p>
+                            )}
+
+                            {order.status === "Delivered" && (
+
+                                <div
+                                    className="mt-4 bg-green-50 border border-green-200 text-green-700 p-4"
+                                >
+                                    🎉 Your order has been delivered successfully!
+                                </div>
+
+                            )}
+
                             <div className="border-t border-[#E8DCCB] my-8"></div>
                             <div className="flex justify-between items-center mt-10">
 
@@ -330,23 +382,70 @@ function OrderHistory() {
 
                                 <div className="flex gap-4">
 
-                                    <button
-                                        onClick={() =>
-                                            downloadInvoice(order)
-                                        }
-                                        className="bg-black text-white px-6 py-3 uppercase tracking-[2px] text-sm">
-                                        Download Invoice
-                                    </button>
+                                    {order.status !== "Cancelled" && (
+
+                                        <button
+                                            onClick={() =>
+                                                downloadInvoice(order)
+                                            }
+                                            className="bg-black text-white px-6 py-3 uppercase tracking-[2px] text-sm"
+                                        >
+                                            Download Invoice
+                                        </button>
+
+                                    )}
+
+                                    {(
+                                        order.status === "Pending" ||
+                                        order.status === "Paid"
+                                    ) && (
+
+                                            <button
+                                                onClick={() =>
+                                                    cancelOrder(order._id)
+                                                }
+                                                className="
+        border
+        border-red-300
+        text-red-600
+        px-6
+        py-3
+        uppercase
+        tracking-[2px]
+        text-sm
+        hover:bg-red-600
+        hover:text-white
+        transition
+        "
+                                            >
+                                                Cancel Order
+                                            </button>
+
+                                        )}
 
                                     <button
                                         onClick={() =>
                                             handleBuyAgain(order)
                                         }
-                                        className="border border-[#D9CFC2] px-8 py-4 uppercase tracking-[2px] text-sm hover:bg-black hover:text-white transition">
+                                        className={`
+        px-8
+        py-4
+        uppercase
+        tracking-[2px]
+        text-sm
+        transition
+        ${order.status === "Cancelled"
+                                                ? "bg-black text-white"
+                                                : "border border-[#D9CFC2] hover:bg-black hover:text-white"
+                                            }
+    `}
+                                    >
                                         {
                                             loadingOrder === order._id
                                                 ? "Adding..."
-                                                : "Buy Again"
+                                                : order.status === "Cancelled"
+                                                    ? "Reorder"
+                                                    : "Buy Again"
                                         }
                                     </button>
 

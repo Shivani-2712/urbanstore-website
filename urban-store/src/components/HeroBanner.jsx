@@ -6,7 +6,7 @@ function HeroBanner() {
   min-h-[90vh]
   flex
   items-center
-  pt-12
+  pt-2
 "
         >
             <div

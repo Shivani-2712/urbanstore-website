@@ -3,6 +3,7 @@ import { CartContext } from "../context/CartContext";
 import { WishlistContext } from "../context/WishlistContext";
 import { Link } from "react-router-dom";
 import { FaHeart, FaShoppingBag, FaUser } from "react-icons/fa";
+import toast from "react-hot-toast"
 
 function Navbar() {
     const userToken = localStorage.getItem("userToken");
@@ -11,6 +12,10 @@ function Navbar() {
         localStorage.removeItem("userToken");
 
         localStorage.removeItem("userInfo");
+
+        toast.success(
+            "Logged out successfully"
+        )
 
         window.location.reload();
     };

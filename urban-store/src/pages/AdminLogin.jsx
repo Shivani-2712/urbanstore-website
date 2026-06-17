@@ -31,20 +31,12 @@ function AdminLogin() {
         }
     }
 
-   return (
+    return (
     <div className="min-h-screen bg-[#F8F4EE] flex items-center justify-center px-6">
 
         <form
             onSubmit={handleLogin}
-            className="
-            bg-white
-            border
-            border-[#E8DCCB]
-            p-10
-            w-full
-            max-w-[500px]
-            "
-        >
+            className="bg-white border border-[#E8DCCB] p-10 w-full max-w-[500px]">
 
             <div className="text-center mb-8">
 
@@ -71,18 +63,7 @@ function AdminLogin() {
                 onChange={(e) =>
                     setEmail(e.target.value)
                 }
-                className="
-                w-full
-                border
-                border-[#D9CFC2]
-                p-4
-                mb-4
-                bg-white
-                outline-none
-                focus:border-black
-                transition
-                "
-            />
+                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-white outline-none focus:border-black transition"/>
 
             <input
                 type="password"
@@ -91,31 +72,9 @@ function AdminLogin() {
                 onChange={(e) =>
                     setPassword(e.target.value)
                 }
-                className="
-                w-full
-                border
-                border-[#D9CFC2]
-                p-4
-                mb-6
-                bg-white
-                outline-none
-                focus:border-black
-                transition
-                "
-            />
+                className="w-full border border-[#D9CFC2] p-4 mb-6 bg-white outline-none focus:border-black transition"/>
 
-            <button
-                className="
-                bg-black
-                text-white
-                w-full
-                py-4
-                uppercase
-                tracking-[4px]
-                hover:opacity-90
-                transition
-                "
-            >
+            <button className="bg-black text-white w-full py-4 uppercase tracking-[4px] hover:opacity-90 transition">
                 Login
             </button>
 

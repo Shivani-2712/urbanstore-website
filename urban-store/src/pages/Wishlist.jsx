@@ -8,33 +8,14 @@ function Wishlist() {
         useContext(WishlistContext)
 
     return (
-        <div
-            className="
-    min-h-screen
-    bg-[#F8F4EE]
-    px-10
-    py-12
-    "
-        >
+        <div className="min-h-screen bg-[#F8F4EE] px-10 py-12">
             <div className="text-center mb-16">
 
-                <p
-                    className="
-        uppercase
-        tracking-[4px]
-        text-gray-400
-        mb-3
-        "
-                >
+                <p className="uppercase tracking-[4px] text-gray-400 mb-3">
                     Saved For Later
                 </p>
 
-                <h1
-                    className="
-        text-5xl
-        font-serif
-        "
-                >
+                <h1 className=" text-5xl font-serif">
                     My Wishlist
                 </h1>
 
@@ -64,33 +45,13 @@ function Wishlist() {
 
                     <Link
                         to="/"
-                        className="
-    inline-block
-    mt-8
-    bg-black
-    text-white
-    px-8
-    py-4
-    uppercase
-    tracking-[3px]
-    "
-                    >
+                        className="inline-block mt-8 bg-black text-white px-8 py-4 uppercase tracking-[3px]">
                         Continue Shopping
                     </Link>
 
                 </div>
             ) : (
-                <div
-                    className="
-    max-w-6xl
-    mx-auto
-    grid
-    grid-cols-1
-    sm:grid-cols-2
-    lg:grid-cols-3
-    gap-10
-    "
-                >
+                <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                     {wishlistItems.map((product) => (
                         <ProductCard
                             key={product._id}

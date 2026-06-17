@@ -86,26 +86,8 @@ function AdminOrders() {
             <input
                 type="text"
                 placeholder="Search by customer, email or order ID..."
-                className="
-    w-full
-    max-w-xl
-    border
-    border-[#D9CFC2]
-    p-3
-    bg-white
-    mb-8
-    "
-            />
-            <div className="
-bg-white
-border
-border-[#E8DCCB]
-p-5
-mb-5
-hover:shadow-lg
-transition
-duration-300
-">
+                className="w-full max-w-xl border border-[#D9CFC2] p-3 bg-white mb-8" />
+            <div className="bg-white border border-[#E8DCCB] p-5 mb-5 hover:shadow-lg transition duration-300">
 
                 {orders.map((order) => (
 
@@ -140,15 +122,9 @@ duration-300
 
                             </div>
 
-                            <div
-                                className={`
-                            px-3
-                            py-1
-                            border
-                            text-sm
+                            <div className={`px-3 py-1 border text-sm
                             ${statusColor[order.status]}
-                            `}
-                            >
+                            `}>
                                 {order.status}
                             </div>
 
@@ -200,18 +176,7 @@ duration-300
                                             e.target.value
                                         )
                                     }
-                                    className="
-border
-border-[#D9CFC2]
-bg-white
-px-4
-py-3
-w-[260px]
-outline-none
-focus:border-black
-transition
-"
-                                >
+                                    className="border border-[#D9CFC2] bg-white px-4 py-3 w-[260px] outline-none focus:border-black transition">
 
                                     <option>
                                         Pending

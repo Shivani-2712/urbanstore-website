@@ -404,20 +404,7 @@ function OrderHistory() {
                                                 onClick={() =>
                                                     cancelOrder(order._id)
                                                 }
-                                                className="
-        border
-        border-red-300
-        text-red-600
-        px-6
-        py-3
-        uppercase
-        tracking-[2px]
-        text-sm
-        hover:bg-red-600
-        hover:text-white
-        transition
-        "
-                                            >
+                                                className="border border-red-300 text-red-600 px-6 py-3 uppercase tracking-[2px] text-sm hover:bg-red-600 hover:text-white transition">
                                                 Cancel Order
                                             </button>
 
@@ -427,19 +414,13 @@ function OrderHistory() {
                                         onClick={() =>
                                             handleBuyAgain(order)
                                         }
-                                        className={`
-        px-8
-        py-4
-        uppercase
-        tracking-[2px]
-        text-sm
-        transition
-        ${order.status === "Cancelled"
+                                        className={`px-8 py-4 uppercase tracking-[2px] text-sm transition
+                                        ${order.status === "Cancelled"
                                                 ? "bg-black text-white"
                                                 : "border border-[#D9CFC2] hover:bg-black hover:text-white"
                                             }
-    `}
-                                    >
+                                        `}>
+                                            
                                         {
                                             loadingOrder === order._id
                                                 ? "Adding..."

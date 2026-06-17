@@ -307,41 +307,25 @@ function ProductDetails() {
             }
         }
 
-        const handleBuyNow = () => {
+    const handleBuyNow = () => {
 
-    if (!selectedSize) {
-        alert("Please select a size")
-        return
+        if (!selectedSize) {
+            alert("Please select a size")
+            return
+        }
+
+        addToCart({
+            ...product,
+            size: selectedSize,
+        })
+
+        setTimeout(() => {
+            navigate("/checkout")
+        }, 300)
     }
-
-    addToCart({
-        ...product,
-        size: selectedSize,
-    })
-
-    setTimeout(() => {
-        navigate("/checkout")
-    }, 300)
-}
     return (
-        <div
-            className="
-    min-h-screen
-    px-10
-    py-12
-    bg-[#F8F4EE]
-    "
-        >
-            <div
-                className="
-    max-w-7xl
-    mx-auto
-    grid
-    md:grid-cols-2
-    gap-12
-    items-start
-    "
-            >
+        <div className="min-h-screen px-10 py-12 bg-[#F8F4EE]">
+            <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-start">
 
                 {/* Product Image */}
 
@@ -349,39 +333,18 @@ function ProductDetails() {
                     <img
                         src={product.image}
                         alt={product.name}
-                        className="
-            w-full
-            h-[500px]
-            object-cover
-            border
-            border-[#E8DCCB]
-            "
-                    />
+                        className="w-full h-[500px] object-cover border border-[#E8DCCB]" />
                 </div>
 
                 {/* Product Details */}
 
                 <div>
 
-                    <p
-                        className="
-            uppercase
-            tracking-[4px]
-            text-gray-400
-            mb-4
-            "
-                    >
+                    <p className="uppercase tracking-[4px] text-gray-400 mb-4">
                         UrbanStore Collection
                     </p>
 
-                    <h1
-                        className="
-            text-3xl
-            font-serif
-            leading-tight
-            mb-6
-            "
-                    >
+                    <h1 className="text-3xl font-serif leading-tight mb-6">
                         {product.name}
                     </h1>
 
@@ -405,24 +368,11 @@ function ProductDetails() {
                         </p>
                     )}
 
-                    <p
-                        className="
-            text-3xl
-            font-semibold
-            mb-8
-            "
-                    >
+                    <p className="text-3xl font-semibold mb-8">
                         ₹ {product.price}
                     </p>
 
-                    <p
-                        className="
-            text-gray-600
-            text-lg
-            leading-8
-            mb-10
-            "
-                    >
+                    <p className="text-gray-600 text-lg leading-8 mb-10">
                         {product.description}
                     </p>
 
@@ -436,35 +386,30 @@ function ProductDetails() {
 
                         <div className="flex gap-3">
 
-    {["S", "M", "L", "XL"].map((size) => (
-        <button
-            key={size}
-            onClick={() =>
-                setSelectedSize(size)
-            }
-            className={`
-                px-5
-                py-3
-                border
-                transition
-                ${
-                    selectedSize === size
-                        ? "bg-black text-white border-black shadow-lg"
-                        : "border-gray-300 hover:bg-black hover:text-white"
-                }
+                            {["S", "M", "L", "XL"].map((size) => (
+                                <button
+                                    key={size}
+                                    onClick={() =>
+                                        setSelectedSize(size)
+                                    }
+                                    className={`px-5 py-3 border transition
+                ${selectedSize === size
+                                            ? "bg-black text-white border-black shadow-lg"
+                                            : "border-gray-300 hover:bg-black hover:text-white"
+                                        }
             `}
-        >
-            {size}
-        </button>
-    ))}
+                                >
+                                    {size}
+                                </button>
+                            ))}
 
-</div>
+                        </div>
 
-{selectedSize && (
-    <p className="mt-3 text-gray-600">
-        Selected Size: {selectedSize}
-    </p>
-)}
+                        {selectedSize && (
+                            <p className="mt-3 text-gray-600">
+                                Selected Size: {selectedSize}
+                            </p>
+                        )}
 
                     </div>
 
@@ -474,44 +419,25 @@ function ProductDetails() {
 
                         <button
                             onClick={() => {
-    if (!selectedSize) {
-        alert("Please select a size")
-        return
-    }
+                                if (!selectedSize) {
+                                    alert("Please select a size")
+                                    return
+                                }
 
-    addToCart({
-        ...product,
-        size: selectedSize,
-    })
-}}
-                            className="
-                w-full
-                bg-black
-                text-white
-                py-4
-                uppercase
-                tracking-[3px]
-                "
-                        >
+                                addToCart({
+                                    ...product,
+                                    size: selectedSize,
+                                })
+                            }}
+                            className="w-full bg-black text-white py-4 uppercase tracking-[3px]">
                             Add To Cart
                         </button>
 
                         <button
-    onClick={handleBuyNow}
-    className="
-    w-full
-    border
-    border-black
-    py-4
-    uppercase
-    tracking-[3px]
-    hover:bg-black
-    hover:text-white
-    transition
-    "
->
-    Buy Now
-</button>
+                            onClick={handleBuyNow}
+                            className="w-full border border-black py-4 uppercase tracking-[3px] hover:bg-black hover:text-white transition">
+                            Buy Now
+                        </button>
 
                     </div>
 
@@ -628,15 +554,7 @@ function ProductDetails() {
                     (review) => (
                         <div
                             key={review._id}
-                            className="
-bg-white
-p-5
-rounded-xl
-border
-border-[#E8DCCB]
-mb-4
-"
-                        >
+                            className="bg-white p-5 rounded-xl border border-[#E8DCCB] mb-4">
                             <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-2">
                                     <h3 className="font-semibold text-lg">
@@ -670,14 +588,8 @@ mb-4
                     )
                 )}
             </div>
-            <div
-className="
-mt-16
-pt-12
-border-t
-border-[#E8DCCB]
-"
->
+
+            <div className="mt-16 pt-12 border-t border-[#E8DCCB]">
 
                 {relatedProducts.length > 0 && (
                     <>
@@ -700,14 +612,7 @@ border-[#E8DCCB]
 
                 {recentlyViewed.length >
                     0 && (
-                        <div
-className="
-mt-16
-pt-12
-border-t
-border-[#E8DCCB]
-"
->
+                        <div className="mt-16 pt-12 border-t border-[#E8DCCB]">
 
                             <h2 className="text-2xl font-serif mb-8">
                                 Recently Viewed

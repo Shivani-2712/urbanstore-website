@@ -68,23 +68,12 @@ function Products() {
   <div className="max-w-7xl mx-auto px-8">
       <div className="text-center mb-10 mt-6">
 <div className="w-40 h-px bg-[#D9CFC2] mx-auto mb-8"></div>
-    <p
-        className="
-        uppercase
-        tracking-[4px]
-        text-gray-400
-        mb-4
-        "
-    >
+
+    <p className="uppercase tracking-[4px] text-gray-400 mb-4">
         Featured Collection
     </p>
 
-    <h2 className="
-text-6xl
-font-serif
-font-medium
-tracking-tight
-">
+    <h2 className="text-6xl font-serif font-medium tracking-tight">
         New Arrivals
     </h2>
 
@@ -97,17 +86,7 @@ tracking-tight
           onChange={(e) =>
             setSearch(e.target.value)
           }
-          className="
-w-full
-max-w-xl
-border
-border-[#D9CFC2]
-bg-white
-p-5
-text-lg
-outline-none
-"
-        />
+          className="w-full max-w-xl border border-[#D9CFC2] bg-white p-5 text-lg outline-none"/>
       </div>
 
       <div className="flex justify-center gap-3 mb-6 flex-wrap">
@@ -225,13 +204,7 @@ outline-none
           onChange={(e) =>
             setSortOption(e.target.value)
           }
-          className="
-border
-border-[#D9CFC2]
-bg-white
-p-3
-"
-        >
+          className="border border-[#D9CFC2] bg-white p-3">
           <option value="default">
             Sort By
           </option>
@@ -255,16 +228,7 @@ p-3
 )}
       
 
-      <div className="
-max-w-7xl
-mx-auto
-grid
-grid-cols-1
-sm:grid-cols-2
-lg:grid-cols-4
-gap-6
-px-8
-">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-8 ">
         {sortedProducts.map((product) => (
           <ProductCard
             key={product._id}

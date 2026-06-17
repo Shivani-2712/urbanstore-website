@@ -206,33 +206,14 @@ function Checkout() {
     }
 
     return (
-        <div
-            className="
-    min-h-screen
-    px-10
-    py-16
-    bg-[#F8F4EE]
-    "
-        >
+        <div className="min-h-screen px-10 py-16 bg-[#F8F4EE]">
             <div className="text-center mb-12">
 
-                <p
-                    className="
-        uppercase
-        tracking-[4px]
-        text-gray-400
-        mb-3
-        "
-                >
+                <p className="uppercase tracking-[4px] text-gray-400 mb-3">
                     Secure Payment
                 </p>
 
-                <h1
-                    className="
-        text-5xl
-        font-serif
-        "
-                >
+                <h1 className="text-5xl font-serif">
                     Checkout
                 </h1>
 
@@ -244,15 +225,8 @@ function Checkout() {
 
                 <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8">
 
-                    <div
+                    <div className="bg-white border border-[#E8DCCB] p-8">
 
-                        className="
-    bg-white
-    border
-    border-[#E8DCCB]
-    p-8
-    "
-                    >
                         <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-6">
                             Customer Details
                         </p>
@@ -266,15 +240,7 @@ function Checkout() {
                                     formData.customerName
                                 }
                                 onChange={handleChange}
-                                className="
-w-full
-border
-border-[#D9CFC2]
-p-4
-mb-4
-bg-[#F8F4EE]
-"
-                            />
+                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-[#F8F4EE]"/>
 
                             <input
                                 type="email"
@@ -283,15 +249,7 @@ bg-[#F8F4EE]
                                 placeholder="Email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="
-w-full
-border
-border-[#D9CFC2]
-p-4
-mb-4
-bg-[#F8F4EE]
-"
-                            />
+                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-[#F8F4EE]"/>
 
                             <input
                                 type="text"
@@ -299,30 +257,15 @@ bg-[#F8F4EE]
                                 placeholder="Phone"
                                 value={formData.phone}
                                 onChange={handleChange}
-                                className="
-w-full
-border
-border-[#D9CFC2]
-p-4
-mb-4
-bg-white
-"
-                            />
+                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-white"/>
 
                             <textarea
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
                                 rows={3}
-                                className="
-    md:col-span-2
-    w-full
-    border
-    border-[#D9CFC2]
-    p-4
-    bg-white
-    "
-                            />
+                                className="md:col-span-2 w-full border border-[#D9CFC2] p-4 bg-white"/>
+
                             <div className="md:col-span-2 mt-2">
                                 <div className="mb-6">
 
@@ -355,14 +298,7 @@ bg-white
                         </form>
                     </div>
                     <div
-                        className="
-    bg-white
-    border
-    border-[#E8DCCB]
-    p-8
-    h-fit
-    "
-                    >
+                        className="bg-white border border-[#E8DCCB] p-8 h-fit">
                         <p className="uppercase tracking-[4px] text-gray-400 text-sm mb-4">
                             Order Summary
                         </p>
@@ -400,23 +336,11 @@ bg-white
 
                                 <div className="flex justify-between items-center">
 
-                                    <span
-                                        className="
-            uppercase
-            tracking-[4px]
-            text-gray-400
-            text-sm
-            "
-                                    >
+                                    <span className="uppercase tracking-[4px] text-gray-400 text-sm">
                                         Total
                                     </span>
 
-                                    <span
-                                        className="
-            text-4xl
-            font-serif
-            "
-                                    >
+                                    <span className="text-4xl font-serif">
                                         ₹{finalAmount.toFixed(0)}
                                     </span>
 
@@ -427,18 +351,7 @@ bg-white
                                 type="button"
 
                                 onClick={handlePayment}
-                                className="
-w-full
-mt-8
-bg-black
-text-white
-py-5
-uppercase
-tracking-[4px]
-hover:opacity-90
-transition
-"
-                            >
+                                className="w-full mt-8 bg-black text-white py-5 uppercase tracking-[4px] hover:opacity-90 transition">
                                 Pay Now
                             </button>
                             <p className="text-center text-xs text-gray-400 mt-5">

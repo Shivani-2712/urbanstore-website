@@ -31,44 +31,98 @@ function AdminLogin() {
         }
     }
 
-    return (
-        <div className="min-h-screen flex justify-center items-center">
-            <form
-                onSubmit={handleLogin}
-                className="bg-white shadow-lg p-8 rounded-xl w-[400px]"
-            >
-                <h1 className="text-3xl font-bold mb-6">
-                    Admin Login
+   return (
+    <div className="min-h-screen bg-[#F8F4EE] flex items-center justify-center px-6">
+
+        <form
+            onSubmit={handleLogin}
+            className="
+            bg-white
+            border
+            border-[#E8DCCB]
+            p-10
+            w-full
+            max-w-[500px]
+            "
+        >
+
+            <div className="text-center mb-8">
+
+                <p className="uppercase tracking-[4px] text-gray-400 mb-3">
+                    UrbanStore Admin
+                </p>
+
+                <h1 className="text-5xl font-serif">
+                    Sign In
                 </h1>
 
-                <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full border p-3 mb-4 rounded"
-                    value={email}
-                    onChange={(e) =>
-                        setEmail(e.target.value)
-                    }
-                />
+                <p className="text-gray-500 mt-3">
+                    Access the admin dashboard
+                </p>
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full border p-3 mb-4 rounded"
-                    value={password}
-                    onChange={(e) =>
-                        setPassword(e.target.value)
-                    }
-                />
+                <div className="w-24 h-px bg-[#D9CFC2] mx-auto mt-8"></div>
 
-                <button
-                    className="w-full bg-black text-white py-3 rounded"
-                >
-                    Login
-                </button>
-            </form>
-        </div>
-    )
+            </div>
+
+            <input
+                type="email"
+                placeholder="Enter admin email"
+                value={email}
+                onChange={(e) =>
+                    setEmail(e.target.value)
+                }
+                className="
+                w-full
+                border
+                border-[#D9CFC2]
+                p-4
+                mb-4
+                bg-white
+                outline-none
+                focus:border-black
+                transition
+                "
+            />
+
+            <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) =>
+                    setPassword(e.target.value)
+                }
+                className="
+                w-full
+                border
+                border-[#D9CFC2]
+                p-4
+                mb-6
+                bg-white
+                outline-none
+                focus:border-black
+                transition
+                "
+            />
+
+            <button
+                className="
+                bg-black
+                text-white
+                w-full
+                py-4
+                uppercase
+                tracking-[4px]
+                hover:opacity-90
+                transition
+                "
+            >
+                Login
+            </button>
+
+        </form>
+
+    </div>
+)
 }
 
 export default AdminLogin

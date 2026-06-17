@@ -105,35 +105,10 @@ function MyAccount() {
 
             </div>
 
-            <div
-                className="
-bg-white
-border
-border-[#E8DCCB]
-max-w-3xl
-mx-auto
-p-8
-shadow-sm
-"
-            >
+            <div className="bg-white border border-[#E8DCCB] max-w-3xl mx-auto p-8 shadow-sm">
                 <div className="flex items-center gap-6 mb-8">
 
-                    <div
-                        className="
-        w-18
-        h-18
-        rounded-full
-        bg-[#F8F4EE]
-text-black
-border
-border-[#E8DCCB]
-        flex
-        items-center
-        justify-center
-        text-3xl
-        font-serif
-        "
-                    >
+                    <div className="w-18 h-18 rounded-full bg-[#F8F4EE] text-black border border-[#E8DCCB] flex items-center justify-center text-3xl font-serif">
                         {user?.name?.charAt(0).toUpperCase()}
                     </div>
 
@@ -178,18 +153,7 @@ border-[#E8DCCB]
 
                         <div
                             onClick={() => navigate("/my-orders")}
-                            className="
-    border
-    border-[#E8DCCB]
-    p-3
-    text-center
-    hover:shadow-md
-    hover:-translate-y-1
-    transition
-    duration-300
-    cursor-pointer
-    "
-                        >
+                            className="border border-[#E8DCCB] p-3 text-center hover:shadow-md hover:-translate-y-1 transition duration-300 cursor-pointer">
                             <p className="text-gray-400 text-xs uppercase tracking-[3px] ">
                                 Orders
                             </p>
@@ -201,21 +165,9 @@ border-[#E8DCCB]
 
                         <div
                             onClick={() => navigate("/wishlist")}
-                            className="
-    border
-    border-[#E8DCCB]
-    p-3
-    text-center
-    hover:shadow-md
-    hover:-translate-y-1
-    transition
-    duration-300
-    cursor-pointer
-    "
-                        >
-                            <p className="text-gray-400 text-xs uppercase tracking-[3px] hover:shadow-md
-transition
-duration-300">
+                            className="border border-[#E8DCCB] p-3 text-center hover:shadow-md hover:-translate-y-1 transition duration-300 cursor-pointer">
+
+                            <p className="text-gray-400 text-xs uppercase tracking-[3px] hover:shadow-md transition duration-300">
                                 Wishlist
                             </p>
 
@@ -226,9 +178,7 @@ duration-300">
 
                         <div className="border border-[#E8DCCB] p-3 text-center hover:shadow-md transition">
 
-                            <p className="text-gray-400 text-xs uppercase tracking-[3px] hover:-translate-y-1
-duration-300
-cursor-pointer">
+                            <p className="text-gray-400 text-xs uppercase tracking-[3px] hover:-translate-y-1 duration-300 cursor-pointer">
                                 Member Since
                             </p>
 
@@ -256,17 +206,7 @@ cursor-pointer">
                             placeholder="+91 98765 43210"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            className="
-w-full
-border
-border-[#D9CFC2]
-p-3
-text-sm
-outline-none
-focus:border-black
-transition
-"
-                        />
+                            className="w-full border border-[#D9CFC2] p-3 text-sm outline-none focus:border-black transition"/>
 
                     </div>
 
@@ -280,18 +220,7 @@ transition
                             placeholder="Enter your shipping address"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            className="
-            w-full
-            border
-            border-[#D9CFC2]
-            p-4
-            h-[90px]
-            resize-none
-            outline-none
-            focus:border-black
-            transition
-            "
-                        />
+                            className="w-full border border-[#D9CFC2] p-4 h-[90px] resize-none outline-none focus:border-black transition"/>
 
                     </div>
 
@@ -302,20 +231,7 @@ transition
                     <button
                         onClick={saveProfile}
                         disabled={loading}
-                        className="
-bg-black
-text-white
-py-4
-uppercase
-tracking-[3px]
-h-[52px]
-hover:bg-[#222]
-transition
-duration-300
-disabled:opacity-50
-disabled:cursor-not-allowed
-"
-                    >
+                        className="bg-black text-white py-4 uppercase tracking-[3px] h-[52px] hover:bg-[#222] transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         <>
                             <FaUserEdit className="inline mr-2" />
                             {loading ? "Saving..." : "Save Profile"}
@@ -324,20 +240,7 @@ disabled:cursor-not-allowed
 
                     <button
                         onClick={() => navigate("/my-orders")}
-                        className="
-border
-border-[#D9CFC2]
-py-4
-h-[52px]
-uppercase
-tracking-[3px]
-hover:bg-black
-hover:text-white
-hover:border-black
-transition
-duration-300
-"
-                    >
+                        className="border border-[#D9CFC2] py-4 h-[52px] uppercase tracking-[3px] hover:bg-black hover:text-white hover:border-black transition duration-300">
                         <>
                             <FaBoxOpen className="inline mr-2" />
                             View Orders

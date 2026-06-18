@@ -59,7 +59,7 @@ function AdminDashboard() {
 
             {/* Stats Cards */}
 
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
 
                 <div className="bg-white border border-[#E8DCCB] p-8 hover:shadow-lg transition duration-300">
                     <h2 className="uppercase tracking-[3px] text-xs text-gray-400">
@@ -77,7 +77,7 @@ function AdminDashboard() {
                     </h2>
 
                     <p className="text-5xl font-serif mt-4">
-                        ₹{stats.totalRevenue}
+                        ₹{stats.totalRevenue.toLocaleString()}
                     </p>
                 </div>
 
@@ -101,6 +101,26 @@ function AdminDashboard() {
                     </p>
                 </div>
 
+                <div className="bg-white border border-[#E8DCCB] p-8 hover:shadow-lg transition duration-300">
+                    <h2 className="uppercase tracking-[3px] text-xs text-gray-400">
+                        Low Stock
+                    </h2>
+
+                    <p className="text-5xl font-serif mt-4 text-orange-500">
+                        {stats.lowStockProducts}
+                    </p>
+                </div>
+
+                <div className="bg-white border border-[#E8DCCB] p-8 hover:shadow-lg transition duration-300">
+                    <h2 className="uppercase tracking-[3px] text-xs text-gray-400">
+                        Out Of Stock
+                    </h2>
+
+                    <p className="text-5xl font-serif mt-4 text-red-500">
+                        {stats.outOfStockProducts}
+                    </p>
+                </div>
+
             </div>
 
             {/* Action Buttons */}
@@ -116,6 +136,50 @@ function AdminDashboard() {
                     className="border border-[#D9CFC2] px-6 py-3 uppercase tracking-[2px] hover:bg-black hover:text-white transition">
                     Manage Products
                 </a>
+
+            </div>
+
+            <div className="mt-16">
+
+                <h2 className="text-4xl font-serif mb-8">
+                    Store Health
+                </h2>
+
+                <div className="grid md:grid-cols-3 gap-6">
+
+                    <div className="bg-white border border-[#E8DCCB] p-6">
+                        <p className="uppercase tracking-[3px] text-xs text-gray-400 mb-3">
+                            Inventory Status
+                        </p>
+
+                        <p className="text-lg">
+                            {stats.outOfStockProducts === 0
+                                ? "✅ All Products Available"
+                                : `⚠️ ${stats.outOfStockProducts} Product(s) Out Of Stock`}
+                        </p>
+                    </div>
+
+                    <div className="bg-white border border-[#E8DCCB] p-6">
+                        <p className="uppercase tracking-[3px] text-xs text-gray-400 mb-3">
+                            Low Stock Alert
+                        </p>
+
+                        <p className="text-lg">
+                            {stats.lowStockProducts} Product(s) Need Restocking
+                        </p>
+                    </div>
+
+                    <div className="bg-white border border-[#E8DCCB] p-6">
+                        <p className="uppercase tracking-[3px] text-xs text-gray-400 mb-3">
+                            Revenue Status
+                        </p>
+
+                        <p className="text-lg">
+                            ₹{stats.totalRevenue.toLocaleString()}
+                        </p>
+                    </div>
+
+                </div>
 
             </div>
 
@@ -139,7 +203,7 @@ function AdminDashboard() {
 
                         <div key={order._id}
                             className="grid grid-cols-3 items-center p-6 border-b border-[#E8DCCB]">
-                        <div>
+                            <div>
 
                                 <p className="font-medium">
                                     {order.customerName}
@@ -159,10 +223,10 @@ function AdminDashboard() {
 
                                 <span className={`px-4 py-2 text-sm border
                                     ${order.status === "Paid"
-                                    ? "bg-green-50 text-green-700 border-green-200"
-                                    : order.status === "Cancelled"
-                                    ? "bg-red-50 text-red-600 border-red-200"
-                                    : "bg-blue-50 text-blue-600 border-blue-200"
+                                        ? "bg-green-50 text-green-700 border-green-200"
+                                        : order.status === "Cancelled"
+                                            ? "bg-red-50 text-red-600 border-red-200"
+                                            : "bg-blue-50 text-blue-600 border-blue-200"
                                     }`}>
                                     {order.status}
                                 </span>

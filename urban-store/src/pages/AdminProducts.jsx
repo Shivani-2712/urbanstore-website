@@ -83,6 +83,7 @@ function Admin() {
         image: "",
         description: "",
         category: "",
+        stock: "",
     })
 
     const handleChange = (e) => {
@@ -129,6 +130,8 @@ function Admin() {
                 name: "",
                 price: "",
                 description: "",
+                category: "",
+                stock: "",
             })
 
             setImageFile(null)
@@ -213,6 +216,15 @@ function Admin() {
                     />
 
                     <input
+                        type="number"
+                        name="stock"
+                        placeholder="Stock Quantity"
+                        value={formData.stock}
+                        onChange={handleChange}
+                        className="w-full border border-[#D9CFC2] p-4 bg-white outline-none focus:border-black transition"
+                    />
+
+                    <input
                         type="file"
                         accept="image/*"
                         onChange={(e) => {
@@ -232,7 +244,7 @@ function Admin() {
                             }
 
                         }}
-                        className="w-full border border-[#D9CFC2] p-4 bg-white"/>
+                        className="w-full border border-[#D9CFC2] p-4 bg-white" />
 
                     {
                         (imagePreview || editingProduct?.image) && (
@@ -244,7 +256,7 @@ function Admin() {
                                         : editingProduct.image
                                 }
                                 alt="Preview"
-                                className="w-32 h-32 object-cover border border-[#D9CFC2]"/>
+                                className="w-32 h-32 object-cover border border-[#D9CFC2]" />
 
                         )
                     }
@@ -392,6 +404,15 @@ function Admin() {
                                         ₹{product.price}
                                     </p>
 
+                                    <p
+                                        className={`text-sm mt-1 ${product.stock > 0
+                                                ? "text-green-600"
+                                                : "text-red-600"
+                                            }`}
+                                    >
+                                        Stock: {product.stock}
+                                    </p>
+
                                 </div>
 
                             </div>
@@ -408,6 +429,7 @@ function Admin() {
                                             image: product.image,
                                             description: product.description,
                                             category: product.category,
+                                            stock: product.stock,
                                         })
                                     }}
                                     className="bg-black text-white px-5 py-2 uppercase tracking-[2px] text-xs"

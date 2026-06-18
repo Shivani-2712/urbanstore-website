@@ -180,31 +180,37 @@ app.post("/admin-login", async (req, res) => {
 app.post("/orders", async (req, res) => {
   try {
     const order = new Order({
-      customerName:
-        req.body.customerName,
-
+      customerName: req.body.customerName,
       email: req.body.email,
-
       phone: req.body.phone,
-
       address: req.body.address,
-
       userId: req.body.userId,
-
       items: req.body.items,
-
-      totalAmount:
-        req.body.totalAmount,
-
+      totalAmount: req.body.totalAmount,
       status: "Paid",
     })
 
-    const savedOrder =
-      await order.save()
+    const savedOrder = await order.save()
 
-    res.status(201).json(
-      savedOrder
-    )
+    // UPDATE PRODUCT STOCK
+    for (const item of req.body.items) {
+      const product = await Product.findById(item._id)
+
+      if (!product) continue
+
+      if (product.stock < (item.quantity || 1)) {
+        return res.status(400).json({
+          message: `${product.name} is out of stock`,
+        })
+      }
+
+      product.stock =
+        product.stock - (item.quantity || 1)
+
+      await product.save()
+    }
+
+    res.status(201).json(savedOrder)
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -333,14 +339,28 @@ app.get(
           })
           .limit(5)
 
+      const lowStockProducts =
+        await Product.countDocuments({
+          stock: {
+            $gt: 0,
+            $lte: 5,
+          },
+        })
+
+      const outOfStockProducts =
+        await Product.countDocuments({
+          stock: 0,
+        })
+
       res.json({
         totalOrders,
         totalProducts,
         totalUsers,
         totalRevenue,
         recentOrders,
+        lowStockProducts,
+        outOfStockProducts,
       })
-
     } catch (error) {
 
       res.status(500).json({
@@ -1133,6 +1153,7 @@ app.post("/products", async (req, res) => {
       image: req.body.image,
       description: req.body.description,
       category: req.body.category,
+      stock: req.body.stock,
     })
 
     const savedProduct = await product.save()
@@ -1156,6 +1177,7 @@ app.put("/products/:id", async (req, res) => {
           image: req.body.image,
           description: req.body.description,
           category: req.body.category,
+          stock: req.body.stock,
         },
         { new: true }
       )

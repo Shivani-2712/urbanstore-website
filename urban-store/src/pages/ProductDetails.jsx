@@ -368,9 +368,21 @@ function ProductDetails() {
                         </p>
                     )}
 
-                    <p className="text-3xl font-semibold mb-8">
+                    <p className="text-3xl font-semibold mb-4">
                         ₹ {product.price}
                     </p>
+
+                    {
+                        product.stock > 0 ? (
+                            <p className="text-green-600 font-medium mb-6">
+                                In Stock ({product.stock} available)
+                            </p>
+                        ) : (
+                            <p className="text-red-600 font-medium mb-6">
+                                Out Of Stock
+                            </p>
+                        )
+                    }
 
                     <p className="text-gray-600 text-lg leading-8 mb-10">
                         {product.description}
@@ -418,6 +430,7 @@ function ProductDetails() {
                     <div className="space-y-4">
 
                         <button
+                            disabled={product.stock <= 0}
                             onClick={() => {
                                 if (!selectedSize) {
                                     alert("Please select a size")
@@ -429,13 +442,26 @@ function ProductDetails() {
                                     size: selectedSize,
                                 })
                             }}
-                            className="w-full bg-black text-white py-4 uppercase tracking-[3px]">
-                            Add To Cart
+                            className="
+    w-full
+    bg-black
+    text-white
+    py-4
+    uppercase
+    tracking-[3px]
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+    "
+                        >
+                            {product.stock > 0
+                                ? "Add To Cart"
+                                : "Out Of Stock"}
                         </button>
 
                         <button
+                            disabled={product.stock <= 0}
                             onClick={handleBuyNow}
-                            className="w-full border border-black py-4 uppercase tracking-[3px] hover:bg-black hover:text-white transition">
+                            className="w-full border border-black py-4 uppercase tracking-[3px] hover:bg-black hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed">
                             Buy Now
                         </button>
 

@@ -1,3 +1,13 @@
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    Tooltip,
+    ResponsiveContainer,
+    CartesianGrid,
+} from "recharts"
+
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -240,6 +250,50 @@ function AdminDashboard() {
                         </div>
 
                     ))}
+
+                </div>
+
+            </div>
+
+            <div className="mt-16">
+
+                <h2 className="text-4xl font-serif mb-8">
+                    Revenue Analytics
+                </h2>
+
+                <div className="bg-white border border-[#E8DCCB] p-8">
+
+                    <ResponsiveContainer
+                        width="100%"
+                        height={350}
+                    >
+                        <BarChart
+                            data={stats.revenueChartData}
+                            margin={{
+                                top: 20,
+                                right: 30,
+                                left: 20,
+                                bottom: 20,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+
+                            <XAxis
+                                dataKey="month"
+                                interval={0}
+                            />
+
+                            <YAxis />
+
+                            <Tooltip />
+
+                            <Bar
+                                dataKey="revenue"
+                                fill="#d4a05f"
+                                barSize={120}
+                            />
+                        </BarChart>
+                    </ResponsiveContainer>
 
                 </div>
 

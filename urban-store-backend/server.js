@@ -374,6 +374,30 @@ app.get(
           stock: 0,
         })
 
+      const monthlyRevenue = {}
+
+      orders.forEach((order) => {
+        const month = new Date(order.createdAt)
+          .toLocaleString("default", {
+            month: "short",
+          })
+
+        if (!monthlyRevenue[month]) {
+          monthlyRevenue[month] = 0
+        }
+
+        monthlyRevenue[month] += order.totalAmount
+      })
+
+      const revenueChartData =
+        Object.keys(monthlyRevenue).map(
+          (month) => ({
+            month,
+            revenue:
+              monthlyRevenue[month],
+          })
+        )
+
       res.json({
         totalOrders,
         totalProducts,
@@ -383,6 +407,7 @@ app.get(
         lowStockProducts,
         outOfStockProducts,
         topSellingProducts,
+        revenueChartData,
       })
     } catch (error) {
 

@@ -183,6 +183,68 @@ function AdminDashboard() {
 
             </div>
 
+            <div className="mt-16">
+
+                <h2 className="text-4xl font-serif mb-8">
+                    Top Selling Products
+                </h2>
+
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 p-6 mb-6">
+
+                    <p className="uppercase tracking-[3px] text-xs text-gray-500 mb-2">
+                        Best Seller
+                    </p>
+
+                    <h3 className="text-3xl font-serif">
+                        🏆 {stats.topSellingProducts?.[0]?.name}
+                    </h3>
+
+                    <p className="text-green-600 mt-2">
+                        {stats.topSellingProducts?.[0]?.sold} Units Sold
+                    </p>
+
+                </div>
+
+                <div className="bg-white border border-[#E8DCCB]">
+
+                    <div className="grid grid-cols-2 p-6 bg-[#f4b66d] border-b border-[#E8DCCB] uppercase tracking-[2px] text-xs">
+                        <div>Product</div>
+                        <div>Units Sold</div>
+                    </div>
+
+                    {stats.topSellingProducts?.map((product, index) => (
+
+                        <div
+                            key={index}
+                            className="grid grid-cols-2 p-6 border-b border-[#E8DCCB]"
+                        >
+
+                            <div className="font-medium">
+                                {
+                                    index === 0
+                                        ? "🥇"
+                                        : index === 1
+                                            ? "🥈"
+                                            : index === 2
+                                                ? "🥉"
+                                                : `#${index + 1}`
+                                } {product.name}
+                            </div>
+
+                            <div>
+                                <span className="font-semibold text-green-600">
+                                    {product.sold} Sold
+                                </span>
+                            </div>
+
+                        </div>
+
+                    ))}
+
+                </div>
+
+            </div>
+
             {/* Recent Orders */}
 
             <div className="mt-16">

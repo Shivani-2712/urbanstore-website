@@ -324,6 +324,28 @@ app.get(
       const orders =
         await Order.find()
 
+      const salesMap = {}
+
+      orders.forEach((order) => {
+        order.items.forEach((item) => {
+          if (!salesMap[item.name]) {
+            salesMap[item.name] = 0
+          }
+
+          salesMap[item.name] +=
+            item.quantity || 1
+        })
+      })
+
+      const topSellingProducts =
+        Object.entries(salesMap)
+          .map(([name, sold]) => ({
+            name,
+            sold,
+          }))
+          .sort((a, b) => b.sold - a.sold)
+          .slice(0, 5)
+
       const totalRevenue =
         orders.reduce(
           (sum, order) =>
@@ -360,6 +382,7 @@ app.get(
         recentOrders,
         lowStockProducts,
         outOfStockProducts,
+        topSellingProducts,
       })
     } catch (error) {
 

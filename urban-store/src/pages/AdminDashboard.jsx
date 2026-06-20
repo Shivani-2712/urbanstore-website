@@ -147,6 +147,13 @@ function AdminDashboard() {
                     Manage Products
                 </a>
 
+                <a
+                    href="/admin/coupons"
+                    className="border border-[#D9CFC2] px-6 py-3 uppercase tracking-[2px] hover:bg-black hover:text-white transition"
+                >
+                    Manage Coupons
+                </a>
+
             </div>
 
             <div className="mt-16">

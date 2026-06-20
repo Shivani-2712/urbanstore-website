@@ -19,6 +19,8 @@ const Wishlist = require("./models/Wishlist")
 const Cart = require("./models/Cart")
 const Razorpay = require("razorpay")
 
+const Coupon = require("./models/Coupon")
+
 console.log(
   "Cloud Name:",
   process.env.CLOUDINARY_CLOUD_NAME
@@ -191,6 +193,24 @@ app.post("/orders", async (req, res) => {
     })
 
     const savedOrder = await order.save()
+
+    if (req.body.couponCode) {
+
+      const coupon =
+        await Coupon.findOne({
+          code:
+            req.body.couponCode.toUpperCase(),
+        })
+
+      if (coupon) {
+
+        coupon.usedCount += 1
+
+        await coupon.save()
+
+      }
+
+    }
 
     // UPDATE PRODUCT STOCK
     for (const item of req.body.items) {
@@ -420,6 +440,134 @@ app.get(
   }
 )
 
+app.post("/coupons", async (req, res) => {
+  try {
+    const coupon = new Coupon({
+      code: req.body.code.toUpperCase(),
+      discount: req.body.discount,
+      minimumOrder: req.body.minimumOrder,
+      usageLimit: req.body.usageLimit,
+      expiryDate: req.body.expiryDate,
+    })
+
+    await coupon.save()
+
+    res.json(coupon)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+})
+
+app.get("/coupons", async (req, res) => {
+  try {
+
+    const coupons =
+      await Coupon.find().sort({
+        createdAt: -1,
+      })
+
+    res.json(coupons)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+})
+
+app.post("/validate-coupon", async (req, res) => {
+
+  try {
+
+    const coupon =
+      await Coupon.findOne({
+        code: req.body.code.toUpperCase(),
+      })
+
+    if (!coupon) {
+      return res.status(404).json({
+        message: "Coupon not found",
+      })
+    }
+
+    if (!coupon.active) {
+      return res.status(400).json({
+        message: "Coupon inactive",
+      })
+    }
+
+    if (
+      new Date(coupon.expiryDate) <
+      new Date()
+    ) {
+      return res.status(400).json({
+        message: "Coupon expired",
+      })
+    }
+
+    if (
+      coupon.usedCount >=
+      coupon.usageLimit
+    ) {
+      return res.status(400).json({
+        message:
+          "Coupon usage limit reached",
+      })
+    }
+
+    if (
+      req.body.totalAmount <
+      coupon.minimumOrder
+    ) {
+      return res.status(400).json({
+        message: `Minimum order ₹${coupon.minimumOrder} required`,
+      })
+    }
+
+    res.json(coupon)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.put("/coupons/:id", async (req, res) => {
+  try {
+
+    const coupon =
+      await Coupon.findByIdAndUpdate(
+        req.params.id,
+        {
+          active: req.body.active,
+        },
+        {
+          new: true,
+        }
+      )
+
+    res.json(coupon)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+})
+
 app.get(
   "/my-orders/:userId",
   async (req, res) => {
@@ -460,6 +608,53 @@ app.put("/orders/:id", async (req, res) => {
     res.status(500).json({
       message: error.message,
     })
+  }
+})
+
+app.put("/cancel-order/:id", async (req, res) => {
+  try {
+
+    const order = await Order.findById(req.params.id)
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      })
+    }
+
+    if (order.status === "Cancelled") {
+      return res.status(400).json({
+        message: "Order already cancelled",
+      })
+    }
+
+    // Restore Stock
+    for (const item of order.items) {
+
+      const product = await Product.findOne({
+        name: item.name,
+      })
+
+      if (product) {
+        product.stock += item.quantity
+        await product.save()
+      }
+    }
+
+    order.status = "Cancelled"
+
+    await order.save()
+
+    res.json({
+      message: "Order cancelled successfully",
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
   }
 })
 

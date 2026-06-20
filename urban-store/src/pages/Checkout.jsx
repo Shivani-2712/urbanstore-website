@@ -70,38 +70,41 @@ function Checkout() {
         })
     }
 
-    const applyCoupon = () => {
+    const applyCoupon = async () => {
 
-        if (
-            couponCode === "SAVE10"
-        ) {
+        try {
+
+            const res = await axios.post(
+                "http://localhost:5000/validate-coupon",
+                {
+                    code: couponCode,
+                    totalAmount,
+                    couponCode,
+                }
+            )
+
+            const coupon =
+                res.data
+
+            const discountAmount =
+                totalAmount *
+                (coupon.discount / 100)
 
             setDiscount(
-                totalAmount * 0.1
+                discountAmount
             )
 
             alert(
-                "10% Discount Applied 🎉"
+                `${coupon.discount}% Discount Applied 🎉`
             )
 
-        } else if (
-            couponCode === "WELCOME20"
-        ) {
-
-            setDiscount(
-                totalAmount * 0.2
-            )
-
-            alert(
-                "20% Discount Applied 🎉"
-            )
-
-        } else {
+        } catch (error) {
 
             setDiscount(0)
 
             alert(
-                "Invalid Coupon ❌"
+                error.response?.data?.message ||
+                "Invalid Coupon"
             )
 
         }
@@ -240,7 +243,7 @@ function Checkout() {
                                     formData.customerName
                                 }
                                 onChange={handleChange}
-                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-[#F8F4EE]"/>
+                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-[#F8F4EE]" />
 
                             <input
                                 type="email"
@@ -249,7 +252,7 @@ function Checkout() {
                                 placeholder="Email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-[#F8F4EE]"/>
+                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-[#F8F4EE]" />
 
                             <input
                                 type="text"
@@ -257,14 +260,14 @@ function Checkout() {
                                 placeholder="Phone"
                                 value={formData.phone}
                                 onChange={handleChange}
-                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-white"/>
+                                className="w-full border border-[#D9CFC2] p-4 mb-4 bg-white" />
 
                             <textarea
                                 name="address"
                                 value={formData.address}
                                 onChange={handleChange}
                                 rows={3}
-                                className="md:col-span-2 w-full border border-[#D9CFC2] p-4 bg-white"/>
+                                className="md:col-span-2 w-full border border-[#D9CFC2] p-4 bg-white" />
 
                             <div className="md:col-span-2 mt-2">
                                 <div className="mb-6">
@@ -273,11 +276,11 @@ function Checkout() {
 
                                         <input
                                             type="text"
-                                            placeholder="Coupon Code"
+                                            placeholder="Enter Coupon Code"
                                             value={couponCode}
                                             onChange={(e) =>
                                                 setCouponCode(
-                                                    e.target.value
+                                                    e.target.value.toUpperCase()
                                                 )
                                             }
                                             className="border p-3 rounded flex-1 border-[#D9CFC2]"

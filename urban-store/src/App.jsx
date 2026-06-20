@@ -24,6 +24,7 @@ import AdminOrders from "./pages/AdminOrders"
 import AdminDashboard from "./pages/AdminDashboard"
 import OrderHistory from "./pages/OrderHistory"
 import ForgotPassword from "./pages/ForgotPassword"
+import AdminCoupons from "./pages/AdminCoupons"
 
 function Home() {
   return (
@@ -136,6 +137,11 @@ function App() {
         <Route
           path="/forgot-password"
           element={<ForgotPassword />}
+        />
+
+        <Route
+          path="/admin/coupons"
+          element={<AdminCoupons />}
         />
       </Routes>
     </BrowserRouter>

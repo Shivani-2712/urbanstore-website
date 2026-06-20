@@ -124,10 +124,7 @@ function OrderHistory() {
         try {
 
             await axios.put(
-                `http://localhost:5000/orders/${orderId}`,
-                {
-                    status: "Cancelled",
-                }
+                `http://localhost:5000/cancel-order/${orderId}`
             )
 
             setOrders(
@@ -420,7 +417,7 @@ function OrderHistory() {
                                                 : "border border-[#D9CFC2] hover:bg-black hover:text-white"
                                             }
                                         `}>
-                                            
+
                                         {
                                             loadingOrder === order._id
                                                 ? "Adding..."

@@ -8,6 +8,7 @@ import {
     CartesianGrid,
 } from "recharts"
 
+import jsPDF from "jspdf"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -45,6 +46,121 @@ function AdminDashboard() {
             </h1>
         )
 
+    }
+
+    const downloadSalesReport = () => {
+
+        const doc = new jsPDF()
+
+        // HEADER
+        doc.setFontSize(26)
+        doc.text("URBANSTORE", 20, 20)
+
+        doc.setFontSize(12)
+        doc.text(
+            "Admin Sales Report",
+            20,
+            30
+        )
+
+        doc.setFontSize(18)
+        doc.text(
+            "Sales Report",
+            20,
+            42
+        )
+
+        doc.line(
+            20,
+            48,
+            190,
+            48
+        )
+
+        // REPORT INFO
+        doc.setFontSize(12)
+
+        doc.text(
+            `Generated On: ${new Date().toLocaleDateString()}`,
+            20,
+            62
+        )
+
+        // SUMMARY BOX
+        doc.setFillColor(245, 240, 230)
+
+        doc.rect(
+            20,
+            72,
+            170,
+            65,
+            "F"
+        )
+
+        doc.setFontSize(13)
+
+        doc.text(
+            `Total Revenue: Rs. ${stats.totalRevenue.toLocaleString("en-IN")}`,
+            30,
+            90
+        )
+
+        doc.text(
+            `Total Orders: ${stats.totalOrders}`,
+            30,
+            102
+        )
+
+        doc.text(
+            `Total Customers: ${stats.totalUsers}`,
+            30,
+            114
+        )
+
+        doc.text(
+            `Total Products: ${stats.totalProducts}`,
+            30,
+            126
+        )
+
+        // TOP SELLING PRODUCTS
+        doc.setFontSize(18)
+
+        doc.text(
+            "Top Selling Products",
+            20,
+            160
+        )
+
+        let y = 175
+
+        stats.topSellingProducts?.forEach(
+            (product, index) => {
+
+                doc.setFontSize(13)
+
+                doc.text(
+                    `${index + 1}. ${product.name} - ${product.sold} sold`,
+                    20,
+                    y
+                )
+
+                y += 12
+            }
+        )
+
+        // FOOTER
+        doc.setFontSize(10)
+
+        doc.text(
+            "Generated automatically by UrbanStore Admin Dashboard",
+            20,
+            280
+        )
+
+        doc.save(
+            "UrbanStore-Sales-Report.pdf"
+        )
     }
 
     return (
@@ -135,7 +251,7 @@ function AdminDashboard() {
 
             {/* Action Buttons */}
 
-            <div className="mt-12 mb-16 flex gap-4">
+            <div className="mt-12 mb-16 flex gap-4 flex-wrap">
 
                 <a href="/admin/orders"
                     className="bg-black text-white px-6 py-3 uppercase tracking-[2px]">
@@ -146,6 +262,13 @@ function AdminDashboard() {
                     className="border border-[#D9CFC2] px-6 py-3 uppercase tracking-[2px] hover:bg-black hover:text-white transition">
                     Manage Products
                 </a>
+
+                <button
+                    onClick={downloadSalesReport}
+                    className="bg-green-600 text-white px-6 py-3 uppercase tracking-[2px] hover:bg-green-700 transition"
+                >
+                    Download Report
+                </button>
 
                 <a
                     href="/admin/coupons"

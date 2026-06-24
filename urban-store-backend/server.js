@@ -344,6 +344,31 @@ app.get(
       const orders =
         await Order.find()
 
+      const pendingOrders =
+        orders.filter(
+          order => order.status === "Pending"
+        ).length
+
+      const paidOrders =
+        orders.filter(
+          order => order.status === "Paid"
+        ).length
+
+      const shippedOrders =
+        orders.filter(
+          order => order.status === "Shipped"
+        ).length
+
+      const deliveredOrders =
+        orders.filter(
+          order => order.status === "Delivered"
+        ).length
+
+      const cancelledOrders =
+        orders.filter(
+          order => order.status === "Cancelled"
+        ).length
+
       const salesMap = {}
 
       orders.forEach((order) => {
@@ -428,6 +453,11 @@ app.get(
         outOfStockProducts,
         topSellingProducts,
         revenueChartData,
+        pendingOrders,
+        paidOrders,
+        shippedOrders,
+        deliveredOrders,
+        cancelledOrders,
       })
     } catch (error) {
 

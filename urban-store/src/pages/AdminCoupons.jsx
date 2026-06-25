@@ -1,3 +1,4 @@
+import AdminLayout from "../layouts/AdminLayout"
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -93,7 +94,7 @@ function AdminCoupons() {
 
     return (
 
-        <div className="min-h-screen bg-[#F8F4EE] px-10 py-16">
+        <AdminLayout>
 
             <div className="mb-12">
 
@@ -264,8 +265,7 @@ function AdminCoupons() {
 
             </div>
 
-        </div>
-
+        </AdminLayout>
     )
 }
 

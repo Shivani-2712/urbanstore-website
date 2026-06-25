@@ -8,89 +8,109 @@ import {
     BarChart3,
 } from "lucide-react"
 
+import { NavLink } from "react-router-dom"
+
 function AdminSidebar() {
+
+    const menuClass = ({ isActive }) =>
+        `flex items-center gap-4 px-6 py-4 rounded-2xl transition-all duration-300 ${isActive
+            ? "bg-[#E8DCCB] text-[#1F2937] font-semibold shadow-lg"
+            : "text-gray-300 hover:bg-[#2B3446] hover:text-white"
+        }`
+
     return (
-        <div className="fixed left-0 top-0 h-screen w-80 bg-[#32458C] text-white">
+        <aside className="fixed left-0 top-0 h-screen w-80 bg-[#1A2234] shadow-2xl">
 
             <div className="h-full flex flex-col p-8">
 
                 {/* Logo */}
 
-                <h1 className="text-4xl font-bold mb-16">
-                    URBANSTORE
-                </h1>
+                <div className="mb-14">
 
-                {/* Menu */}
+                    <h1 className="text-4xl font-bold tracking-wide text-white">
+                        URBANSTORE
+                    </h1>
 
-                <div className="space-y-8 flex-1">
-
-                    <a
-                        href="/admin"
-                        className="flex items-center gap-3 text-xl"
-                    >
-                        <LayoutDashboard size={22} />
-                        Dashboard
-                    </a>
-
-                    <a
-                        href="/admin/orders"
-                        className="flex items-center gap-3 text-xl"
-                    >
-                        <ShoppingBag size={22} />
-                        Orders
-                    </a>
-
-                    <a
-                        href="/admin/products"
-                        className="flex items-center gap-3 text-xl"
-                    >
-                        <Package size={22} />
-                        Products
-                    </a>
-
-                    <a
-                        href="/admin/product-analytics"
-                        className="flex items-center gap-3 text-xl"
-                    >
-                        <BarChart3 size={22} />
-                        Product Analytics
-                    </a>
-
-                    <a
-                        href="/admin/users"
-                        className="flex items-center gap-3 text-xl"
-                    >
-                        <Users size={22} />
-                        Customers
-                    </a>
-
-                    <a
-                        href="/admin/coupons"
-                        className="flex items-center gap-3 text-xl"
-                    >
-                        <Ticket size={22} />
-                        Coupons
-                    </a>
+                    <p className="text-gray-400 mt-2 text-sm tracking-[3px] uppercase">
+                        Admin Panel
+                    </p>
 
                 </div>
 
+                {/* Navigation */}
+
+                <nav className="flex-1 space-y-3">
+
+                    <NavLink
+                        to="/admin"
+                        end
+                        className={menuClass}
+                    >
+                        <LayoutDashboard size={21} />
+                        <span className="text-lg">Dashboard</span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/orders"
+                        className={menuClass}
+                    >
+                        <ShoppingBag size={21} />
+                        <span className="text-lg">Orders</span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/products"
+                        className={menuClass}
+                    >
+                        <Package size={21} />
+                        <span className="text-lg">Products</span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/product-analytics"
+                        className={menuClass}
+                    >
+                        <BarChart3 size={21} />
+                        <span className="text-lg">
+                            Product Analytics
+                        </span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/users"
+                        className={menuClass}
+                    >
+                        <Users size={21} />
+                        <span className="text-lg">Customers</span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/coupons"
+                        className={menuClass}
+                    >
+                        <Ticket size={21} />
+                        <span className="text-lg">Coupons</span>
+                    </NavLink>
+
+                </nav>
+
                 {/* Bottom */}
 
-                <div>
+                <div className="pt-8 border-t border-white/10">
 
-                    <a
-                        href="#"
-                        className="flex items-center gap-3 text-xl"
+                    <NavLink
+                        to="/admin/settings"
+                        className={menuClass}
                     >
-                        <Settings size={22} />
-                        Settings
-                    </a>
+                        <Settings size={21} />
+                        <span className="text-lg">Settings</span>
+                    </NavLink>
 
                 </div>
 
             </div>
 
-        </div>
+        </aside>
     )
 }
 

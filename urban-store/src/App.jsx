@@ -82,7 +82,9 @@ function App() {
         <Route
           path="/admin/orders"
           element={
-            <AdminOrders />
+            <ProtectedRoute>
+              <AdminOrders />
+            </ProtectedRoute>
           }
         />
 
@@ -97,12 +99,29 @@ function App() {
 
         <Route
           path="/admin/users"
-          element={<AdminUsers />}
+          element={
+            <ProtectedRoute>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/admin/product-analytics"
-          element={<AdminProductAnalytics />}
+          element={
+            <ProtectedRoute>
+              <AdminProductAnalytics />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/coupons"
+          element={
+            <ProtectedRoute>
+              <AdminCoupons />
+            </ProtectedRoute>
+          }
         />
 
         <Route
@@ -149,11 +168,6 @@ function App() {
         <Route
           path="/forgot-password"
           element={<ForgotPassword />}
-        />
-
-        <Route
-          path="/admin/coupons"
-          element={<AdminCoupons />}
         />
       </Routes>
     </BrowserRouter>

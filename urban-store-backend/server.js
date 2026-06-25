@@ -109,6 +109,40 @@ app.post(
   }
 )
 
+app.get("/admin/verify", (req, res) => {
+
+  try {
+
+    const token =
+      req.headers.authorization?.split(" ")[1]
+
+    if (!token) {
+
+      return res.status(401).json({
+        valid: false,
+      })
+
+    }
+
+    jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    )
+
+    res.json({
+      valid: true,
+    })
+
+  } catch (error) {
+
+    res.status(401).json({
+      valid: false,
+    })
+
+  }
+
+})
+
 app.post("/create-admin", async (req, res) => {
   try {
     const hashedPassword =
@@ -161,11 +195,11 @@ app.post("/admin-login", async (req, res) => {
 
     const token = jwt.sign(
       {
-        adminId: admin._id,
+        adminId: admin._id
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "7d",
+        expiresIn: "24h"
       }
     )
 

@@ -1,3 +1,5 @@
+import AdminLayout from "../layouts/AdminLayout"
+
 import { useEffect, useState } from "react"
 import axios from "axios"
 
@@ -68,8 +70,7 @@ function AdminOrders() {
 
     return (
 
-        <div className="min-h-screen bg-[#F8F4EE] px-10 py-16">
-
+        <AdminLayout>
             <div className="mb-12">
 
                 <p className="uppercase tracking-[4px] text-gray-400 mb-3">
@@ -214,8 +215,7 @@ function AdminOrders() {
 
             </div>
 
-        </div>
-
+        </AdminLayout>
     )
 }
 

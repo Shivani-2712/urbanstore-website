@@ -786,6 +786,12 @@ app.post(
           })
       }
 
+      if (user.isBlocked) {
+        return res.status(403).json({
+          message: "Your account has been blocked by the admin.",
+        })
+      }
+
       const isMatch =
         await bcrypt.compare(
           req.body.password,
@@ -1395,6 +1401,131 @@ app.delete(
     }
   }
 )
+
+app.get("/admin/users", async (req, res) => {
+  try {
+
+    const users = await User.find().select("-password")
+
+    const customers = await Promise.all(
+
+      users.map(async (user) => {
+
+        const orders = await Order.find({
+          userId: user._id,
+        })
+
+        const totalSpent = orders.reduce(
+          (sum, order) => sum + order.totalAmount,
+          0
+        )
+
+        return {
+          ...user.toObject(),
+
+          totalOrders: orders.length,
+
+          totalSpent,
+        }
+
+      })
+
+    )
+
+    res.json(customers)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+})
+
+app.put("/admin/users/:id/block", async (req, res) => {
+  try {
+
+    const user = await User.findById(req.params.id)
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      })
+    }
+
+    user.isBlocked = !user.isBlocked
+
+    await user.save()
+
+    res.json(user)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+})
+
+app.get("/admin/product-analytics", async (req, res) => {
+  try {
+
+    const products = await Product.find()
+
+    const orders = await Order.find()
+
+    const analytics = products.map((product) => {
+
+      let sold = 0
+      let revenue = 0
+
+      orders.forEach((order) => {
+
+        order.items.forEach((item) => {
+
+          if (
+            item._id?.toString() === product._id.toString()
+          ) {
+
+            sold += item.quantity
+
+            revenue +=
+              item.quantity * item.price
+
+          }
+
+        })
+
+      })
+
+      return {
+
+        _id: product._id,
+
+        name: product.name,
+
+        stock: product.stock,
+
+        sold,
+
+        revenue,
+
+      }
+
+    })
+
+    res.json(analytics)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+})
 
 app.listen(process.env.PORT, () => {
   console.log(

@@ -25,6 +25,8 @@ import AdminDashboard from "./pages/AdminDashboard"
 import OrderHistory from "./pages/OrderHistory"
 import ForgotPassword from "./pages/ForgotPassword"
 import AdminCoupons from "./pages/AdminCoupons"
+import AdminUsers from "./pages/AdminUsers"
+import AdminProductAnalytics from "./pages/AdminProductAnalytics"
 
 function Home() {
   return (
@@ -91,6 +93,16 @@ function App() {
               <AdminDashboard />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/admin/users"
+          element={<AdminUsers />}
+        />
+
+        <Route
+          path="/admin/product-analytics"
+          element={<AdminProductAnalytics />}
         />
 
         <Route

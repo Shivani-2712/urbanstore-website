@@ -5,6 +5,7 @@ import {
     Package,
     Ticket,
     Settings,
+    BarChart3,
 } from "lucide-react"
 
 function AdminSidebar() {
@@ -45,6 +46,14 @@ function AdminSidebar() {
                     >
                         <Package size={22} />
                         Products
+                    </a>
+
+                    <a
+                        href="/admin/product-analytics"
+                        className="flex items-center gap-3 text-xl"
+                    >
+                        <BarChart3 size={22} />
+                        Product Analytics
                     </a>
 
                     <a

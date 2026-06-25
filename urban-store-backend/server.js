@@ -331,6 +331,35 @@ app.get(
   async (req, res) => {
 
     try {
+      const filter = req.query.filter || "month"
+
+      let startDate = new Date()
+
+      if (filter === "today") {
+
+        startDate.setHours(0, 0, 0, 0)
+
+      } else if (filter === "week") {
+
+        startDate.setDate(startDate.getDate() - 7)
+
+      } else if (filter === "month") {
+
+        startDate = new Date(
+          startDate.getFullYear(),
+          startDate.getMonth(),
+          1
+        )
+
+      } else if (filter === "year") {
+
+        startDate = new Date(
+          startDate.getFullYear(),
+          0,
+          1
+        )
+
+      }
 
       const totalOrders =
         await Order.countDocuments()
@@ -341,8 +370,11 @@ app.get(
       const totalUsers =
         await User.countDocuments()
 
-      const orders =
-        await Order.find()
+      const orders = await Order.find({
+        createdAt: {
+          $gte: startDate,
+        },
+      })
 
       const pendingOrders =
         orders.filter(
@@ -419,6 +451,18 @@ app.get(
           stock: 0,
         })
 
+      const topLowStockProducts =
+        await Product.find({
+          stock: {
+            $lte: 5,
+          },
+        })
+          .select("name stock")
+          .sort({
+            stock: 1,
+          })
+          .limit(5)
+
       const monthlyRevenue = {}
 
       orders.forEach((order) => {
@@ -458,6 +502,7 @@ app.get(
         shippedOrders,
         deliveredOrders,
         cancelledOrders,
+        topLowStockProducts,
       })
     } catch (error) {
 

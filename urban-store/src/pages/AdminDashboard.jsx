@@ -18,12 +18,16 @@ function AdminDashboard() {
     const [stats, setStats] =
         useState(null)
 
+    const [filter, setFilter] = useState("month")
+
+    const [showNotifications, setShowNotifications] =
+        useState(false)
+
     useEffect(() => {
 
-        axios
-            .get(
-                "http://localhost:5000/admin/stats"
-            )
+        axios.get(
+            `http://localhost:5000/admin/stats?filter=${filter}`
+        )
             .then((res) => {
 
                 setStats(
@@ -37,7 +41,7 @@ function AdminDashboard() {
 
             })
 
-    }, [])
+    }, [filter])
 
     if (!stats) {
 
@@ -181,8 +185,110 @@ function AdminDashboard() {
 
                     <div className="flex items-center gap-4">
 
-                        <div className="w-12 h-12 rounded-full bg-white rounded-3xl shadow-sm p-8 flex items-center justify-center">
-                            🔔
+                        <div className="relative">
+
+                            <button
+                                onClick={() =>
+                                    setShowNotifications(
+                                        !showNotifications
+                                    )
+                                }
+                                className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-2xl relative"
+                            >
+                                🔔
+
+                                {
+                                    stats.topLowStockProducts.length > 0 && (
+
+                                        <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-6 h-6 flex items-center justify-center">
+
+                                            {stats.topLowStockProducts.length}
+
+                                        </span>
+
+                                    )
+                                }
+
+                            </button>
+
+                            {
+                                showNotifications && (
+
+                                    <div className="absolute right-0 mt-4 w-80 bg-white rounded-2xl shadow-xl border border-[#E8DCCB] z-50">
+
+                                        <div className="p-5 border-b">
+
+                                            <h3 className="font-semibold">
+                                                Low Stock Alerts
+                                            </h3>
+
+                                        </div>
+
+                                        {
+                                            stats.topLowStockProducts.length === 0 ? (
+
+                                                <p className="p-5 text-gray-500">
+                                                    No notifications 🎉
+                                                </p>
+
+                                            ) : (
+
+                                                stats.topLowStockProducts.map(
+                                                    (product) => (
+
+                                                        <div
+                                                            key={product._id}
+                                                            className="flex justify-between items-center px-5 py-4 border-b"
+                                                        >
+
+                                                            <div>
+
+                                                                <p className="font-medium">
+                                                                    {product.name}
+                                                                </p>
+
+                                                                <p className="text-sm text-gray-500">
+
+                                                                    {
+                                                                        product.stock === 0
+                                                                            ? "Out of Stock"
+                                                                            : `Only ${product.stock} left`
+                                                                    }
+
+                                                                </p>
+
+                                                            </div>
+
+                                                            <span className="text-xl">
+
+                                                                {
+                                                                    product.stock === 0
+                                                                        ? "❌"
+                                                                        : "⚠️"
+                                                                }
+
+                                                            </span>
+
+                                                        </div>
+
+                                                    )
+                                                )
+
+                                            )
+                                        }
+
+                                        <a
+                                            href="/admin/products"
+                                            className="block text-center p-4 font-medium hover:bg-gray-50"
+                                        >
+                                            View Products →
+                                        </a>
+
+                                    </div>
+
+                                )
+                            }
+
                         </div>
 
                         <div className="flex items-center gap-3">
@@ -208,17 +314,65 @@ function AdminDashboard() {
 
                 {/* Header */}
 
-                <div className="mb-12">
+                <div className="flex justify-between items-center mb-12">
 
-                    <p className="uppercase tracking-[4px] text-gray-400 mb-3">
-                        UrbanStore Admin
-                    </p>
+                    <div>
 
-                    <h1 className="text-3xl font-serif">
-                        Dashboard Overview
-                    </h1>
+                        <p className="uppercase tracking-[4px] text-gray-400 mb-3">
+                            UrbanStore Admin
+                        </p>
 
-                    <div className="w-24 h-px bg-[#D9CFC2] mt-6"></div>
+                        <h1 className="text-3xl font-serif">
+                            Dashboard Overview
+                        </h1>
+
+                        <div className="w-24 h-px bg-[#D9CFC2] mt-6"></div>
+
+                    </div>
+
+                    <div className="flex gap-3">
+
+                        <button
+                            onClick={() => setFilter("today")}
+                            className={`px-5 py-2 rounded-xl transition ${filter === "today"
+                                ? "bg-black text-white"
+                                : "bg-white border border-[#D9CFC2]"
+                                }`}
+                        >
+                            Today
+                        </button>
+
+                        <button
+                            onClick={() => setFilter("week")}
+                            className={`px-5 py-2 rounded-xl transition ${filter === "week"
+                                ? "bg-black text-white"
+                                : "bg-white border border-[#D9CFC2]"
+                                }`}
+                        >
+                            Week
+                        </button>
+
+                        <button
+                            onClick={() => setFilter("month")}
+                            className={`px-5 py-2 rounded-xl transition ${filter === "month"
+                                ? "bg-black text-white"
+                                : "bg-white border border-[#D9CFC2]"
+                                }`}
+                        >
+                            Month
+                        </button>
+
+                        <button
+                            onClick={() => setFilter("year")}
+                            className={`px-5 py-2 rounded-xl transition ${filter === "year"
+                                ? "bg-black text-white"
+                                : "bg-white border border-[#D9CFC2]"
+                                }`}
+                        >
+                            Year
+                        </button>
+
+                    </div>
 
                 </div>
 

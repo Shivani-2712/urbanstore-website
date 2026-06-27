@@ -1,11 +1,13 @@
 import AdminLayout from "../layouts/AdminLayout"
 
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import axios from "axios"
 
 function AdminOrders() {
 
     const [orders, setOrders] = useState([])
+    const navigate = useNavigate()
 
     const loadOrders = () => {
 
@@ -94,7 +96,10 @@ function AdminOrders() {
 
                     <div
                         key={order._id}
-                        className="bg-white border border-[#E8DCCB] p-5 mb-5"
+                        onClick={() =>
+                            navigate(`/admin/orders/${order._id}`)
+                        }
+                        className="bg-white border border-[#E8DCCB] p-5 mb-5 cursor-pointer hover:shadow-lg transition"
                     >
 
                         <div className="flex justify-between items-start">

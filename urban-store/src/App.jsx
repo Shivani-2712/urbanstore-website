@@ -27,6 +27,7 @@ import ForgotPassword from "./pages/ForgotPassword"
 import AdminCoupons from "./pages/AdminCoupons"
 import AdminUsers from "./pages/AdminUsers"
 import AdminProductAnalytics from "./pages/AdminProductAnalytics"
+import AdminOrderDetails from "./pages/AdminOrderDetails"
 
 function Home() {
   return (
@@ -120,6 +121,15 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminCoupons />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/orders/:id"
+          element={
+            <ProtectedRoute>
+              <AdminOrderDetails />
             </ProtectedRoute>
           }
         />

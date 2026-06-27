@@ -11,25 +11,17 @@ function AdminTopbar({ notifications }) {
 
     const handleLogout = () => {
 
-        const handleLogout = () => {
+        if (
+            window.confirm(
+                "Are you sure you want to logout?"
+            )
+        ) {
 
-            if (
-                window.confirm(
-                    "Are you sure you want to logout?"
-                )
-            ) {
+            localStorage.removeItem("adminToken")
 
-                localStorage.removeItem(
-                    "adminToken"
-                )
-
-                navigate("/admin-login")
-
-            }
+            navigate("/admin-login")
 
         }
-
-        navigate("/admin-login")
 
     }
 

@@ -547,6 +547,44 @@ app.get(
           })
         )
 
+      // ==========================
+      // Category Sales Analytics
+      // ==========================
+
+      const categoryMap = {}
+
+      for (const order of orders) {
+
+        for (const item of order.items) {
+
+          const product = await Product.findOne({
+            name: item.name
+          })
+
+          if (!product) continue
+
+          if (!categoryMap[product.category]) {
+
+            categoryMap[product.category] = 0
+
+          }
+
+          categoryMap[product.category] += item.quantity
+
+        }
+
+      }
+
+      const categorySales = Object.keys(categoryMap).map(
+        (category) => ({
+
+          category,
+
+          sales: categoryMap[category],
+
+        })
+      )
+      console.log(categorySales)
       res.json({
         totalOrders,
         totalProducts,
@@ -563,6 +601,7 @@ app.get(
         deliveredOrders,
         cancelledOrders,
         topLowStockProducts,
+        categorySales,
       })
     } catch (error) {
 
@@ -1630,6 +1669,66 @@ app.get("/admin/product-analytics", async (req, res) => {
     })
 
   }
+})
+
+app.get("/admin/search", async (req, res) => {
+
+  try {
+
+    const query = req.query.query || ""
+
+    if (!query) {
+
+      return res.json({
+        products: [],
+        orders: [],
+        users: [],
+      })
+
+    }
+
+    const regex = new RegExp(query, "i")
+
+    const products = await Product.find({
+      name: regex,
+    })
+      .select("name price image")
+      .limit(5)
+
+    const orders = await Order.find({
+      $or: [
+        { customerName: regex },
+        { email: regex },
+      ],
+    })
+      .select("_id customerName totalAmount status")
+      .limit(5)
+
+    const users = await User.find({
+      $or: [
+        { name: regex },
+        { email: regex },
+      ],
+    })
+      .select("name email")
+      .limit(5)
+
+    res.json({
+      products,
+      orders,
+      users,
+    })
+
+  }
+
+  catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
 })
 
 app.listen(process.env.PORT, () => {

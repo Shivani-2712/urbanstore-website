@@ -507,8 +507,8 @@ function AdminOrderDetails() {
 
                     <div
                         className={`h-1 flex-1 ${["Paid", "Shipped", "Delivered"].includes(order.status)
-                                ? "bg-green-600"
-                                : "bg-gray-300"
+                            ? "bg-green-600"
+                            : "bg-gray-300"
                             }`}
                     />
 
@@ -531,12 +531,11 @@ function AdminOrderDetails() {
                     </div>
 
                     <div
-    className={`h-1 flex-1 ${
-        ["Shipped", "Delivered"].includes(order.status)
-            ? "bg-green-600"
-            : "bg-gray-300"
-    }`}
-/>
+                        className={`h-1 flex-1 ${["Shipped", "Delivered"].includes(order.status)
+                            ? "bg-green-600"
+                            : "bg-gray-300"
+                            }`}
+                    />
 
                     <div className="flex flex-col items-center flex-1">
 
@@ -557,12 +556,11 @@ function AdminOrderDetails() {
                     </div>
 
                     <div
-    className={`h-1 flex-1 ${
-        order.status === "Delivered"
-            ? "bg-green-600"
-            : "bg-gray-300"
-    }`}
-/>
+                        className={`h-1 flex-1 ${order.status === "Delivered"
+                            ? "bg-green-600"
+                            : "bg-gray-300"
+                            }`}
+                    />
 
                     <div className="flex flex-col items-center flex-1">
 

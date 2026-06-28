@@ -1,11 +1,17 @@
 import {
     BarChart,
     Bar,
+    LineChart,
+    Line,
+    PieChart,
+    Pie,
+    Cell,
     XAxis,
     YAxis,
     Tooltip,
     ResponsiveContainer,
     CartesianGrid,
+    Legend,
 } from "recharts"
 
 import { Link } from "react-router-dom"
@@ -40,6 +46,14 @@ function AdminDashboard() {
             })
 
     }, [filter])
+
+    const COLORS = [
+        "#4F46E5",
+        "#22C55E",
+        "#F59E0B",
+        "#EF4444",
+        "#06B6D4",
+    ]
 
     if (!stats) {
 
@@ -318,7 +332,7 @@ function AdminDashboard() {
 
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-6 mt-10">
+            <div className="grid lg:grid-cols-3 gap-6 mt-10">
 
                 {/* Order Status */}
 
@@ -406,6 +420,48 @@ function AdminDashboard() {
                             />
 
                         </BarChart>
+
+                    </ResponsiveContainer>
+
+                </div>
+
+                {/* Category Sales */}
+
+                <div className="bg-white rounded-3xl shadow-sm p-6">
+
+                    <h3 className="text-2xl font-serif mb-6">
+                        Category Sales
+                    </h3>
+
+                    <ResponsiveContainer
+                        width="100%"
+                        height={300}
+                    >
+
+                        <PieChart>
+
+                            <Pie
+                                data={stats.categorySales}
+                                dataKey="sales"
+                                nameKey="category"
+                                outerRadius={90}
+                                label={({ category, percent }) =>
+                                    `${category} ${(percent * 100).toFixed(0)}%`
+                                }
+                            >
+                                {stats.categorySales.map((entry, index) => (
+                                    <Cell
+                                        key={index}
+                                        fill={COLORS[index % COLORS.length]}
+                                    />
+                                ))}
+                            </Pie>
+
+                            <Tooltip />
+
+                            <Legend />
+
+                        </PieChart>
 
                     </ResponsiveContainer>
 

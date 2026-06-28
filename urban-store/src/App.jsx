@@ -1,33 +1,29 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Register from "./pages/Register"
-import Login from "./pages/Login"
-import ProtectedRoute from "./components/ProtectedRoute"
-import Navbar from "./components/Navbar"
-import Hero from "./components/Hero"
-import Products from "./components/Products"
-import ProductDetails from "./pages/ProductDetails"
-import Cart from "./pages/Cart"
-import Admin from "./pages/AdminProducts"
-import AdminLogin from "./pages/AdminLogin"
-import Wishlist from "./pages/Wishlist"
-import HeroBanner from "./components/HeroBanner"
-import Checkout from "./pages/Checkout"
-import OrderSuccess from "./pages/OrderSuccess"
-import UserProtectedRoute from "./components/UserProtectedRoute"
-import MyAccount from "./pages/MyAccount"
-import AdminOrders from "./pages/AdminOrders"
-import AdminDashboard from "./pages/AdminDashboard"
-import OrderHistory from "./pages/OrderHistory"
-import ForgotPassword from "./pages/ForgotPassword"
-import AdminCoupons from "./pages/AdminCoupons"
-import AdminUsers from "./pages/AdminUsers"
-import AdminProductAnalytics from "./pages/AdminProductAnalytics"
-import AdminOrderDetails from "./pages/AdminOrderDetails"
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Products from "./components/Products";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
+import Admin from "./pages/AdminProducts";
+import AdminLogin from "./pages/AdminLogin";
+import Wishlist from "./pages/Wishlist";
+import HeroBanner from "./components/HeroBanner";
+import Checkout from "./pages/Checkout";
+import OrderSuccess from "./pages/OrderSuccess";
+import UserProtectedRoute from "./components/UserProtectedRoute";
+import MyAccount from "./pages/MyAccount";
+import AdminOrders from "./pages/AdminOrders";
+import AdminDashboard from "./pages/AdminDashboard";
+import OrderHistory from "./pages/OrderHistory";
+import ForgotPassword from "./pages/ForgotPassword";
+import AdminCoupons from "./pages/AdminCoupons";
+import AdminUsers from "./pages/AdminUsers";
+import AdminProductAnalytics from "./pages/AdminProductAnalytics";
+import AdminOrderDetails from "./pages/AdminOrderDetails";
 
 function Home() {
   return (
@@ -36,40 +32,24 @@ function Home() {
       <HeroBanner />
       <Products />
     </>
-  )
+  );
 }
 
 function App() {
   return (
     <BrowserRouter>
-
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route
-          path="/product/:id"
-          element={<ProductDetails />}
-        />
+        <Route path="/product/:id" element={<ProductDetails />} />
 
-        <Route
-          path="/cart"
-          element={<Cart />}
-        />
+        <Route path="/cart" element={<Cart />} />
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+        <Route path="/register" element={<Register />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/admin-login"
-          element={<AdminLogin />}
-        />
+        <Route path="/admin-login" element={<AdminLogin />} />
 
         <Route
           path="/admin/products"
@@ -152,10 +132,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/order-success"
-          element={<OrderSuccess />}
-        />
+        <Route path="/order-success" element={<OrderSuccess />} />
 
         <Route
           path="/my-account"
@@ -175,13 +152,10 @@ function App() {
           }
         />
 
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassword />}
-        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

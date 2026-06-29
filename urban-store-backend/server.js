@@ -1731,6 +1731,88 @@ app.get("/admin/search", async (req, res) => {
 
 })
 
+app.get("/admin/inventory", async (req, res) => {
+
+  try {
+
+    const products = await Product.find()
+
+    const totalProducts = products.length
+
+    const inventoryValue = products.reduce(
+      (sum, product) =>
+        sum + (product.price * product.stock),
+      0
+    )
+
+    const lowStockProducts = products.filter(
+      product => product.stock > 0 && product.stock <= 5
+    )
+
+    const outOfStockProducts = products.filter(
+      product => product.stock === 0
+    )
+
+    res.json({
+
+      totalProducts,
+
+      inventoryValue,
+
+      lowStockCount: lowStockProducts.length,
+
+      outOfStockCount: outOfStockProducts.length,
+
+      lowStockProducts,
+
+      outOfStockProducts,
+
+      products,
+
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    })
+
+  }
+
+})
+
+app.put("/admin/restock/:id", async (req, res) => {
+
+  try {
+
+    const { quantity } = req.body
+
+    const product = await Product.findById(req.params.id)
+
+    if (!product) {
+
+      return res.status(404).json({
+        message: "Product not found"
+      })
+
+    }
+
+    product.stock += Number(quantity)
+
+    await product.save()
+
+    res.json(product)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    })
+
+  }
+
+})
+
 app.listen(process.env.PORT, () => {
   console.log(
     `Server running on port ${process.env.PORT}`

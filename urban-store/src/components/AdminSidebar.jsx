@@ -6,6 +6,7 @@ import {
     Ticket,
     Settings,
     BarChart3,
+    Boxes
 } from "lucide-react"
 
 import { NavLink } from "react-router-dom"
@@ -64,6 +65,16 @@ function AdminSidebar() {
                     >
                         <Package size={21} />
                         <span className="text-lg">Products</span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/admin/inventory"
+                        className={menuClass}
+                    >
+                        <Boxes size={21} />
+                        <span className="text-lg">
+                            Inventory
+                        </span>
                     </NavLink>
 
                     <NavLink

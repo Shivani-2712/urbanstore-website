@@ -25,6 +25,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminProductAnalytics from "./pages/AdminProductAnalytics";
 import AdminOrderDetails from "./pages/AdminOrderDetails";
 import AdminInventory from "./pages/AdminInventory"
+import AdminSettings from "./pages/AdminSettings"
 
 function Home() {
   return (
@@ -116,13 +117,18 @@ function App() {
         />
 
         <Route
-    path="/admin/inventory"
-    element={
-        <ProtectedRoute>
-            <AdminInventory />
-        </ProtectedRoute>
-    }
-/>
+          path="/admin/inventory"
+          element={
+            <ProtectedRoute>
+              <AdminInventory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/settings"
+          element={<AdminSettings />}
+        />
 
         <Route
           path="/wishlist"

@@ -18,6 +18,7 @@ const User = require("./models/User")
 const Wishlist = require("./models/Wishlist")
 const Cart = require("./models/Cart")
 const Razorpay = require("razorpay")
+const Settings = require("./models/Settings")
 
 const Coupon = require("./models/Coupon")
 
@@ -1802,6 +1803,113 @@ app.put("/admin/restock/:id", async (req, res) => {
     await product.save()
 
     res.json(product)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    })
+
+  }
+
+})
+
+app.get("/admin/settings", async (req, res) => {
+
+  try {
+
+    let settings = await Settings.findOne()
+
+    if (!settings) {
+
+      settings = await Settings.create({})
+
+    }
+
+    res.json(settings)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.put("/admin/settings", async (req, res) => {
+
+  try {
+
+    let settings = await Settings.findOne()
+
+    if (!settings) {
+
+      settings = await Settings.create({})
+    }
+
+    settings.storeName = req.body.storeName
+    settings.email = req.body.email
+    settings.phone = req.body.phone
+    settings.address = req.body.address
+
+    await settings.save()
+
+    res.json(settings)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.put("/admin/change-password", async (req, res) => {
+
+  try {
+
+    const {
+      currentPassword,
+      newPassword
+    } = req.body
+
+    const admin = await Admin.findOne()
+
+    if (!admin) {
+
+      return res.status(404).json({
+        message: "Admin not found"
+      })
+
+    }
+
+    const isMatch = await bcrypt.compare(
+      currentPassword,
+      admin.password
+    )
+
+    if (!isMatch) {
+
+      return res.status(400).json({
+        message: "Current password is incorrect"
+      })
+
+    }
+
+    admin.password = await bcrypt.hash(
+      newPassword,
+      10
+    )
+
+    await admin.save()
+
+    res.json({
+      message: "Password updated successfully"
+    })
 
   } catch (error) {
 

@@ -9,6 +9,7 @@ function AdminSettings() {
         email: "",
         phone: "",
         address: "",
+        logo: "",
     })
 
     const [passwords, setPasswords] = useState({
@@ -50,6 +51,43 @@ function AdminSettings() {
             console.log(error)
 
             alert("Failed To Save Settings")
+
+        }
+
+    }
+
+    const uploadLogo = async (e) => {
+
+        const file = e.target.files[0]
+
+        if (!file) return
+
+        const formData = new FormData()
+
+        formData.append("image", file)
+
+        try {
+
+            const res = await axios.post(
+                "http://localhost:5000/upload",
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            )
+
+            setSettings({
+                ...settings,
+                logo: res.data.imageUrl,
+            })
+
+        } catch (error) {
+
+            console.log(error)
+
+            alert("Logo upload failed.")
 
         }
 
@@ -127,6 +165,44 @@ function AdminSettings() {
                     <div className="space-y-5">
 
                         <div>
+
+                            <div className="mb-8">
+
+                                <label className="block text-sm text-gray-500 mb-3">
+                                    Store Logo
+                                </label>
+
+                                <div className="flex items-center gap-6">
+
+                                    {
+                                        settings.logo ? (
+
+                                            <img
+                                                src={settings.logo}
+                                                alt="Store Logo"
+                                                className="w-24 h-24 rounded-xl border object-cover"
+                                            />
+
+                                        ) : (
+
+                                            <div className="w-24 h-24 rounded-xl border flex items-center justify-center bg-gray-100 text-gray-400">
+
+                                                No Logo
+
+                                            </div>
+
+                                        )
+                                    }
+
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={uploadLogo}
+                                    />
+
+                                </div>
+
+                            </div>
 
                             <label className="block text-sm text-gray-500 mb-2">
                                 Store Name

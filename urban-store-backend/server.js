@@ -1853,6 +1853,7 @@ app.put("/admin/settings", async (req, res) => {
     settings.email = req.body.email
     settings.phone = req.body.phone
     settings.address = req.body.address
+    settings.logo = req.body.logo
 
     await settings.save()
 

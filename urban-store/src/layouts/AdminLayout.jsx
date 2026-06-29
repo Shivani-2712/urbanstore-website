@@ -30,13 +30,13 @@ function AdminLayout({ children }) {
 
             <AdminSidebar />
 
-            <main className="flex-1 ml-80">
+            <main className="flex-1 ml-[280px]">
 
                 <AdminTopbar
                     notifications={notifications}
                 />
 
-                <div className="p-10">
+                <div className="px-10 py-8">
 
                     {children}
 

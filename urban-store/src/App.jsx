@@ -26,6 +26,7 @@ import AdminProductAnalytics from "./pages/AdminProductAnalytics";
 import AdminOrderDetails from "./pages/AdminOrderDetails";
 import AdminInventory from "./pages/AdminInventory"
 import AdminSettings from "./pages/AdminSettings"
+import AdminBanners from "./pages/AdminBanners"
 
 function Home() {
   return (
@@ -128,6 +129,15 @@ function App() {
         <Route
           path="/admin/settings"
           element={<AdminSettings />}
+        />
+
+        <Route
+          path="/admin/banners"
+          element={
+            <ProtectedRoute>
+              <AdminBanners />
+            </ProtectedRoute>
+          }
         />
 
         <Route

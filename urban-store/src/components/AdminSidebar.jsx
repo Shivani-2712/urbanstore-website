@@ -7,6 +7,7 @@ import {
     Settings,
     BarChart3,
     Boxes,
+    Image,
 } from "lucide-react"
 
 import { useEffect, useState } from "react"
@@ -109,6 +110,16 @@ function AdminSidebar() {
                         <NavLink to="/admin/coupons" className={menuClass}>
                             <Ticket size={21} />
                             <span className="text-lg">Coupons</span>
+                        </NavLink>
+
+                        <NavLink
+                            to="/admin/banners"
+                            className={menuClass}
+                        >
+                            <Image size={21} />
+                            <span className="text-lg">
+                                Banners
+                            </span>
                         </NavLink>
 
                     </nav>

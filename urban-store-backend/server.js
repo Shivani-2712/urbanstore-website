@@ -19,7 +19,7 @@ const Wishlist = require("./models/Wishlist")
 const Cart = require("./models/Cart")
 const Razorpay = require("razorpay")
 const Settings = require("./models/Settings")
-
+const Banner = require("./models/Banner")
 const Coupon = require("./models/Coupon")
 
 console.log(
@@ -1916,6 +1916,89 @@ app.put("/admin/change-password", async (req, res) => {
 
     res.status(500).json({
       message: error.message
+    })
+
+  }
+
+})
+
+app.post("/admin/banners", async (req, res) => {
+
+  try {
+
+    const banner = await Banner.create(req.body)
+
+    res.status(201).json(banner)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.get("/admin/banners", async (req, res) => {
+
+  try {
+
+    const banners = await Banner.find()
+      .sort({ createdAt: -1 })
+
+    res.json(banners)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.put("/admin/banners/:id", async (req, res) => {
+
+  try {
+
+    const banner = await Banner.findByIdAndUpdate(
+
+      req.params.id,
+
+      req.body,
+
+      { new: true }
+
+    )
+
+    res.json(banner)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.delete("/admin/banners/:id", async (req, res) => {
+
+  try {
+
+    await Banner.findByIdAndDelete(req.params.id)
+
+    res.json({
+      message: "Banner deleted successfully."
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
     })
 
   }

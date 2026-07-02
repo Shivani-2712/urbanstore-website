@@ -94,7 +94,7 @@ function Checkout() {
                 discountAmount
             )
 
-            alert(
+            toast.success(
                 `${coupon.discount}% Discount Applied 🎉`
             )
 
@@ -102,7 +102,7 @@ function Checkout() {
 
             setDiscount(0)
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Invalid Coupon"
             )
@@ -128,7 +128,7 @@ function Checkout() {
             !formData.phone ||
             !formData.address
         ) {
-            alert("Please fill all fields")
+            toast.error("Please fill all fields")
             return
         }
         try {
@@ -182,7 +182,7 @@ function Checkout() {
 
                         await clearCart()
 
-                        alert(
+                        toast.success(
                             "Order Placed Successfully 🎉"
                         )
 

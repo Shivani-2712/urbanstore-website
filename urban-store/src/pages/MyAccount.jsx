@@ -74,7 +74,7 @@ function MyAccount() {
                 }
             )
 
-            alert(
+            toast.success(
                 "Profile Updated Successfully 🎉"
             )
 
@@ -206,7 +206,7 @@ function MyAccount() {
                             placeholder="+91 98765 43210"
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
-                            className="w-full border border-[#D9CFC2] p-3 text-sm outline-none focus:border-black transition"/>
+                            className="w-full border border-[#D9CFC2] p-3 text-sm outline-none focus:border-black transition" />
 
                     </div>
 
@@ -220,7 +220,7 @@ function MyAccount() {
                             placeholder="Enter your shipping address"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            className="w-full border border-[#D9CFC2] p-4 h-[90px] resize-none outline-none focus:border-black transition"/>
+                            className="w-full border border-[#D9CFC2] p-4 h-[90px] resize-none outline-none focus:border-black transition" />
 
                     </div>
 

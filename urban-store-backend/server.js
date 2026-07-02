@@ -2005,6 +2005,47 @@ app.delete("/admin/banners/:id", async (req, res) => {
 
 })
 
+app.get("/admin/reviews", async (req, res) => {
+
+  try {
+
+    const reviews = await Review.find()
+      .populate("productId", "name image")
+      .populate("userId", "name email")
+      .sort({ createdAt: -1 })
+
+    res.json(reviews)
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    })
+
+  }
+
+})
+
+app.delete("/admin/reviews/:id", async (req, res) => {
+
+  try {
+
+    await Review.findByIdAndDelete(req.params.id)
+
+    res.json({
+      message: "Review deleted successfully."
+    })
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message
+    })
+
+  }
+
+})
+
 app.listen(process.env.PORT, () => {
   console.log(
     `Server running on port ${process.env.PORT}`

@@ -58,11 +58,13 @@ function AdminCoupons() {
 
             loadCoupons()
 
-            alert("Coupon Created 🎉")
+            toast.success("Coupon Created 🎉")
 
         } catch (error) {
 
             console.log(error)
+
+            toast.error("Failed to create coupon.")
 
         }
 

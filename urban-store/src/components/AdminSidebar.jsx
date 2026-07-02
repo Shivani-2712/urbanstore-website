@@ -8,6 +8,7 @@ import {
     BarChart3,
     Boxes,
     Image,
+    MessageSquare,
 } from "lucide-react"
 
 import { useEffect, useState } from "react"
@@ -105,6 +106,16 @@ function AdminSidebar() {
                         <NavLink to="/admin/users" className={menuClass}>
                             <Users size={21} />
                             <span className="text-lg">Customers</span>
+                        </NavLink>
+
+                        <NavLink
+                            to="/admin/reviews"
+                            className={menuClass}
+                        >
+                            <MessageSquare size={21} />
+                            <span className="text-lg">
+                                Reviews
+                            </span>
                         </NavLink>
 
                         <NavLink to="/admin/coupons" className={menuClass}>

@@ -19,6 +19,7 @@ import jsPDF from "jspdf"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import AdminLayout from "../layouts/AdminLayout"
+import AdminSkeleton from "../components/AdminSkeleton"
 
 function AdminDashboard() {
 
@@ -58,9 +59,13 @@ function AdminDashboard() {
     if (!stats) {
 
         return (
-            <h1 className="p-10">
-                Loading...
-            </h1>
+
+            <AdminLayout>
+
+                <AdminSkeleton />
+
+            </AdminLayout>
+
         )
 
     }

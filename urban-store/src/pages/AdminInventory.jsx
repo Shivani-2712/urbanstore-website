@@ -40,13 +40,13 @@ function AdminInventory() {
 
             setInventory(res.data)
 
-            alert("Stock Updated Successfully!")
+            toast.success("Stock Updated Successfully!")
 
         } catch (error) {
 
             console.log(error)
 
-            alert("Failed to update stock.")
+            toast.error("Failed to update stock.")
 
         }
 

@@ -27,6 +27,7 @@ import AdminOrderDetails from "./pages/AdminOrderDetails";
 import AdminInventory from "./pages/AdminInventory"
 import AdminSettings from "./pages/AdminSettings"
 import AdminBanners from "./pages/AdminBanners"
+import AdminReviews from "./pages/AdminReviews"
 
 function Home() {
   return (
@@ -136,6 +137,15 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminBanners />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/reviews"
+          element={
+            <ProtectedRoute>
+              <AdminReviews />
             </ProtectedRoute>
           }
         />

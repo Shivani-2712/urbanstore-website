@@ -44,13 +44,13 @@ function AdminSettings() {
                 settings
             )
 
-            alert("Settings Updated Successfully!")
+            toast.success("Settings Updated Successfully!")
 
         } catch (error) {
 
             console.log(error)
 
-            alert("Failed To Save Settings")
+            toast.error("Failed To Save Settings")
 
         }
 
@@ -87,7 +87,7 @@ function AdminSettings() {
 
             console.log(error)
 
-            alert("Logo upload failed.")
+            toast.error("Logo upload failed.")
 
         }
 
@@ -97,7 +97,7 @@ function AdminSettings() {
 
         if (passwords.newPassword !== passwords.confirmPassword) {
 
-            alert("New password and confirm password do not match.")
+            toast.error("New password and confirm password do not match.")
 
             return
 
@@ -113,7 +113,7 @@ function AdminSettings() {
                 }
             )
 
-            alert(res.data.message)
+            toast.success(res.data.message)
 
             setPasswords({
 
@@ -127,7 +127,7 @@ function AdminSettings() {
 
         } catch (error) {
 
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Failed to change password."
             )

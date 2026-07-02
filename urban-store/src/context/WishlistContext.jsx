@@ -8,90 +8,11 @@ function WishlistProvider({
     children,
 }) {
     const [
-    wishlistItems,
-    setWishlistItems,
-] = useState([])
+        wishlistItems,
+        setWishlistItems,
+    ] = useState([])
 
-const loadWishlist = async () => {
-
-    const user =
-        JSON.parse(
-            localStorage.getItem(
-                "userInfo"
-            )
-        )
-
-    if (!user) {
-
-        setWishlistItems([])
-
-        return
-    }
-
-    try {
-
-        const res =
-            await axios.get(
-                `http://localhost:5000/wishlist/${user._id}`
-            )
-
-        const wishlistData =
-            await Promise.all(
-
-                res.data.map(
-                    async (item) => {
-
-                        const product =
-                            await axios.get(
-                                `http://localhost:5000/products/${item.productId}`
-                            )
-
-                        return product.data
-                    }
-                )
-            )
-
-        setWishlistItems(
-            wishlistData
-        )
-
-    } catch (error) {
-
-        console.log(error)
-
-    }
-}
-
-useEffect(() => {
-
-    loadWishlist()
-
-}, [])
-
-useEffect(() => {
-
-    const handleWishlistReload =
-        () => {
-
-            loadWishlist()
-
-        }
-
-    window.addEventListener(
-        "wishlistUpdated",
-        handleWishlistReload
-    )
-
-    return () =>
-        window.removeEventListener(
-            "wishlistUpdated",
-            handleWishlistReload
-        )
-
-}, [])
-
-    const toggleWishlist =
-    async (product) => {
+    const loadWishlist = async () => {
 
         const user =
             JSON.parse(
@@ -101,51 +22,130 @@ useEffect(() => {
             )
 
         if (!user) {
-            alert(
-                "Please login first"
-            )
+
+            setWishlistItems([])
+
             return
         }
 
-        const exists =
-            wishlistItems.find(
-                (item) =>
-                    item._id ===
-                    product._id
+        try {
+
+            const res =
+                await axios.get(
+                    `http://localhost:5000/wishlist/${user._id}`
+                )
+
+            const wishlistData =
+                await Promise.all(
+
+                    res.data.map(
+                        async (item) => {
+
+                            const product =
+                                await axios.get(
+                                    `http://localhost:5000/products/${item.productId}`
+                                )
+
+                            return product.data
+                        }
+                    )
+                )
+
+            setWishlistItems(
+                wishlistData
             )
 
-        if (exists) {
+        } catch (error) {
 
-    await axios.delete(
-        `http://localhost:5000/wishlist/${user._id}/${product._id}`
-    )
+            console.log(error)
 
-    setWishlistItems(
-        wishlistItems.filter(
-            (item) =>
-                item._id !==
-                product._id
-        )
-    )
-        } else {
-
-            await axios.post(
-                "http://localhost:5000/wishlist",
-                {
-                    userId:
-                        user._id,
-
-                    productId:
-                        product._id,
-                }
-            )
-
-            setWishlistItems([
-                ...wishlistItems,
-                product,
-            ])
         }
     }
+
+    useEffect(() => {
+
+        loadWishlist()
+
+    }, [])
+
+    useEffect(() => {
+
+        const handleWishlistReload =
+            () => {
+
+                loadWishlist()
+
+            }
+
+        window.addEventListener(
+            "wishlistUpdated",
+            handleWishlistReload
+        )
+
+        return () =>
+            window.removeEventListener(
+                "wishlistUpdated",
+                handleWishlistReload
+            )
+
+    }, [])
+
+    const toggleWishlist =
+        async (product) => {
+
+            const user =
+                JSON.parse(
+                    localStorage.getItem(
+                        "userInfo"
+                    )
+                )
+
+            if (!user) {
+                toast.error(
+                    "Please login first"
+                )
+                return
+            }
+
+            const exists =
+                wishlistItems.find(
+                    (item) =>
+                        item._id ===
+                        product._id
+                )
+
+            if (exists) {
+
+                await axios.delete(
+                    `http://localhost:5000/wishlist/${user._id}/${product._id}`
+                )
+
+                setWishlistItems(
+                    wishlistItems.filter(
+                        (item) =>
+                            item._id !==
+                            product._id
+                    )
+                )
+            } else {
+
+                await axios.post(
+                    "http://localhost:5000/wishlist",
+                    {
+                        userId:
+                            user._id,
+
+                        productId:
+                            product._id,
+                    }
+                )
+
+                setWishlistItems([
+                    ...wishlistItems,
+                    product,
+                ])
+            }
+        }
 
     const removeFromWishlist = (
         id

@@ -223,7 +223,7 @@ function ProductDetails() {
 
             setRating(5)
 
-            alert(
+            toast.success(
                 "Review Added ⭐"
             )
         } catch (error) {
@@ -231,7 +231,7 @@ function ProductDetails() {
             if (
                 error.response
             ) {
-                alert(
+                toast.error(
                     error.response
                         .data
                         .message
@@ -298,7 +298,7 @@ function ProductDetails() {
 
                 setRating(5)
 
-                alert(
+                toast.success(
                     "Review Updated ⭐"
                 )
 
@@ -310,7 +310,7 @@ function ProductDetails() {
     const handleBuyNow = () => {
 
         if (!selectedSize) {
-            alert("Please select a size")
+            toast.error("Please select a size")
             return
         }
 
@@ -433,7 +433,7 @@ function ProductDetails() {
                             disabled={product.stock <= 0}
                             onClick={() => {
                                 if (!selectedSize) {
-                                    alert("Please select a size")
+                                    toast.error("Please select a size")
                                     return
                                 }
 

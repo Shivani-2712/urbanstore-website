@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
 import AdminLayout from "../layouts/AdminLayout"
+import toast from "react-hot-toast"
 
 function AdminBanners() {
 
@@ -65,7 +66,7 @@ function AdminBanners() {
 
             console.log(error)
 
-            alert("Image upload failed.")
+            toast.error("Image upload failed.")
 
         }
 
@@ -125,13 +126,13 @@ function AdminBanners() {
 
             setEditingId(null)
 
-            alert("Banner added successfully!")
+            toast.success("Banner added successfully!")
 
         } catch (error) {
 
             console.log(error)
 
-            alert("Failed to add banner.")
+            toast.error("Failed to add banner.")
 
         }
 
@@ -153,13 +154,13 @@ function AdminBanners() {
 
             fetchBanners()
 
-            alert("Banner deleted successfully!")
+            toast.success("Banner deleted successfully!")
 
         } catch (error) {
 
             console.log(error)
 
-            alert("Failed to delete banner.")
+            toast.error("Failed to delete banner.")
 
         }
 
